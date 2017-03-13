@@ -10,3 +10,5 @@ Dieting can be challenging in Singapore, especially on a diet that restricts int
 - [Pusher](https://pusher.com/): https://pusher.com/tutorials/realtime_chat_widget
 - [Laravel Scout](https://laravel.com/docs/5.4/scout): composer require laravel/scout
 - ...
+
+Note: This version only has Laravel base, no other framework has been added.
