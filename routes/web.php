@@ -11,6 +11,12 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+# standard web views
+
+Route::get('/{page?}', 'HomeController@index') -> name('index');
+
+
+
+# restful end points
+
+Route::get('/rest/home/{lastId}/{page}', 'HomeController@resthome');
