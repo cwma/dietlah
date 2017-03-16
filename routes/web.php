@@ -13,9 +13,12 @@
 #	into the main index page. The main reason the routes for Lists, Tags and Search also
 # 	have a regular end point is to allow users to save urls or link certain pages directly.
 #
-#	For first iteration we'll keep them as normal pages first without AJAX,
-#	As to do it properly we need to do client side routing for browser history
-#	Will handle later, if its too difficult we'll drop the AJAX bit
+#	For first iteration we'll have ajax infinite scrolling, but changing views will just
+#	be regular page changes as there needs to be substantial client side routing code
+#	to handle browser history properly (backbone.js router)
+#	If this is too complicated we can drop it.
+#	
+#	For forms we can do regular post first. Once everything works we'll add AJAX.
 
 #	Home/Main page default view all: Order by top(favourites)
 Route::get('/', 'HomeController@index') -> name('home.default');
@@ -30,7 +33,7 @@ Route::get('/', 'HomeController@index') -> name('home.default');
 #	it in your favourites
 #
 #	Home/Main page view all: order by sort type
-Route::get('/{sort}/{page?}', 'HomeController@index') -> name('home.sorted');
+Route::get('/view/{sort}/{page?}', 'HomeController@index') -> name('home.sorted');
 
 #	View user favourites
 Route::get('/favourites/{sort}/{page?}', 'TestController@test') -> name('favourites');
