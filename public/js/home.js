@@ -1,19 +1,3 @@
-function initializeNavBar() {
-
-    // mobile menu
-    $('.button-collapse').sideNav({
-        menuWidth: 300, // Default is 300
-        edge: 'right', // Choose the horizontal origin
-        closeOnClick: true, // Closes side-nav on <a> clicks, useful for Angular/Meteor
-        draggable: true // Choose whether you can drag to open on touch screens
-    });
-
-    // navbar dropdown
-    $(".dropdown-button").dropdown({
-        hover: true
-    });
-}
-
 function compileCardTemplate() {
     var source = $("#card_template").html();
     return Handlebars.compile(source);
@@ -81,8 +65,5 @@ function initializeInfiniteScroll() {
 
 
 $(document).ready(function(){
-
-    initializeNavBar();
     initializeInfiniteScroll();
-
 });

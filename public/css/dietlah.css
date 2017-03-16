@@ -103,23 +103,23 @@
 
 @media screen and (min-width: 601px){
     .navbar-fixed {
-      height: 32px;
+      height: 50px;
       margin-bottom: 4px;
     }
 
     nav {
-        height: 32px;
-        line-height: 32px;
+        height: 25px;
+        line-height: 25px;
     }
 
     nav i, nav [class^="mdi-"], nav [class*="mdi-"], nav i.material-icons {
-        height: 32px;
-        line-height: 32px;
+        height: 25px;
+        line-height: 25px;
     }
 
     nav .button-collapse i {
-        height: 32px;
-        line-height: 32px;
+        height: 25px;
+        line-height: 25px;
     }
 
     nav .brand-logo { 
@@ -127,12 +127,12 @@
     }
 
     nav, nav .nav-wrapper i, nav a.button-collapse, nav a.button-collapse i {
-        height: 32px;
-        line-height: 32px;
+        height: 25px;
+        line-height: 25px;
     }
 
     .nav-progress {
-      top: 32px;
+      top: 50px;
     }
 
 }
@@ -173,7 +173,7 @@
 }
 
 input[id="nav-search"] {
-height: 32px !important; /* fix for search in navbar on chrome */
+height: 25px !important; /* fix for search in navbar on chrome */
 }
 
 input[id="nav-search-mobile"] {

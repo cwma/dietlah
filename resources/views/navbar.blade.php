@@ -1,39 +1,47 @@
 <div class="navbar-fixed">
-    <ul id="newdropdown" class="dropdown-content">
-        <li><a href="#!">All</a></li>
-        <li><a href="#!">Dining</a></li>
-        <li><a href="#!">Recipes</a></li>
-        <li><a href="#!">Tips</a></li>
-        <li><a href="#!">Success Stories</a></li>
-        <li><a href="#!">Discussion</a></li>
+    <ul id="listsdropdown" class="dropdown-content">
+        @foreach ($lists as $list) 
+            <li><a href="/tag/{{$list}}/popular">{{$list}}</a></li>
+        @endforeach
+        <li><a href="/manage">Manage Lists</a></li>
     </ul>
-    <ul id="populardropdown" class="dropdown-content">
-        <li><a href="#!">All</a></li>
-        <li><a href="#!">Dining</a></li>
-        <li><a href="#!">Recipes</a></li>
-        <li><a href="#!">Tips</a></li>
-        <li><a href="#!">Success Stories</a></li>
-        <li><a href="#!">Discussion</a></li>
+    <ul id="tagsdropdown" class="dropdown-content">
+        @foreach ($tags as $tag) 
+            <li><a href="/tag/{{$tag}}/popular">{{$tag}}</a></li>
+        @endforeach
+        <li><a href="/tags">See all tags ({{$tagCount}})</a></li>
     </ul>
     <nav class="light-green lighten-1">
         <div class="nav-wrapper">
-            <a href="#!" class="brand-logo center"><i class="material-icons">cloud</i>DietLah!</a>
             <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li class=""><a class="dropdown-button" href="#!" data-activates="newdropdown">New<i class="material-icons right">arrow_drop_down</i></a></li>
-                <li class=""><a class="dropdown-button" href="#!" data-activates="populardropdown">Popular<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li><a href="/"><b>DietLah!</b></a></li>
+                <li class="active"><a href="/">All</a></li>
+                <li class=""><a class="dropdown-button" href="#!" data-activates="tagsdropdown">Tags<i class="material-icons right">arrow_drop_down</i></a></li>
+                <li class=""><a class="dropdown-button" href="#!" data-activates="listsdropdown">My Lists<i class="material-icons right">arrow_drop_down</i></a></li>
             </ul>
             <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
                 <li><form>
                     <div class="input-field">
-                        <input id="search nav-search" type="search" required>
+                        <input id="search nav-search" type="search" placeholder="search posts">
                         <label class="label-icon" for="search"><i class="material-icons">search</i></label>
                         <i class="material-icons">close</i>
                     </div>
                 </form></li>
+                <li><a href="#">Make a post</a></li>
                 <li><a href="#">About</a></li>
                 <li><a href="#">Login</a></li>
                 <li><a href="#">Register</a></li>
+            </ul>
+        </div>
+        <div class="nav-wrapper light-green lighten-2 hide-on-med-and-down">
+            <ul id="nav-mobile" class="left">
+                <li style="padding-left: 10px">Viewing All Posts</li>
+                <li style="padding-left: 8px; padding-right: 8px">|</li>
+                <li class="active"><a href="#">New</a></li>
+                <li><a href="#">Popular</a></li>
+                <li><a href="#">Most Comments</a></li>
+                <li><a href="#">Relevance</a></li>
             </ul>
         </div>
     </nav>
@@ -46,40 +54,6 @@
         <li><a href="#">About</a></li>
         <li><a href="#">Login</a></li>
         <li><a href="#">Register</a></li>
-        <li><div class="divider"></div></li>
-        <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header">New<i class="material-icons">arrow_drop_down</i></a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="#!">All</a></li>
-                            <li><a href="#!">Dining</a></li>
-                            <li><a href="#!">Recipes</a></li>
-                            <li><a href="#!">Tips</a></li>
-                            <li><a href="#!">Success Stories</a></li>
-                            <li><a href="#!">Discussion</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
-        <li class="no-padding">
-            <ul class="collapsible collapsible-accordion">
-                <li>
-                    <a class="collapsible-header">Popular<i class="material-icons">arrow_drop_down</i></a>
-                    <div class="collapsible-body">
-                        <ul>
-                            <li><a href="#!">All</a></li>
-                            <li><a href="#!">Dining</a></li>
-                            <li><a href="#!">Recipes</a></li>
-                            <li><a href="#!">Tips</a></li>
-                            <li><a href="#!">Success Stories</a></li>
-                            <li><a href="#!">Discussion</a></li>
-                        </ul>
-                    </div>
-                </li>
-            </ul>
-        </li>
+        <!-- WIP -->
     </ul>
 </div>
