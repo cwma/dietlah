@@ -1,4 +1,4 @@
-function onPageLoad() {
+function initializeNavBar() {
 
     // mobile menu
     $('.button-collapse').sideNav({
@@ -14,44 +14,75 @@ function onPageLoad() {
     });
 }
 
+function compileCardTemplate() {
+    var source = $("#card_template").html();
+    return Handlebars.compile(source);
+}
 
-$(document).ready(function(){
+function showNavLoadingBar() {
+    $('.progress').show();
+}
 
-    onPageLoad();
+function hideNavLoadingBar() {
+    $('.progress').hide();
+}
 
+function renderCards(cardJson, cardTemplate) {
+    var div = document.createElement('div');
+    div.innerHTML = cardTemplate(cardJson);
+    var elements = div.childNodes;
+    salvattore.appendElements(grid, elements);
+    $('.card').fadeIn();
+}
+
+function loadJavascriptElements() {
+    $(window).lazyLoadXT();
+    $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    $('.modal').modal();
+    $('.tooltipped').tooltip({delay: 50});
+}
+
+function disableInfiniteScroll() {
+    $('#marker').off();
+    $('.end-of-page').fadeIn();
+}
+
+function paginationFailure(jqXHR, textStatus) {
+    console.log(textStatus);
+    console.log(jqXHR);
+}
+
+function initializeInfiniteScroll() {
     var grid = document.querySelector('#grid');
     var marker = $('#marker');
 
-    var source = $("#card_template").html();
-    var template = Handlebars.compile(source);
+    var cardTemplate = compileCardTemplate();
 
     $('#marker').on('lazyshow', function () {
 
-        $('.progress').show();
+        showNavLoadingBar();
 
         $.ajax({
             url: dietlah.restUrl + String(dietlah.page),
             dataType: "json"
         }).done(function (response) {
-            var div = document.createElement('div');
-            div.innerHTML = template(response);
-            var elements = div.childNodes;
-            salvattore.appendElements(grid, elements);
-            $(window).lazyLoadXT();
-            $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
-            $('.modal').modal();
-            $('.tooltipped').tooltip({delay: 50});
-            $('.card').fadeIn();
+            renderCards(response, cardTemplate);
+            loadJavascriptElements();
             dietlah.page += 1;
             if (!response["hasMore"]) {
-                $('#marker').off();
-                $('.end-of-page').fadeIn();
+                disableInfiniteScroll();
             }
-            $('.progress').hide();
+            hideNavLoadingBar();
         }).fail(function(jqXHR, textStatus) {
-        	console.log(textStatus);
-        	console.log(jqXHR);
-        	// handle ajax failure here
+            paginationFailure(jqXHR, textStatus);
         });
     }).lazyLoadXT({visibleOnly: false});
+}
+
+
+$(document).ready(function(){
+
+    initializeNavBar();
+    initializeInfiniteScroll();
+
 });
