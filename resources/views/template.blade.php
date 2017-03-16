@@ -28,6 +28,6 @@
         <script type="text/javascript" src="https://unpkg.com/imagesloaded@4.1/imagesloaded.pkgd.min.js"></script>
         <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.0.0/jquery.lazyloadxt.min.js"></script>
         @yield('scripts')
-        </script>
+        @include('jsvars')
     </body>
 </html>

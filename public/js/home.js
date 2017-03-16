@@ -28,28 +28,21 @@ $(document).ready(function(){
     $('#marker').on('lazyshow', function () {
 
         $('.progress').show();
-        page = parseInt(marker.attr('page'));
-        current = String(page);
-        next = String(page + 1);
-        marker.attr('page', next);
-
-        var restUrl = marker.attr('rest-url') + marker.attr('last-id') + "/" + current;
 
         $.ajax({
-            url: restUrl,
+            url: dietlah.restUrl + String(dietlah.page),
             dataType: "json"
         }).done(function (response) {
             var div = document.createElement('div');
             div.innerHTML = template(response);
-            console.log(div.innerHTML);
             var elements = div.childNodes;
             salvattore.appendElements(grid, elements);
             $(window).lazyLoadXT();
             $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
             $('.modal').modal();
-            $('.materialboxed').materialbox();
             $('.tooltipped').tooltip({delay: 50});
             $('.card').fadeIn();
+            dietlah.page += 1;
             if (!response["hasMore"]) {
                 $('#marker').off();
                 $('.end-of-page').fadeIn();

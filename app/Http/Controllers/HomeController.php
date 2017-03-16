@@ -3,19 +3,26 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use JavaScript;
 use Faker;
 
 class HomeController extends Controller {
 
     public function index($page = 1) {
-        return view('home', ["restUrl" => "/rest/home/", "page" => $page, "lastId" => "0"]);
+        JavaScript::put([
+            "page" => 1,
+            "restUrl" => "/rest/home/popular/0/",
+        ]);
+
+
+        return view('home');
     }
 
 
 
     # RESTFUL end points
 
-    public function resthome($lastId, $page) {
+    public function restHome($sorttype, $datetime, $page) {
         $faker = Faker\Factory::create();
         $faker->seed($page);
 

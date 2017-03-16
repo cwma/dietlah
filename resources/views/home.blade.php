@@ -16,7 +16,7 @@
 @section('bottom-anchor')
 <div class="container">
     <div class="row">
-        <div id="marker" last-id="{{$lastId}}" rest-url="{{$restUrl}}" page="{{$page}}"></div>
+        <div id="marker"></div>
 
         <div class="end-of-page center" hidden>
             <hr>
@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="card-image">
-        <img class="materialboxed" data-src="@{{{this.cardPic}}}" data-caption="Salad!">
+        <img data-src="@{{{this.cardPic}}}" data-caption="Salad!">
     </div>
     <div class="card-content">
         <span class="card-title">@{{{this.title}}}</span>
