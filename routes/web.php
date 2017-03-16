@@ -189,7 +189,7 @@ Route::Post('/rest/reportpost', 'TestController@test');
 ####################################################################################
 
 #	Admin page
-Route::Post('/admin', 'TestController@test') -> name('admin');
+Route::Get('/admin', 'TestController@test') -> name('admin');
 
 # 	add admin form post routes here etc
 

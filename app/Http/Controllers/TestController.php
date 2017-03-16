@@ -8,8 +8,8 @@ use Faker;
 
 class TestController extends Controller {
 
-    public function index($page = 1) {
-        $response = ["test": "successful!"];
-        return response(json_encode($response)) ->header('Content-Type', 'application/json'););
+    public function test($page = 1) {
+        $response = ["test" => "successful!"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 }
