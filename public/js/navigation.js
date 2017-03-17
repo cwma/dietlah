@@ -19,6 +19,8 @@ function initializeNavBar() {
         alignment: 'left', // Displays dropdown with edge aligned to the left of button
         stopPropagation: false // Stops event propagation
     });
+
+    $('.tooltipped').tooltip({delay: 50});
 }
 
 
