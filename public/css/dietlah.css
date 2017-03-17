@@ -185,3 +185,9 @@ height: 64px !important; /* fix for search in navbar on chrome */
 .end-of-page {
   height: 50%;
 }
+
+/* card items */
+
+.btn-card {
+  width: 50px;
+}

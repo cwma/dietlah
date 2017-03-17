@@ -147,7 +147,7 @@ Route::get('/rest/tags/{tag}/{sort}/{datetime}/{page?}', 'TestController@test');
 Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
 
 #	Post content ajax endpoint
-Route::get('/rest/post/{postId}/{postTitle}', 'TestController@test');
+Route::get('/rest/post/{postId}/', 'HomeController@restPost');
 
 ####################################################################################
 
