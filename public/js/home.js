@@ -112,6 +112,26 @@ function initializePostModal() {
     });
 }
 
+function initializeSubmitComment() {
+   $('#commentForm').on('submit', function(e) {
+        e.preventDefault(); 
+        var comment = $('#commentForm #comment').val();
+        var postId = $('#commentForm #postId').val();
+        console.log(comment);
+        $.ajax({
+            type: "POST",
+            url: "/rest/createcomment",
+            data: {
+                comment:comment,
+                postId:postId
+            },
+            success: function( msg ) {
+                Materialize.toast(msg["test"], 4000);
+            }
+        });
+    });
+}
+
 function loadHomeJavascriptElements() {
     $(window).lazyLoadXT();
     $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
@@ -128,6 +148,8 @@ function loadPostJavascriptElements(modal) {
     });
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip({delay: 50});
+    $('.collapsible').collapsible();
+    initializeSubmitComment();
 }
 
 function disableInfiniteScroll() {
@@ -168,8 +190,16 @@ function initializeInfiniteScroll() {
     }).lazyLoadXT({visibleOnly: false});
 }
 
+function setupAjax() {
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+}
 
 $(document).ready(function(){
+    setupAjax();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     registerDateTimeHelper();
     initializeInfiniteScroll();

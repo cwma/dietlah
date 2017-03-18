@@ -62,7 +62,7 @@
         </div>
         <div class="col s3 center">
             <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments" href="#">
-                <i style="vertical-align:middle" class="material-icons light-green-text">chat</i><span>@{{{this.comments}}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{this.comments}}}</span>
             </a>
         </div>
         <div class="col s3 center">
@@ -97,7 +97,7 @@
                     </li>
                     <li class="tab">
                         <a href="#post-comments" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments">
-                            <i class="material-icons light-green-text" style="vertical-align:middle">reply</i>
+                            <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
                             <span class="light-green-text">(@{{{this.commentCount}}})</span> 
                         </a>
                     </li>
@@ -155,17 +155,34 @@
                 </div>
                 
                 <div id="post-comments" class="col s12">
-
-                    <ul class="collection">
-                        @{{#each this.comments}}
-                        <li class="collection-item avatar">
-                            <img data-src="@{{{this.profilePic}}}" alt="" class="circle">
-                            <span class="title">@{{this.username}}</span>
-                            <p>@{{this.commentText}}</p>
-                            <p class="light-green-text">@{{timeSince this.commentTime.date}}</p>
-                        </li>
-                        @{{~/each}}
-                    </ul>
+                    <div class="row">
+                        <form id="commentForm">
+                            <div class="input-field col s12">
+                                <textarea id="comment" class="materialize-textarea"></textarea>
+                                <label for="comment">add a comment</label>
+                            </div>
+                            <input id="postId" type="text" value="@{{{this.postId}}}"hidden>
+                            <div>
+                                <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                                    <i class="material-icons right">send</i>Post Comment
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <br>
+                    <div class="divider"></div>
+                    <div class="row">
+                        <ul class="collection">
+                            @{{#each this.comments}}
+                            <li class="collection-item avatar">
+                                <img data-src="@{{{this.profilePic}}}" alt="" class="circle">
+                                <span class="title">@{{this.username}}</span>
+                                <p>@{{this.commentText}}</p>
+                                <p class="light-green-text">@{{timeSince this.commentTime.date}}</p>
+                            </li>
+                            @{{~/each}}
+                        </ul>
+                    </div>
                 </div>
                 
                 <div id="post-tags" class="col s12">
