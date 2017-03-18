@@ -199,28 +199,44 @@ height: 64px !important; /* fix for search in navbar on chrome */
 
 @media screen and (max-width: 600px){
     .modal {
-      width: 90%;
+      width: 90% !important;
+      height: 90% !important;
+      max-height: 90% !important;
     }
 }
 
 @media screen and (min-width: 601px) and (max-width: 992px) {
     .modal {
-      width: 85%;
+      width: 85% !important;
+      height: 90% !important;
+      max-height: 90% !important;
     }
 }
 
 @media screen and (min-width: 993px) and (max-width: 1280px) {
     .modal {
-      width: 80%;
+      width: 90% !important;
+      height: 90% !important;
+      max-height: 90% !important;
     }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1600px) {
     .modal {
-      width: 75%;
+      width: 80% !important;
+      height: 90% !important;
+      max-height: 90% !important;
     }
 }
 
+
+@media screen and (min-width: 1601px) {
+    .modal {
+      width: 80% !important;
+      height: 90% !important;
+      max-height: 90% !important;
+    }
+}
 
 /* modal header */
 
