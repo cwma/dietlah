@@ -22,7 +22,7 @@ class HomeController extends Controller {
 
     # RESTFUL end points
 
-    public function restHome($sorttype, $datetime, $page) {
+    public function restHomeAll($sorttype, $datetime, $page) {
         $faker = Faker\Factory::create();
         $faker->seed($page);
 
@@ -38,7 +38,7 @@ class HomeController extends Controller {
                                 "comments" => $faker->numberBetween($min = 0, $max = 99),
                                 "userLiked" => $faker->boolean($chanceOfGettingTrue = 50),
                                 "userFavourited" => $faker->boolean($chanceOfGettingTrue = 50),
-                                "id" => $i,
+                                "id" => $i, "tagCount" => $faker->numberBetween($min = 1, $max = 9)
                                 ]);
         }
 
@@ -56,15 +56,26 @@ class HomeController extends Controller {
         $faker = Faker\Factory::create();
         $faker->seed($postId);
 
+        $tagCount = $faker->numberBetween($min = 1, $max = 9);
+        $tags = [];
+        for($i = 0; $i < $tagCount; $i++) {
+            array_push($tags, ["tag" => $faker->word, "votes" => $faker->numberBetween($min = 1, $max = 20),
+                                "userVoted" => $faker->boolean($chanceOfGettingTrue = 50)]);
+        }
+
+
         $commentCount = $faker->numberBetween($min = 0, $max = 20);
         $comments = [];
         for($i = 0; $i < $commentCount; $i++) {
             array_push($comments, ["username" => $faker->name, "profilePic" => $faker->imageUrl($width = 200, $height = 200, 'cats', true, 'Faker'),
-                                   "commentText" => $faker->sentence($nbWords = 30, $variableNbWords = true)]);
+                                   "commentText" => $faker->sentence($nbWords = 30, $variableNbWords = true),
+                                   "commentTime" => $faker->dateTime($max='now', $timezone="GMT+8")]);
         }
 
-        $post = ["title" => $postId.". ".$faker->sentence($nbWords = 3, $variableNbWords = true), "username" => $faker->name,
-                "fulltext" => $faker->sentence($nbWords = 30, $variableNbWords = true), "tag" => $faker->word,
+
+
+        $post = ["title" => $postId.". ".$faker->sentence($nbWords = 7, $variableNbWords = true), "username" => $faker->name,
+                "fulltext" => $faker->paragraphs($nb = 5, $asText = true), "tag" => $faker->word,
                 "authorPic" => $faker->imageUrl($width = 200, $height = 200, 'cats', true, 'Faker'),
                 "postPic" => $faker->imageUrl($width = 800, $height = 600, 'cats', true, 'Faker'),
                 "postTime" => $faker->dateTime($max = 'now', $timezone = "GMT+8"),
@@ -73,7 +84,7 @@ class HomeController extends Controller {
                 "comments" => $comments,
                 "userLiked" => $faker->boolean($chanceOfGettingTrue = 50),
                 "userFavourited" => $faker->boolean($chanceOfGettingTrue = 50),
-                "id" => $postId
+                "postId" => $postId, "tags" => $tags, "tagCount" => $tagCount
                 ];
         return response(json_encode($post)) ->header('Content-Type', 'application/json');
     }

@@ -33,16 +33,16 @@ Route::get('/', 'HomeController@index') -> name('home.default');
 #	it in your favourites
 #
 #	Home/Main page view all: order by sort type
-Route::get('/view/{sort}/{page?}', 'HomeController@index') -> name('home.sorted');
+Route::get('/view/{sort}/{page?}', 'HomeController@homeAll') -> name('home.sorted');
 
 #	View user favourites
-Route::get('/favourites/{sort}/{page?}', 'TestController@test') -> name('favourites');
+Route::get('/favourites/{sort}/{page?}', 'HomeController@homeFavourites') -> name('favourites');
 
 #	View according to user defined list of tags
-Route::get('/list/{listname}/{sort}/{page?}', 'TestController@test') -> name('userlist');
+Route::get('/list/{listname}/{sort}/{page?}', 'HomeController@homeLists') -> name('userlist');
 
 #	View according to tags
-Route::get('/tag/{tag}/{sort}/{page?}', 'TestController@test') -> name('tag');
+Route::get('/tag/{tag}/{sort}/{page?}', 'HomeController@homeTags') -> name('tag');
 
 #	View according to search
 Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
@@ -135,13 +135,16 @@ Route::Post('/sendmessage', 'TestController@test');
 #	Alternatively load all IDs and lazy load paginate as user scrolls using those IDs
 
 #	main home page ajax endpoint
-Route::get('/rest/home/{sort}/{datetime}/{page}', 'HomeController@restHome');
+Route::get('/rest/home/{sort}/{datetime}/{page}', 'HomeController@restHomeAll');
+
+#	View according to favourites ajax endpoint
+Route::get('/favourites/{sort}/{page?}', 'HomeController@restHomeFavourites');
 
 #	view according to lists ajax endpoint
-Route::get('/rest/list/{listName}/{sort}/{datetime}/{page?}', 'TestController@test');
+Route::get('/rest/list/{listName}/{sort}/{datetime}/{page?}', 'HomeController@restHomeList');
 
 #	view according to tags ajax endpoint
-Route::get('/rest/tags/{tag}/{sort}/{datetime}/{page?}', 'TestController@test');
+Route::get('/rest/tags/{tag}/{sort}/{datetime}/{page?}', 'HomeController@restHomeTags');
 
 #	View according to search ajax endpoint
 Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');

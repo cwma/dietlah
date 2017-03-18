@@ -191,3 +191,64 @@ height: 64px !important; /* fix for search in navbar on chrome */
 .btn-card {
   width: 50px;
 }
+
+.card-action {
+  height: 50px;
+}
+/* modal */
+
+@media screen and (max-width: 600px){
+    .modal {
+      width: 90%;
+    }
+}
+
+@media screen and (min-width: 601px) and (max-width: 992px) {
+    .modal {
+      width: 85%;
+    }
+}
+
+@media screen and (min-width: 993px) and (max-width: 1280px) {
+    .modal {
+      width: 80%;
+    }
+}
+
+@media screen and (min-width: 1281px) and (max-width: 1600px) {
+    .modal {
+      width: 75%;
+    }
+}
+
+
+/* modal header */
+
+.modal.modal-fixed-header {
+  padding: 0;
+  height: 70%;
+}
+.modal.modal-fixed-header .modal-header {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  position: absolute;
+  top: 0;
+}
+.modal.modal-fixed-header .modal-header {
+  border-radius: 0 0 2px 2px;
+  padding: 4px 6px;
+  height: 56px;
+  width: 100%;
+}
+.modal.modal-fixed-header .modal-content {
+  position: absolute;
+  top: 56px;
+  height: calc(85%);
+  max-height: 100%;
+  width: 100%;
+  overflow-y: auto;
+}
+
+/* tab indicator */
+.indicator {
+    background-color: #8bc34a !important;
+}

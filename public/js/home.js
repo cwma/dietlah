@@ -99,7 +99,7 @@ function initializePostModal() {
                 dataType: "json"
             }).done(function (response) {
                 renderPost(modal, response, postTemplate);
-                loadPostJavascriptElements();
+                loadPostJavascriptElements(modal);
                 hideNavLoadingBar();
             }).fail(function(jqXHR, textStatus) {
                 paginationFailure(jqXHR, textStatus);
@@ -119,8 +119,15 @@ function loadHomeJavascriptElements() {
     initializePostModal();
 }
 
-function loadPostJavascriptElements() {
-
+function loadPostJavascriptElements(modal) {
+    $(modal).find('#post-content img').lazyLoadXT();
+    $('ul.tabs').tabs({
+        onShow: function(tab) {
+            $(tab).find('img').lazyLoadXT();
+        }
+    });
+    $('.materialboxed').materialbox();
+    $('.tooltipped').tooltip({delay: 50});
 }
 
 function disableInfiniteScroll() {
@@ -163,6 +170,7 @@ function initializeInfiniteScroll() {
 
 
 $(document).ready(function(){
+    $.lazyLoadXT.scrollContainer = '.modal-content';
     registerDateTimeHelper();
     initializeInfiniteScroll();
 });
