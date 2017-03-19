@@ -48,7 +48,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="tooltipped" href="#" data-position="bottom" data-delay="50" data-tooltip="Create new post">
+                    <a class="tooltipped" href="/createpost" data-position="bottom" data-delay="50" data-tooltip="Create new post">
                         <i class="material-icons">create</i>
                     </a>
                 </li>
