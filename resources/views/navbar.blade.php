@@ -7,6 +7,7 @@
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="/"><b>DietLah!</b><i class="material-icons left">cloud</i></a></li>
+                @if (Route::currentRouteNamed('home.default'))
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-order-select" class="post-filter">
                         <option value="1" selected>New</option>
@@ -34,6 +35,7 @@
                         @endforeach
                     </select>
                 </li>
+                @endif
             </ul>
             <a href="#" data-activates="mobile" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
