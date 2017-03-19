@@ -11,10 +11,8 @@ class HomeController extends Controller {
     public function index($page = 1) {
         JavaScript::put([
             "page" => 1,
-            "restUrl" => "/rest/home/popular/0/",
+            "restUrl" => "/rest/postfeed/",
         ]);
-
-
         return view('home');
     }
 
@@ -22,15 +20,17 @@ class HomeController extends Controller {
 
     # RESTFUL end points
 
-    public function restHomeAll($sorttype, $datetime, $page) {
+    public function restPostFeed($order, $range, $datetime, $page, Request $request) {
         $faker = Faker\Factory::create();
         $faker->seed($page);
 
         $posts = [];
 
+        $metadata = "params: ".$order." ".$range." ".$datetime." ".$page." ".json_encode($request->tags);
         for($i = ($page * 12) - 11 ; $i < ($page * 12) + 1; $i++) {
             array_push($posts, ["title" => $i.". ".$faker->sentence($nbWords = 3, $variableNbWords = true), "username" => $faker->name,
-                                "summary" => $faker->sentence($nbWords = 30, $variableNbWords = true), "tag" => $faker->word,
+                                "summary" => $faker->sentence($nbWords = 30, $variableNbWords = true)."<br><br>".$metadata, 
+                                "tag" => $faker->word,
                                 "profilePic" => $faker->imageUrl($width = 200, $height = 200, 'cats', true, 'Faker'),
                                 "cardPic" => $faker->imageUrl($width = 800, $height = 600, 'cats', true, 'Faker'),
                                 "postTime" => $faker->dateTime($max = 'now', $timezone = "GMT+8"),
