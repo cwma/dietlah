@@ -13,6 +13,7 @@
                         <option value="2">Popular</option>
                         <option value="3">Favourites</option>
                         <option value="3">Comments</option>
+                        <option value="4">Relevance</option>
                     </select>
                 </li>
                 <li>&nbsp;</li>
