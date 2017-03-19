@@ -7,16 +7,17 @@
     <div class="row">
     	 {!! Form::open(['url' => 'createpost']) !!}
 
-        <div class="form-group">
+        <div class="input-field">
             {!! Form::label('title', 'Title:') !!}
-            {!! Form::text('title', null, ['class' => 'form-control']) !!}
+            {!! Form::text('title', null, ['class' => '']) !!}
         </div>
-         <div class="form-group">
-            {!! Form::textarea('text', null, ['class' => 'form-control']) !!}
+         <div class="input-field">
+            {!! Form::textarea('text', null, ['class' => 'materialize-textarea']) !!}
         </div>
         <button class="btn btn-success" type="submit">Post!</button>
         {!! Form::close() !!}
     </div>
 
 </div>
+@stop
 
