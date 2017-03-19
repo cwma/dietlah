@@ -49,6 +49,7 @@ Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
 
 #	Post direct link: include post title in url to make it user/SEO friendly. 
 Route::get('/post/{postId}/{postTitle}', 'TestController@test') -> name('post');
+Route::get('/createpost', 'PostController@newpost') -> name('post');
 
 #	update an existing post
 Route::get('/update/{postid}', 'TestController@test') -> name('edit');
@@ -80,7 +81,7 @@ Route::get('/profile/{username}', 'TestController@test') -> name('profile');
 ####################################################################################
 
 # 	create a new post
-Route::Post('/createpost', 'TestController@test');
+Route::Post('/createpost', 'PostController@verifyPost');
 
 # 	update post
 Route::Post('/updatepost', 'TestController@test');
