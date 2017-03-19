@@ -135,16 +135,7 @@ Route::Post('/sendmessage', 'TestController@test');
 #	Alternatively load all IDs and lazy load paginate as user scrolls using those IDs
 
 #	main home page ajax endpoint
-Route::get('/rest/home/{sort}/{datetime}/{page}', 'HomeController@restHomeAll');
-
-#	View according to favourites ajax endpoint
-Route::get('/favourites/{sort}/{page?}', 'HomeController@restHomeFavourites');
-
-#	view according to lists ajax endpoint
-Route::get('/rest/list/{listName}/{sort}/{datetime}/{page?}', 'HomeController@restHomeList');
-
-#	view according to tags ajax endpoint
-Route::get('/rest/tags/{tag}/{sort}/{datetime}/{page?}', 'HomeController@restHomeTags');
+Route::get('/rest/postfeed/{order}/{range}/{datetime}/{page}', 'HomeController@restPostFeed');
 
 #	View according to search ajax endpoint
 Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');

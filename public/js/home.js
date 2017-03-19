@@ -69,9 +69,9 @@ function hideNavLoadingBar() {
     $('.progress').hide();
 }
 
-function renderCards(cardJson, cardTemplate) {
+function renderCards(grid, cardJson) {
     var div = document.createElement('div');
-    div.innerHTML = cardTemplate(cardJson);
+    div.innerHTML = dietlah.cardTemplate(cardJson);
     var elements = div.childNodes;
     salvattore.appendElements(grid, elements);
     $('.card').fadeIn();
@@ -235,31 +235,35 @@ function paginationFailure(jqXHR, textStatus) {
     console.log(jqXHR);
 }
 
-function initializeInfiniteScroll() {
+function ajaxLoadPageFeed(order, range, tags) {
+    showNavLoadingBar();
+
+    $.ajax({
+        url: dietlah.restUrl + order + "/" + range + "/" + "placeholder" + "/" + String(dietlah.page),
+        dataType: "json",
+        data: {
+            tags: tags
+        }
+    }).done(function (response) {
+        renderCards(grid, response);
+        loadHomeJavascriptElements();
+        dietlah.page += 1;
+        if (!response["hasMore"]) {
+            disableInfiniteScroll();
+        }
+        hideNavLoadingBar();
+    }).fail(function(jqXHR, textStatus) {
+        paginationFailure(jqXHR, textStatus);
+        hideNavLoadingBar();
+    });
+}
+
+function initializeInfiniteScroll(order, range, tags) {
     var grid = document.querySelector('#grid');
     var marker = $('#marker');
 
-    var cardTemplate = compileCardTemplate();
-
     $('#marker').on('lazyshow', function () {
-
-        showNavLoadingBar();
-
-        $.ajax({
-            url: dietlah.restUrl + String(dietlah.page),
-            dataType: "json"
-        }).done(function (response) {
-            renderCards(response, cardTemplate);
-            loadHomeJavascriptElements();
-            dietlah.page += 1;
-            if (!response["hasMore"]) {
-                disableInfiniteScroll();
-            }
-            hideNavLoadingBar();
-        }).fail(function(jqXHR, textStatus) {
-            paginationFailure(jqXHR, textStatus);
-            hideNavLoadingBar();
-        });
+        ajaxLoadPageFeed(order, range, tags);
     }).lazyLoadXT({visibleOnly: false});
 }
 
@@ -271,9 +275,37 @@ function setupAjax() {
     });
 }
 
+function reinitializeInfiniteScroll() {
+    dietlah.page = 1;
+    // var order = $("#post-order-select").val();
+    // var range = $("#post-range-select").val();
+    // var tags = $("#post-tag-select").val();
+    var order = $("#post-order-select option:selected").text();
+    var range = $("#post-range-select option:selected").text();
+    var tags = $("#post-tag-select option:selected").text();
+    $('#marker').off();
+    $('.cards-container').children().html("")
+    ajaxLoadPageFeed(order, range, tags);
+    initializeInfiniteScroll(order, range, tags);
+}
+
+function setupPostsFiltering() {
+    $('#post-order-select').on('change', function(e) {
+        reinitializeInfiniteScroll();
+    });
+    $('#post-range-select').on('change', function(e) {
+        reinitializeInfiniteScroll();
+    });
+    $('#post-tag-select').on('change', function(e) {
+        reinitializeInfiniteScroll();
+    });
+}
+
 $(document).ready(function(){
     setupAjax();
+    dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     registerDateTimeHelper();
-    initializeInfiniteScroll();
+    initializeInfiniteScroll("new", "all", []);
+    setupPostsFiltering();
 });
