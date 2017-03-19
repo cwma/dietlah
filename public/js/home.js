@@ -237,7 +237,6 @@ function paginationFailure(jqXHR, textStatus) {
 
 function ajaxLoadPageFeed(order, range, tags) {
     showNavLoadingBar();
-
     $.ajax({
         url: dietlah.restUrl + order + "/" + range + "/" + "placeholder" + "/" + String(dietlah.page),
         dataType: "json",
@@ -260,7 +259,6 @@ function ajaxLoadPageFeed(order, range, tags) {
 
 function initializeInfiniteScroll(order, range, tags) {
     var grid = document.querySelector('#grid');
-    var marker = $('#marker');
 
     $('#marker').on('lazyshow', function () {
         ajaxLoadPageFeed(order, range, tags);
@@ -285,8 +283,8 @@ function reinitializeInfiniteScroll() {
     var tags = $("#post-tag-select option:selected").text();
     $('#marker').off();
     $('.cards-container').children().html("")
-    ajaxLoadPageFeed(order, range, tags);
     initializeInfiniteScroll(order, range, tags);
+    $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
 }
 
 function setupPostsFiltering() {
