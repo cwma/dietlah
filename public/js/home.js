@@ -101,7 +101,7 @@ function initializePostModal() {
             showNavLoadingBar();
             postid = $(trigger).attr('data-postid');
             $.ajax({
-                url: "http://dietlah.cwma.me/rest/post/" + postid,
+                url: "/rest/post/" + postid,
                 dataType: "json"
             }).done(function (response) {
                 renderPost(modal, response, postTemplate);
