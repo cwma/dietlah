@@ -177,7 +177,10 @@ Route::Post('/rest/updatecomment', 'TestController@test');
 Route::Post('/rest/deletecomment', 'TestController@test');
 
 #	Favourite post
-Route::Post('/rest/favourite', 'TestController@test');
+Route::Post('/rest/favourite', 'TestController@testFavourite');
+
+#	Like post
+Route::Post('/rest/like', 'TestController@testLike');
 
 #	Add/+1 tag to post
 Route::Post('/rest/addtag', 'TestController@test');

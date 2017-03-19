@@ -1,3 +1,5 @@
+/* handlebars helper functions */
+
 function timeSince(date) {
     if (typeof date !== 'object') {
         date = new Date(date);
@@ -47,6 +49,8 @@ function registerDateTimeHelper() {
     })
 }
 
+/* page rendering functions */
+
 function compileCardTemplate() {
     var source = $("#card_template").html();
     return Handlebars.compile(source);
@@ -81,6 +85,8 @@ function renderPost(modal, postJson, postTemplate) {
 function clearPost(modal) {
     $(modal).html("");
 }
+
+/* javascript/ajax handling */
 
 function initializePostModal() {
     postTemplate = compilePostTemplate();
@@ -117,7 +123,6 @@ function initializeSubmitComment() {
         e.preventDefault(); 
         var comment = $('#commentForm #comment').val();
         var postId = $('#commentForm #postId').val();
-        console.log(comment);
         $.ajax({
             type: "POST",
             url: "/rest/createcomment",
@@ -132,20 +137,88 @@ function initializeSubmitComment() {
     });
 }
 
+function handleLikeClickEvent(elementId) {
+    $(elementId).on('click', function(e) {
+        var likeCaller = this;
+        e.preventDefault(); 
+        var liked = $(likeCaller).attr("liked");
+        var postId = $(likeCaller).attr("post-id");
+        $.ajax({
+            type: "POST",
+            url: "/rest/like",
+            data: {
+                liked:liked,
+                postId:postId
+            },
+            success: function( msg ) {
+                Materialize.toast(msg["test"], 4000);
+                if(liked == "true") {
+                    $(likeCaller).attr("liked", false);
+                    $(likeCaller).children("i").html("star_outline");
+                    $(likeCaller).children("span").html(msg["likes"]);
+                } else {
+                    $(likeCaller).attr("liked", true);
+                    $(likeCaller).children("i").html("star");
+                    $(likeCaller).children("span").html(msg["likes"]);
+                }
+            }
+        });
+    })
+}
+
+function handleFavouriteClickEvent(elementId) {
+    $(elementId).on('click', function(e) {
+        var favCaller = this;
+        e.preventDefault(); 
+        var favourited = $(favCaller).attr("favourited");
+        var postId = $(favCaller).attr("post-id");
+        $.ajax({
+            type: "POST",
+            url: "/rest/favourite",
+            data: {
+                favourited:favourited,
+                postId:postId
+            },
+            success: function( msg ) {
+                Materialize.toast(msg["test"], 4000);
+                if(favourited == "true") {
+                    $(favCaller).attr("favourited", false);
+                    $(favCaller).children("i").html("bookmark_outline");
+                } else {
+                    $(favCaller).attr("favourited", true);
+                    $(favCaller).children("i").html("bookmark");
+                }
+            }
+        });
+    })
+}
+
 function loadHomeJavascriptElements() {
+    handleLikeClickEvent('.post-like');
+    handleFavouriteClickEvent('.post-fav');
     $(window).lazyLoadXT();
     $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     $('.tooltipped').tooltip({delay: 50});
+    $('#post-fav').on('click', function(e) {
+        e.preventDefault(); 
+        $('#postmodal').modal('close');
+    })
     initializePostModal();
 }
 
 function loadPostJavascriptElements(modal) {
+    handleLikeClickEvent('.full-post-like');
+    handleFavouriteClickEvent('.full-post-fav');
     $(modal).find('#post-content img').lazyLoadXT();
     $('ul.tabs').tabs({
         onShow: function(tab) {
             $(tab).find('img').lazyLoadXT();
         }
     });
+   $('#modal-close').on('click', function(e) {;
+        e.preventDefault(); 
+        $('#postmodal').modal('close');
+    })
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip({delay: 50});
     $('.collapsible').collapsible();

@@ -58,7 +58,7 @@
     </div>
     <div class="card-action">
         <div class="col s3 center">
-            <a class="modal-trigger light-green-text" href="#postmodal"data-postid="@{{{this.id}}}">More</a>
+            <a class="modal-trigger light-green-text" href="#postmodal" data-postid="@{{{this.postId}}}">More</a>
         </div>
         <div class="col s3 center">
             <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments" href="#">
@@ -66,13 +66,15 @@
             </a>
         </div>
         <div class="col s3 center">
-            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#">
-                <i style="vertical-align:middle" class="material-icons light-green-text" onclick="Materialize.toast('Liked!', 4000)">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
+            <a class="tooltipped light-green-text post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
+                liked="@{{#if this.userLiked}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
             </a>
         </div>
         <div class="col s3 center">
-            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#">
-                <i style="vertical-align:middle" class="material-icons light-green-text" onclick="Materialize.toast('Added to Favourites!', 4000)">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+            <a class="tooltipped light-green-text post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                favourited="@{{#if this.userFavourited}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
             </a>
         </div>
     </div>
@@ -196,20 +198,28 @@
     </div>
     <div class="modal-footer">
         <div class="row vertical-align">
-            <div class="col s4 center">
-                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#">
-                    <i style="vertical-align:middle" class="material-icons light-green-text" onclick="Materialize.toast('Liked!', 4000)">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
+            <div class="col s3 center">
+                <a class="tooltipped light-green-text full-post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
+                    liked="@{{#if this.userLiked}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
+                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
                 </a>
             </div>
-            <div class="col s4 center">
-                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#">
-                    <i style="vertical-align:middle" class="material-icons light-green-text" onclick="Materialize.toast('Added to Favourites!', 4000)">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
-                </a>
+            <div class="col s3 center">
+            <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                favourited="@{{#if this.userFavourited}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+            </a>
             </div>
-            <div class="col s4 center">
-                <a class="tooltipped light-green-text modal-tab-icon" data-position="bottom" data-delay="50" data-tooltip="open post in new window" 
+            <div class="col s3 center">
+                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="open post in new window" 
                     target="_blank" href="/post/@{{{this.postId}}}/@{{{this.title}}}">
                 <i class="material-icons light-green-text" style="vertical-align:middle">open_in_new</i>
+                </a>
+            </div>
+            <div class="col s3 center">
+                <a href="#!" class="light-green-text modal-tab-icon" id="modal-close">
+                <i class="material-icons light-green-text" style="vertical-align:middle">close</i>
+                </a>
             </div>
         </div>
     </div>

@@ -38,7 +38,7 @@ class HomeController extends Controller {
                                 "comments" => $faker->numberBetween($min = 0, $max = 99),
                                 "userLiked" => $faker->boolean($chanceOfGettingTrue = 50),
                                 "userFavourited" => $faker->boolean($chanceOfGettingTrue = 50),
-                                "id" => $i, "tagCount" => $faker->numberBetween($min = 1, $max = 9)
+                                "postId" => $i, "tagCount" => $faker->numberBetween($min = 1, $max = 9)
                                 ]);
         }
 
