@@ -6,15 +6,18 @@ use Illuminate\Http\Request;
 use JavaScript;
 use Faker;
 
-class HomeController extends Controller {
+class HomePageController extends Controller {
+
+    public function __construct() {
+        $this->middleware('auth');
+    }
 
     public function index(Request $request, $page = 1) {
         JavaScript::put([
             "page" => 1,
             "restUrl" => "/rest/postfeed/",
         ]);
-    $request->session()->put('username', Auth::user()->username);
-        return view('home');
+        return view('homepage');
     }
 
 
