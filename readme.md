@@ -1,4 +1,4 @@
-<h1 align="center"><a href="https://cwma/dietlah/"><b>DietLah!</b></a></h1>
+<h1 align="center"><a href="dev.dietlah.sg"><b>DietLah!</b></a></h1>
 
 ## About DietLah!
 
