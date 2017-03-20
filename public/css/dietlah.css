@@ -229,6 +229,10 @@ height: 64px !important; /* fix for search in navbar on chrome */
   width: 50px;
 }
 
+.card-image, .card-content {
+  cursor: pointer;
+}
+
 .card-action {
   height: 50px;
 }

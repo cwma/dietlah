@@ -118,6 +118,12 @@ function initializePostModal() {
     });
 }
 
+function initializeCardClickModalOpen() {
+    $('.card-image, .card-content').on('click', function() {
+        $("a[data-postid="+$(this).attr("data-postid")+"]").click();
+    })
+}
+
 function initializeSubmitComment() {
    $('#commentForm').on('submit', function(e) {
         e.preventDefault(); 
@@ -196,6 +202,7 @@ function handleFavouriteClickEvent(elementId) {
 function loadHomeJavascriptElements() {
     handleLikeClickEvent('.post-like');
     handleFavouriteClickEvent('.post-fav');
+    initializeCardClickModalOpen();
     $(window).lazyLoadXT();
     $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     $('.tooltipped').tooltip({delay: 50});

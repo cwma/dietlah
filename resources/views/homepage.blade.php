@@ -45,10 +45,10 @@
             </div>
         </div>
     </div>
-    <div class="card-image">
+    <div class="card-image" data-postid="@{{{this.postId}}}">
         <img data-src="@{{{this.cardPic}}}">
     </div>
-    <div class="card-content">
+    <div class="card-content" data-postid="@{{{this.postId}}}">
         <span class="card-title">@{{{this.title}}}</span>
         <p>@{{{this.summary}}}</p>
         <br>
