@@ -6,14 +6,14 @@ use Illuminate\Http\Request;
 use JavaScript;
 use Faker;
 
-class HomeController extends Controller {
+class HomePageController extends Controller {
 
     public function index($page = 1) {
         JavaScript::put([
             "page" => 1,
             "restUrl" => "/rest/postfeed/",
         ]);
-        return view('home');
+        return view('homepage');
     }
 
 
