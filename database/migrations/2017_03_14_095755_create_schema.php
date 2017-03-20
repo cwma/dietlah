@@ -23,6 +23,10 @@ class CreateSchema extends Migration
             $table->string('title');
             $table->string('text', 10000);
             $table->string('location')->nullable();
+	    $table->integer('likes_count')->unsigned();
+	    $table->index('likes_count');
+	    $table->integer('favourites_count')->unsigned();
+	    $table->index('favourites_count');
 	    $table->softDeletes();
             $table->timestamps();
         });
@@ -32,12 +36,12 @@ class CreateSchema extends Migration
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-            $table->timestamps();
         });
 	Schema::create('comments', function (Blueprint $table) {
 	    $table->increments('id');
 	    $table->string('comment', 1000);
 	    $table->softDeletes();
+            $table->timestamps();
 	});
 	Schema::create('post_comments', function (Blueprint $table) {
 	    $table->increments('id');
@@ -50,6 +54,7 @@ class CreateSchema extends Migration
 	    $table->increments('id');
 	    $table->string('tag_name');
 	    $table->softDeletes();
+            $table->timestamps();
 	});
 	Schema::create('post_tags', function (Blueprint $table) {
 	    $table->increments('id');
@@ -67,25 +72,16 @@ class CreateSchema extends Migration
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 	    $table->softDeletes();
+            $table->timestamps();
 	});
-	Schema::create('lists', function (Blueprint $table) {
-	    $table->increments('id');
-	    $table->string('list_name');
-	    $table->softDeletes();
-	});
-	Schema::create('user_lists', function (Blueprint $table) {
+	Schema::create('likes', function (Blueprint $table) {
 	    $table->increments('id');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('list_id')->unsigned();
-	    $table->foreign('list_id')->references('id')->on('lists')->onDelete('cascade');
-	});
-	Schema::create('list_tags', function (Blueprint $table) {
-	    $table->increments('id');
-            $table->integer('list_id')->unsigned();
-	    $table->foreign('list_id')->references('id')->on('lists')->onDelete('cascade');
-            $table->integer('tag_id')->unsigned();
-	    $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+            $table->integer('post_id')->unsigned();
+	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+	    $table->softDeletes();
+            $table->timestamps();
 	});
 	Schema::create('reports', function (Blueprint $table) {
 	    $table->increments('id');
@@ -93,6 +89,7 @@ class CreateSchema extends Migration
 	    $table->string('report_type');
 	    $table->string('report_comment');
 	    $table->softDeletes();
+            $table->timestamps();
 	});
     }
 
