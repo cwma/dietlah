@@ -48,7 +48,8 @@ Route::get('/tag/{tag}/{sort}/{page?}', 'HomeController@homeTags') -> name('tag'
 Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
 
 #	Post direct link: include post title in url to make it user/SEO friendly. 
-Route::get('/post/{postId}/{postTitle}', 'TestController@test') -> name('post');
+//Route::get('/post/{postId}/{postTitle}', 'TestController@test') -> name('post');
+Route::get('/post/{postId}', 'PostController@post') -> name('post');//without title for now, easier to nagivate 
 Route::get('/createpost', 'PostController@newpost') -> name('post');
 
 #	update an existing post

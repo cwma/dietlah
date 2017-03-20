@@ -10,3 +10,4 @@ Homestead.yaml
 /config/database.php
 yarn.lock
 sftp-config.json
+composer.json

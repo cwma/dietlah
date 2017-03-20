@@ -9,7 +9,7 @@ use Faker;
 use App\Post;
 class PostController extends Controller {
 	public function newpost(Request $request){
-		return view('newpost');
+		return view('createpost');
 	}
 	public function verifyPost(Request $request){
 		$validator = Validator::make($request->all(), [ 
@@ -27,5 +27,9 @@ class PostController extends Controller {
     	$post->text = $request->text;
     	$post->save();
     	return redirect('/');
+	}
+	public function post($postId, Request $request){
+		$post = Post::findOrFail($postId);
+		return view('post', ['post'=> $post]);
 	}
 }
