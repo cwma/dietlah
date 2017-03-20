@@ -6,8 +6,6 @@
 <div class="container">
     <div class="row">
         <div class="cards-container" id="grid" data-columns>
-
-
         </div>
     </div>
 </div>

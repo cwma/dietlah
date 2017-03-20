@@ -11,7 +11,7 @@ class PostController extends Controller {
 	public function newpost(Request $request){
 		return view('createpost');
 	}
-	public function verifyPost(Request $request){
+	public function createPost(Request $request){
 		$validator = Validator::make($request->all(), [ 
       		'title' => 'required|min:3|max:100',
       		'text' => 'required',

@@ -21,7 +21,7 @@ class CreateSchema extends Migration
             $table->increments('id');
             $table->string('image')->nullable();
             $table->string('title');
-            $table->string('text');
+            $table->string('text', 10000);
             $table->string('location')->nullable();
 	    $table->softDeletes();
             $table->timestamps();
@@ -36,7 +36,7 @@ class CreateSchema extends Migration
         });
 	Schema::create('comments', function (Blueprint $table) {
 	    $table->increments('id');
-	    $table->string('comment');
+	    $table->string('comment', 1000);
 	    $table->softDeletes();
 	});
 	Schema::create('post_comments', function (Blueprint $table) {
