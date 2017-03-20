@@ -101,7 +101,7 @@ function initializePostModal() {
             showNavLoadingBar();
             postid = $(trigger).attr('data-postid');
             $.ajax({
-                url: "http://dietlah.cwma.me/rest/post/" + postid,
+                url: "/rest/post/" + postid,
                 dataType: "json"
             }).done(function (response) {
                 renderPost(modal, response, postTemplate);
@@ -288,13 +288,23 @@ function reinitializeInfiniteScroll() {
 }
 
 function setupPostsFiltering() {
-    $('#post-order-select').on('change', function(e) {
+    $('#post-order-select, #post-order-select-mobile').on('change', function(e) {
+        $('#post-order-select, #post-order-select-mobile').val(this.value);
+        $('#post-order-select, #post-order-select-mobile').material_select();
         reinitializeInfiniteScroll();
     });
-    $('#post-range-select').on('change', function(e) {
+    $('#post-range-select, #post-range-select-mobile').on('change', function(e) {
+        $('#post-range-select, #post-range-select-mobile').val(this.value);
+        $('#post-range-select, #post-range-select-mobile').material_select();
         reinitializeInfiniteScroll();
     });
-    $('#post-tag-select').on('change', function(e) {
+    $('#post-tag-select, #post-tag-select-mobile').on('change', function(e) {
+        $('#post-tag-select, #post-tag-select-mobile').val($(this).val());
+        if($(this).attr("id") == "post-tag-select") {
+            $('#post-tag-select-mobile').material_select();
+        } else {
+            $('#post-tag-select').material_select();
+        }
         reinitializeInfiniteScroll();
     });
 }

@@ -208,6 +208,15 @@ height: 64px !important; /* fix for search in navbar on chrome */
   padding: 2px 0px 2px 0px;
 }
 
+.navbar-mobile .input-dropdown input  {
+  padding: 0px 15px !important;
+  border-bottom: none !important;
+}
+
+.navbar-mobile .select-dropdown {
+  width: 282px !important;
+}
+
 /* end card */
 
 .end-of-page {
