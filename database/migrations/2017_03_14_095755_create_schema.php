@@ -104,9 +104,7 @@ class CreateSchema extends Migration
 	    $table->dropColumn(['profile_pic', 'bio']);
 	});
 	Schema::dropIfExists('reports');
-	Schema::dropIfExists('list_tags');
-	Schema::dropIfExists('user_lists');
-	Schema::dropIfExists('lists');
+	Schema::dropIfExists('likes');
 	Schema::dropIfExists('favourites');
 	Schema::dropIfExists('post_tags');
 	Schema::dropIfExists('tags');
