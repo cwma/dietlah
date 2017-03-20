@@ -9,7 +9,7 @@ use Faker;
 use App\Post;
 class PostController extends Controller {
 	public function newpost(Request $request){
-		return view('createpost');
+		return view('newpost');
 	}
 	public function verifyPost(Request $request){
 		$validator = Validator::make($request->all(), [ 
