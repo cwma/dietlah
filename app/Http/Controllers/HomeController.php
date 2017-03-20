@@ -9,16 +9,12 @@ use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller {
 
-    public function __construct() {
-	$this->middleware('auth');
-    }
-
     public function index(Request $request, $page = 1) {
         JavaScript::put([
             "page" => 1,
             "restUrl" => "/rest/postfeed/",
         ]);
-	$request->session()->put('username', Auth::user()->username);
+	$request->session()->put('username', 'temp');
         return view('home');
     }
 
