@@ -249,6 +249,7 @@ function ajaxLoadPageFeed(order, range, tags) {
         dietlah.page += 1;
         if (!response["hasMore"]) {
             disableInfiniteScroll();
+            dietlah.pageEnd = true;
         }
         hideNavLoadingBar();
     }).fail(function(jqXHR, textStatus) {
@@ -258,8 +259,8 @@ function ajaxLoadPageFeed(order, range, tags) {
 }
 
 function initializeInfiniteScroll(order, range, tags) {
+    dietlah.pageEnd = false;
     var grid = document.querySelector('#grid');
-    $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     $('#marker').on('lazyshow', function () {
         ajaxLoadPageFeed(order, range, tags);
     }).lazyLoadXT({visibleOnly: false});
@@ -275,6 +276,9 @@ function setupAjax() {
 
 function reinitializeInfiniteScroll() {
     dietlah.page = 1;
+    if(dietlah.pageEnd){
+        $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    }
     // var order = $("#post-order-select").val();
     // var range = $("#post-range-select").val();
     // var tags = $("#post-tag-select").val();
