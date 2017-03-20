@@ -259,7 +259,7 @@ function ajaxLoadPageFeed(order, range, tags) {
 
 function initializeInfiniteScroll(order, range, tags) {
     var grid = document.querySelector('#grid');
-
+    $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     $('#marker').on('lazyshow', function () {
         ajaxLoadPageFeed(order, range, tags);
     }).lazyLoadXT({visibleOnly: false});
@@ -282,6 +282,7 @@ function reinitializeInfiniteScroll() {
     var range = $("#post-range-select option:selected").text();
     var tags = $("#post-tag-select option:selected").text();
     $('#marker').off();
+    $('.end-of-page').hide();
     $('.cards-container').children().html("")
     initializeInfiniteScroll(order, range, tags);
     $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
