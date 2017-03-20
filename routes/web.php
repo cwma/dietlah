@@ -198,3 +198,7 @@ Route::Get('/admin', 'TestController@test') -> name('admin');
 
 ####################################################################################
 
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index');

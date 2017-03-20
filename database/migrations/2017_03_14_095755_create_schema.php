@@ -14,8 +14,8 @@ class CreateSchema extends Migration
     public function up()
     {
 	Schema::table('users', function(Blueprint $table) {
-	    $table->string('profile_pic');
-	    $table->string('bio');
+	    $table->string('profile_pic')->nullable();
+	    $table->string('bio')->nullable();
 	});
 	Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
