@@ -21,7 +21,7 @@
 #	For forms we can do regular post first. Once everything works we'll add AJAX.
 
 #	Home/Main page default view all: Order by top(favourites)
-Route::get('/', 'HomeController@index') -> name('home.default');
+Route::get('/', 'HomePageController@index') -> name('home.default');
 
 #	Sort Types:
 #		New, Popular(favourites), Comments, Relevance(tag/list only)
@@ -33,16 +33,16 @@ Route::get('/', 'HomeController@index') -> name('home.default');
 #	it in your favourites
 #
 #	Home/Main page view all: order by sort type
-Route::get('/view/{sort}/{page?}', 'HomeController@homeAll') -> name('home.sorted');
+Route::get('/view/{sort}/{page?}', 'HomePageController@homeAll') -> name('home.sorted');
 
 #	View user favourites
-Route::get('/favourites/{sort}/{page?}', 'HomeController@homeFavourites') -> name('favourites');
+Route::get('/favourites/{sort}/{page?}', 'HomePageController@homeFavourites') -> name('favourites');
 
 #	View according to user defined list of tags
-Route::get('/list/{listname}/{sort}/{page?}', 'HomeController@homeLists') -> name('userlist');
+Route::get('/list/{listname}/{sort}/{page?}', 'HomePageController@homeLists') -> name('userlist');
 
 #	View according to tags
-Route::get('/tag/{tag}/{sort}/{page?}', 'HomeController@homeTags') -> name('tag');
+Route::get('/tag/{tag}/{sort}/{page?}', 'HomePageController@homeTags') -> name('tag');
 
 #	View according to search
 Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
@@ -137,13 +137,13 @@ Route::Post('/sendmessage', 'TestController@test');
 #	Alternatively load all IDs and lazy load paginate as user scrolls using those IDs
 
 #	main home page ajax endpoint
-Route::get('/rest/postfeed/{order}/{range}/{datetime}/{page}', 'HomeController@restPostFeed');
+Route::get('/rest/postfeed/{order}/{range}/{datetime}/{page}', 'HomePageController@restPostFeed');
 
 #	View according to search ajax endpoint
 Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
 
 #	Post content ajax endpoint
-Route::get('/rest/post/{postId}/', 'HomeController@restPost');
+Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
 
 ####################################################################################
 
