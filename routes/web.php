@@ -82,7 +82,7 @@ Route::get('/profile/{username}', 'TestController@test') -> name('profile');
 ####################################################################################
 
 # 	create a new post
-Route::Post('/createpost', 'PostController@verifyPost');
+Route::Post('/createpost', 'PostController@createPost');
 
 # 	update post
 Route::Post('/updatepost', 'TestController@test');
