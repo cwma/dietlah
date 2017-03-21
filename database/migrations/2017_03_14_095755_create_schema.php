@@ -95,7 +95,9 @@ class CreateSchema extends Migration
 	Schema::create('tag_reports', function (Blueprint $table) {
 	    $table->increments('id');
             $table->integer('tag_id')->unsigned();
-	    $table->string('post_id')->unsigned();
+	    $table->foreign('tag_id')->references('id')->on('tags')->onDelete('cascade');
+	    $table->integer('post_id')->unsigned();
+	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 	    $table->string('report_comment');
 	    $table->boolean('status');
 	    $table->softDeletes();
@@ -113,6 +115,7 @@ class CreateSchema extends Migration
         Schema::table('users', function(Blueprint $table) {
 	    $table->dropColumn(['profile_pic', 'bio']);
 	});
+	Schema::dropIfExists('tag_reports');
 	Schema::dropIfExists('reports');
 	Schema::dropIfExists('likes');
 	Schema::dropIfExists('favourites');
