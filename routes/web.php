@@ -178,8 +178,10 @@ Route::Post('/rest/like', 'TestController@testLike');
 #	Add/+1 tag to post
 Route::Post('/rest/addtag', 'TestController@test');
 
-#	Report Post
+#	Report content
 Route::Post('/rest/report', 'ReportController@report');
+#	Report inaccurate tagging for removal
+Route::Post('/rest/remove_tag', 'ReportController@remove_tag');
 
 ####################################################################################
 

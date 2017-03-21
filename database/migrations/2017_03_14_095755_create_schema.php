@@ -52,7 +52,7 @@ class CreateSchema extends Migration
 	});
 	Schema::create('tags', function (Blueprint $table) {
 	    $table->increments('id');
-	    $table->string('tag_name');
+	    $table->string('tag_name')->unique();
 	    $table->softDeletes();
             $table->timestamps();
 	});
@@ -88,6 +88,16 @@ class CreateSchema extends Migration
             $table->integer('reported_id')->unsigned();
 	    $table->string('report_type');
 	    $table->string('report_comment');
+	    $table->boolean('status');
+	    $table->softDeletes();
+            $table->timestamps();
+	});
+	Schema::create('tag_reports', function (Blueprint $table) {
+	    $table->increments('id');
+            $table->integer('tag_id')->unsigned();
+	    $table->string('post_id')->unsigned();
+	    $table->string('report_comment');
+	    $table->boolean('status');
 	    $table->softDeletes();
             $table->timestamps();
 	});
