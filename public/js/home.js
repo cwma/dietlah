@@ -46,7 +46,13 @@ function timeSince(date) {
 function registerDateTimeHelper() {
     Handlebars.registerHelper("timeSince", function(dateTime) {
         return timeSince(dateTime);
-    })
+    });
+}
+
+function registerLinkifyHelper() {
+    Handlebars.registerHelper("linkify", function(post) {
+        return linkifyHtml(post);
+    });
 }
 
 /* page rendering functions */
@@ -322,10 +328,11 @@ function setupPostsFiltering() {
 }
 
 $(document).ready(function(){
+    registerDateTimeHelper();
+    registerLinkifyHelper();
     setupAjax();
     dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
-    registerDateTimeHelper();
     initializeInfiniteScroll("new", "all", []);
     setupPostsFiltering();
 });

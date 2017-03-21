@@ -76,7 +76,8 @@ class HomePageController extends Controller {
 
 
         $post = ["title" => $postId.". ".$faker->sentence($nbWords = 7, $variableNbWords = true), "username" => $faker->name,
-                "fulltext" => $faker->paragraphs($nb = 5, $asText = true), "tag" => $faker->word,
+                "fulltext" => nl2br(e($faker->paragraphs($nb = 5, $asText = true)."\r\n\r\n".$faker->url)), 
+                "tag" => $faker->word,
                 "authorPic" => $faker->imageUrl($width = 200, $height = 200, 'cats', true, 'Faker'),
                 "postPic" => $faker->imageUrl($width = 800, $height = 600, 'cats', true, 'Faker'),
                 "postTime" => $faker->dateTime($max = 'now', $timezone = "GMT+8"),

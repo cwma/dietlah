@@ -28,6 +28,8 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+<script type="text/javascript" src="js/linkify.min.js"></script>
+<script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/home.js"></script>
 <script id="card_template" type="text/x-handlebars-template">
 @{{~#each posts~}}
@@ -50,7 +52,7 @@
     </div>
     <div class="card-content" data-postid="@{{{this.postId}}}">
         <span class="card-title">@{{{this.title}}}</span>
-        <p>@{{{this.summary}}}</p>
+        <p>@{{{linkify this.summary}}}</p>
         <br>
         <p class="light-green-text">@{{timeSince this.postTime.date}}</p>
     </div>
@@ -122,7 +124,7 @@
             <div class="row">
                 <div id="post-content" class="col s12">
                     <div class="center-align">
-                        <img class="responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
                     </div>
                     <div class="article-header">
                         <div class="article-user left">
@@ -138,7 +140,7 @@
                     <div class="divider"></div>
                     <div class="section">
                         <h5>@{{{this.title}}}</h5>
-                        <p>@{{{this.fulltext}}}</p>
+                        <p>@{{{linkify this.fulltext}}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
