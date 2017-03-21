@@ -7,6 +7,7 @@ class Comment extends Model
 {
     use SoftDeletes;
     protected $dates = ['deleted_at'];
+
     public function post() {
         return $this->belongsTo('App\Post', 'post_comments');
     }
