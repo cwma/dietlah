@@ -90,6 +90,7 @@ function renderPost(modal, postJson, postTemplate) {
 
 function clearPost(modal) {
     $(modal).html("");
+    dietlah.postModalOpen = false;
 }
 
 /* javascript/ajax handling */
@@ -220,6 +221,8 @@ function loadHomeJavascriptElements() {
 }
 
 function loadPostJavascriptElements(modal) {
+    dietlah.postModalOpen = true;
+    history.pushState({modal:"open"}, "modal", "#modal");
     handleLikeClickEvent('.full-post-like');
     handleFavouriteClickEvent('.full-post-fav');
     $(modal).find('#post-content img').lazyLoadXT();
@@ -327,9 +330,18 @@ function setupPostsFiltering() {
     });
 }
 
+function overrideBackButtonForModal(){
+    $(window).on('popstate', function() {
+        if(dietlah.postModalOpen) {
+            $('#postmodal').modal('close');
+        }
+    });
+}
+
 $(document).ready(function(){
     registerDateTimeHelper();
     registerLinkifyHelper();
+    overrideBackButtonForModal();
     setupAjax();
     dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
