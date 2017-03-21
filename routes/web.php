@@ -179,7 +179,7 @@ Route::Post('/rest/like', 'TestController@testLike');
 Route::Post('/rest/addtag', 'TestController@test');
 
 #	Report Post
-Route::Post('/rest/reportpost', 'TestController@test');
+Route::Post('/rest/report', 'ReportController@report');
 
 ####################################################################################
 
@@ -201,4 +201,3 @@ Route::Get('/admin', 'TestController@test') -> name('admin');
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
