@@ -25,6 +25,8 @@ class PostController extends Controller {
     	$post = new Post;
     	$post->title = $request->title;
     	$post->text = $request->text;
+      $post->likes_count = 0;
+      $post->favourites_count = 0;
     	$post->save();
     	return redirect('/');
 	}
