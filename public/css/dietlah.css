@@ -279,6 +279,13 @@ height: 64px !important; /* fix for search in navbar on chrome */
     }
 }
 
+.img-container {
+  max-width: 500px;
+  max-height: 500px;
+  display: table;
+  margin: 0 auto;
+}
+
 /* modal header */
 
 .modal.modal-fixed-header {

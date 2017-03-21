@@ -124,7 +124,9 @@
             <div class="row">
                 <div id="post-content" class="col s12">
                     <div class="center-align">
-                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                        <div class="img-container">
+                            <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                        </div>
                     </div>
                     <div class="article-header">
                         <div class="article-user left">
