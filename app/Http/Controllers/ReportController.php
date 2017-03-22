@@ -23,11 +23,11 @@ class ReportController extends Controller
 	    $report->user_id = $request->input('user_id');
 	    $report->save();
 	    return response()->json(['status' => 'success', 
-		'reason' => 'valid id']); 
+		'reason' => 'valid']); 
 	}
 	else {
 	    return response()->json(['status' => 'failure',
-		'reason' => 'invalid id']);
+		'reason' => 'invalid reported_id or report_type']);
 	}
     }
     //report inaccurate tagging for removal
@@ -41,15 +41,15 @@ class ReportController extends Controller
 	    $report->user_id = $request->input('user_id');
 	    $report->save();
 	    return response()->json(['status' => 'success', 
-		'reason' => 'valid id']); 
+		'reason' => 'valid']); 
 	}
 	else {
 	    return response()->json(['status' => 'failure',
-		'reason' => 'invalid id']);
+		'reason' => 'invalid tag_id or post_id']);
 	}
     }
 
-    public function validate_report(Request $request) {
+    public function validate_report_id(Request $request) {
 	if ($request->input('report_type') == 'user') {
 	    try {
 	    	User::findOrFail($request->input('reported_id'));
@@ -79,6 +79,7 @@ class ReportController extends Controller
 	    }
 	}
 	else {
+	    //invalid report_type
 	    return false;
 	}
 	return true;
