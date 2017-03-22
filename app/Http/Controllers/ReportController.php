@@ -49,7 +49,7 @@ class ReportController extends Controller
 	}
     }
 
-    public function validate_report_id(Request $request) {
+    public function validate_report(Request $request) {
 	if ($request->input('report_type') == 'user') {
 	    try {
 	    	User::findOrFail($request->input('reported_id'));
