@@ -282,14 +282,6 @@ function initializeInfiniteScroll(order, range, tags) {
     }).lazyLoadXT({visibleOnly: false});
 }
 
-function setupAjax() {
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-}
-
 function reinitializeInfiniteScroll() {
     dietlah.page = 1;
     if(dietlah.pageEnd){
@@ -342,7 +334,6 @@ $(document).ready(function(){
     registerDateTimeHelper();
     registerLinkifyHelper();
     overrideBackButtonForModal();
-    setupAjax();
     dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll("new", "all", []);
