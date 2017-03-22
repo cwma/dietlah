@@ -218,12 +218,12 @@
                 
                 <div id="post-comments" class="col s12">
                     <div class="row">
-                        <form id="commentForm">
+                        <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
                             <div class="input-field col s12">
-                                <textarea id="comment" class="materialize-textarea"></textarea>
+                                <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
                                 <label for="comment">add a comment</label>
                             </div>
-                            <input id="postId" type="text" value="@{{{this.postId}}}"hidden>
+                            <input name="post_id" id="post_id" type="text" value="@{{{this.postId}}}" hidden>
                             <div>
                                 <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
                                     <i class="material-icons right">send</i>Post Comment

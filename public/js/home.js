@@ -172,22 +172,24 @@ function initializeCardClickModalOpen() {
 }
 
 function initializeSubmitComment() {
-   $('#commentForm').on('submit', function(e) {
-        e.preventDefault(); 
-        var comment = $('#commentForm #comment').val();
-        var postId = $('#commentForm #postId').val();
-        $.ajax({
-            type: "POST",
-            url: "/rest/createcomment",
-            data: {
-                comment:comment,
-                postId:postId
-            },
-            success: function( msg ) {
-                Materialize.toast(msg["test"], 4000);
-            }
-        });
-    });
+    $('#comment-form').validate({
+        rules: {
+            comment: "required",
+            post_id: "required",
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                clearForm: true,
+                error: function(e){
+                    Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    Materialize.toast(data["test"], 4000);
+                    console.log(data);
+                }
+            });
+        }
+    }); 
 }
 
 function handleLikeClickEvent(elementId) {
