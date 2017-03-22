@@ -88,7 +88,7 @@ Route::Post('/createpost', 'PostController@createPost');
 Route::Post('/updatepost', 'TestController@test');
 
 #	delete post
-Route::Post('/deletepost', 'TestController@test');
+Route::Post('/deletepost', 'PostController@deletePost');
 
 #	create a new comment
 Route::Post('/createcomment', 'TestController@test');
