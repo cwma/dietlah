@@ -178,11 +178,13 @@ Route::post('/rest/like', 'TestController@testLike');
 #	Add/+1 tag to post
 Route::post('/rest/addtag', 'TestController@test');
 
+Route::group(['middleware' => 'auth'], function () {
 #	Report content
 Route::post('/rest/report', 'ReportController@report');
+
 #	Report inaccurate tagging for removal
 Route::post('/rest/remove_tag', 'ReportController@remove_tag');
-
+});
 ####################################################################################
 
 ### Admin routes
