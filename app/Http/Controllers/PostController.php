@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Validator;
 use App\Post;
 class PostController extends Controller {
 	public function newpost() {
+        if (!Auth::check()) {
+            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
 		return view('newpost');
 	}
 
@@ -27,12 +32,15 @@ class PostController extends Controller {
 //             ->withInput(); // the previously entered input remains
 //    	}
 
+        // TODO yy add image and location when UI ready
     	$post = new Post;
-    	$post->user_id = Auth::user()->id;
+//    	$post->image = $request->file('portrait')->store('public/images/postimages');
     	$post->title = $request->title;
     	$post->text = $request->text;
+//    	$post->location = $request->location;
         $post->likes_count = 0;
         $post->favourites_count = 0;
+        $post->user_id = Auth::user()->id;
     	$post->save();
 
         $response = ["status" => "successful", "post_id" => $post->id];
@@ -40,10 +48,14 @@ class PostController extends Controller {
 	}
 
 	public function updatePost(Request $request) {
+        // TODO yy add image and location when UI ready
         $post_id = $request->post_id;
         $post = Post::findOrFail($post_id);
+        // TODO yy delete the old image?
+//    	$post->image = $request->file('portrait')->store('public/images/postimages');
         $post->title = $request->title;
         $post->text = $request->text;
+//    	$post->location = $request->location;
         $post->save();
 
         $response = ["status" => "successful", "post_id" => $post_id];
