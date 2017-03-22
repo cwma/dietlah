@@ -5,8 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
-use Javascript;
-use Faker;
 use App\Post;
 class PostController extends Controller {
 	public function newpost() {
@@ -37,13 +35,25 @@ class PostController extends Controller {
         $post->favourites_count = 0;
     	$post->save();
 
-    	return redirect('/');
+        $response = ["status" => "successful", "post_id" => $post->id];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
+
+	public function updatePost(Request $request) {
+        $post_id = $request->post_id;
+        $post = Post::findOrFail($post_id);
+        $post->title = $request->title;
+        $post->text = $request->text;
+        $post->save();
+
+        $response = ["status" => "successful", "post_id" => $post_id];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    }
 
 	public function deletePost(Request $request) {
         Post::destroy($request->post_id);
 
-        $response = ["delete" => "successful"];
+        $response = ["status" => "successful"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 }
