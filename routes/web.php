@@ -82,28 +82,28 @@ Route::get('/profile/{username}', 'TestController@test') -> name('profile');
 ####################################################################################
 
 # 	create a new post
-Route::Post('/createpost', 'PostController@createPost');
+Route::post('/createpost', 'PostController@createPost');
 
 # 	update post
-Route::Post('/updatepost', 'PostController@updatePost');
+Route::post('/updatepost', 'PostController@updatePost');
 
 #	delete post
-Route::Post('/deletepost', 'PostController@deletePost');
+Route::post('/deletepost', 'PostController@deletePost');
 
 #	create a new comment
-Route::Post('/createcomment', 'TestController@test');
+Route::post('/createcomment', 'TestController@test');
 
 #	update comment
-Route::Post('/updatecomment', 'TestController@test');
+Route::post('/updatecomment', 'TestController@test');
 
 #	delete comment
-Route::Post('/deletecomment', 'TestController@test');
+Route::post('/deletecomment', 'TestController@test');
 
 #	report post
-Route::Post('/reportpost', 'TestController@test');
+Route::post('/reportpost', 'TestController@test');
 
 #	send message
-Route::Post('/sendmessage', 'TestController@test');
+Route::post('/sendmessage', 'TestController@test');
 
 ####################################################################################
 
@@ -152,36 +152,36 @@ Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
 ####################################################################################
 
 # 	create a new post
-Route::Post('/rest/createpost', 'TestController@test');
+Route::post('/rest/createpost', 'TestController@test');
 
 # 	update post
-Route::Post('/rest/updatepost', 'TestController@test');
+Route::post('/rest/updatepost', 'TestController@test');
 
 #	delete post
-Route::Post('/rest/deletepost', 'TestController@test');
+Route::post('/rest/deletepost', 'TestController@test');
 
 #	create a new comment
-Route::Post('/rest/createcomment', 'TestController@testCreateComment');
+Route::post('/rest/createcomment', 'TestController@testCreateComment');
 
 #	update comment
-Route::Post('/rest/updatecomment', 'TestController@test');
+Route::post('/rest/updatecomment', 'TestController@test');
 
 #	delete comment
-Route::Post('/rest/deletecomment', 'TestController@test');
+Route::post('/rest/deletecomment', 'TestController@test');
 
 #	Favourite post
-Route::Post('/rest/favourite', 'TestController@testFavourite');
+Route::post('/rest/favourite', 'TestController@testFavourite');
 
 #	Like post
-Route::Post('/rest/like', 'TestController@testLike');
+Route::post('/rest/like', 'TestController@testLike');
 
 #	Add/+1 tag to post
-Route::Post('/rest/addtag', 'TestController@test');
+Route::post('/rest/addtag', 'TestController@test');
 
 #	Report content
-Route::Post('/rest/report', 'ReportController@report');
+Route::post('/rest/report', 'ReportController@report');
 #	Report inaccurate tagging for removal
-Route::Post('/rest/remove_tag', 'ReportController@remove_tag');
+Route::post('/rest/remove_tag', 'ReportController@remove_tag');
 
 ####################################################################################
 
@@ -190,7 +190,7 @@ Route::Post('/rest/remove_tag', 'ReportController@remove_tag');
 ####################################################################################
 
 #	Admin page
-Route::Get('/admin', 'TestController@test') -> name('admin');
+Route::get('/admin', 'TestController@test') -> name('admin');
 
 # 	add admin form post routes here etc
 
