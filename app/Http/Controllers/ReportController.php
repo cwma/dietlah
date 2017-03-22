@@ -9,6 +9,7 @@ use App\Post;
 use App\Comment;
 use App\Tag;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
@@ -20,7 +21,7 @@ class ReportController extends Controller
 	    $report->report_type = $request->input('report_type');
 	    $report->report_comment = $request->input('report_comment');
 	    $report->status = true;
-	    $report->user_id = $request->input('user_id');
+	    $report->user_id = Auth::id();
 	    $report->save();
 	    return response()->json(['status' => 'success', 
 		'reason' => 'valid']); 
@@ -38,7 +39,7 @@ class ReportController extends Controller
 	    $report->post_id = $request->input('post_id');
 	    $report->report_comment = $request->input('report_comment');
 	    $report->status = true;
-	    $report->user_id = $request->input('user_id');
+	    $report->user_id = Auth::id();
 	    $report->save();
 	    return response()->json(['status' => 'success', 
 		'reason' => 'valid']); 
