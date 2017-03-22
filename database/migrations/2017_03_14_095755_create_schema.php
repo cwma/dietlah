@@ -27,28 +27,20 @@ class CreateSchema extends Migration
 	    $table->index('likes_count');
 	    $table->integer('favourites_count')->unsigned();
 	    $table->index('favourites_count');
-	    $table->softDeletes();
-            $table->timestamps();
-        });
-	Schema::create('user_posts', function (Blueprint $table) {
-            $table->increments('id');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->integer('post_id')->unsigned();
-	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+	    $table->softDeletes();
+            $table->timestamps();
         });
 	Schema::create('comments', function (Blueprint $table) {
 	    $table->increments('id');
 	    $table->string('comment', 1000);
-	    $table->softDeletes();
-            $table->timestamps();
-	});
-	Schema::create('post_comments', function (Blueprint $table) {
-	    $table->increments('id');
-            $table->integer('comment_id')->unsigned();
-	    $table->foreign('comment_id')->references('id')->on('comments')->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
+	    $table->softDeletes();
+            $table->timestamps();
 	});
 	Schema::create('tags', function (Blueprint $table) {
 	    $table->increments('id');
@@ -89,6 +81,8 @@ class CreateSchema extends Migration
 	    $table->string('report_type');
 	    $table->string('report_comment');
 	    $table->boolean('status');
+            $table->integer('user_id')->unsigned();
+	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 	    $table->softDeletes();
             $table->timestamps();
 	});
@@ -100,6 +94,8 @@ class CreateSchema extends Migration
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
 	    $table->string('report_comment');
 	    $table->boolean('status');
+            $table->integer('user_id')->unsigned();
+	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 	    $table->softDeletes();
             $table->timestamps();
 	});
@@ -121,9 +117,7 @@ class CreateSchema extends Migration
 	Schema::dropIfExists('favourites');
 	Schema::dropIfExists('post_tags');
 	Schema::dropIfExists('tags');
-	Schema::dropIfExists('post_comments');
 	Schema::dropIfExists('comments');
-	Schema::dropIfExists('user_posts');
 	Schema::dropIfExists('posts');
     }
 }
