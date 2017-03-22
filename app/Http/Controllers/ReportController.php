@@ -14,7 +14,7 @@ class ReportController extends Controller
 {
     //report inappropriat content for deletion
     public function report(Request $request) {
-	if (validate_report($request)) {
+	if (self::validate_report($request)) {
     	    $report = new Report;
 	    $report->reported_id = $request->input('reported_id');
 	    $report->report_type = $request->input('report_type');
@@ -31,7 +31,7 @@ class ReportController extends Controller
     }
     //report inaccurate tagging for removal
     public function remove_tag(Request $request) {
-	if (validate_remove_tag($request)) {
+	if (self::validate_remove_tag($request)) {
     	    $report = new Report;
 	    $report->tag_id = $request->input('tag_id');
 	    $report->post_id = $request->input('post_id');
@@ -48,31 +48,32 @@ class ReportController extends Controller
     }
 
     public function validate_report(Request $request) {
+    	return true;
 	if ($request->input('report_type') == 'user') {
 	    try {
-	    	App\User::findOrFail($request->input('reported_id'));
-	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    	User::findOrFail($request->input('reported_id'));
+	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 		return false;
 	    }
 	}
 	else if ($request->input('report_type') == 'post') {
 	    try {
 	    	App\Post::findOrFail($request->input('reported_id'));
-	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 		return false;
 	    }
 	}
 	else if ($request->input('report_type') == 'comment') {
 	    try {
-	    	App\Comment::findOrFail($request->input('reported_id'));
-	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    	Comment::findOrFail($request->input('reported_id'));
+	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 		return false;
 	    }
 	}
 	else if ($request->input('report_type') == 'tag') {
 	    try {
-	    	App\Tag::findOrFail($request->input('reported_id'));
-	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    	Tag::findOrFail($request->input('reported_id'));
+	    } catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 		return false;
 	    }
 	}
@@ -84,13 +85,13 @@ class ReportController extends Controller
 
     public function validate_remove_tag(Request $request) {
 	try {
-	    App\Tag::findOrFail($request->input('tag_id'));
-	} catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    Tag::findOrFail($request->input('tag_id'));
+	} catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 	    return false;
 	}
 	try {
-	    App\Post::findOrFail($request->input('post_id'));
-	} catch (Illuminate\Database\Eloquent\ModelNotFoundException $e)
+	    Post::findOrFail($request->input('post_id'));
+	} catch (Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 	    return false;
 	}
 	return true;
