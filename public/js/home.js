@@ -95,9 +95,9 @@ function clearPost(modal) {
 
 /* javascript/ajax handling */
 
-function initializePostModal() {
+function initializeHomeModals() {
     postTemplate = compilePostTemplate();
-    $('.modal').modal({
+    $('.post-modal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
         inDuration: 300, // Transition in duration
@@ -121,6 +121,46 @@ function initializePostModal() {
         },
         complete: function(modal) { 
             clearPost(modal);
+        } // Callback for Modal close
+    });
+    $('.report-post-modal').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '5%', // Starting top style attribute
+        endingTop: '45%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            $("#reported_id_post").val($(trigger).attr('data-postid'));
+        },
+        complete: function(modal) { 
+            $("#reported_id_post").val("");
+        } // Callback for Modal close
+    });
+    $('.report-comment-modal').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '5%', // Starting top style attribute
+        endingTop: '45%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            $("#reported_id_comment").val($(trigger).attr('comment-id'));
+        },
+        complete: function(modal) { 
+        } // Callback for Modal close
+    });
+    $('.report-tag-modal').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '5%', // Starting top style attribute
+        endingTop: '45%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+
+        },
+        complete: function(modal) { 
         } // Callback for Modal close
     });
 }
@@ -206,6 +246,50 @@ function handleFavouriteClickEvent(elementId) {
     })
 }
 
+function handleReportPostSubmit() {
+    $('#report-post-form').validate({
+        rules: {
+            report_comment: "required",
+            reported_id: "required",
+            report_type: "required"
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                clearForm: true,
+                error: function(e){
+                    Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    Materialize.toast("Your report has been submitted.", 4000);
+                    console.log(data);
+                }
+            });
+        }
+    }); 
+}
+
+function handleReportCommentSubmit() {
+    $('#report-comment-form').validate({
+        rules: {
+            report_comment: "required",
+            reported_id: "required",
+            report_type: "required"
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                clearForm: true,
+                error: function(e){
+                    Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    Materialize.toast("Your report has been submitted.", 4000);
+                    console.log(data);
+                }
+            });
+        }
+    }); 
+}
+
 function loadHomeJavascriptElements() {
     handleLikeClickEvent('.post-like');
     handleFavouriteClickEvent('.post-fav');
@@ -217,7 +301,7 @@ function loadHomeJavascriptElements() {
         e.preventDefault(); 
         $('#postmodal').modal('close');
     })
-    initializePostModal();
+    initializeHomeModals();
 }
 
 function loadPostJavascriptElements(modal) {
@@ -330,10 +414,22 @@ function overrideBackButtonForModal(){
     });
 }
 
+function setupValidationErrorFormatting() {
+    $.validator.setDefaults({
+        errorClass: 'invalid',
+        errorPlacement: function (error, element) {
+            $(element).next("label").attr("data-error", error.contents().text());
+        }
+    });
+}
+
 $(document).ready(function(){
+    setupValidationErrorFormatting();
     registerDateTimeHelper();
     registerLinkifyHelper();
     overrideBackButtonForModal();
+    handleReportPostSubmit();
+    handleReportCommentSubmit();
     dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll("new", "all", []);

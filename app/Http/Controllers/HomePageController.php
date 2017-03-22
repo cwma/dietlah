@@ -69,7 +69,7 @@ class HomePageController extends Controller {
         $comments = [];
         for($i = 0; $i < $commentCount; $i++) {
             array_push($comments, ["username" => $faker->name, "profilePic" => $faker->imageUrl($width = 200, $height = 200, 'cats', true, 'Faker'),
-                                   "commentText" => $faker->sentence($nbWords = 30, $variableNbWords = true),
+                                   "commentText" => $faker->sentence($nbWords = 30, $variableNbWords = true), "id" => $i, "user_id" => $i,
                                    "commentTime" => $faker->dateTime($max='now', $timezone="GMT+8")]);
         }
 
