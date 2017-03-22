@@ -21,6 +21,7 @@ class CreateSchema extends Migration
             $table->increments('id');
             $table->string('image')->nullable();
             $table->string('title');
+            $table->string('summary', 5000);
             $table->string('text', 10000);
             $table->string('location')->nullable();
 	    $table->integer('likes_count')->unsigned();
