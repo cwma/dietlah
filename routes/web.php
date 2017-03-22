@@ -85,10 +85,10 @@ Route::get('/profile/{username}', 'TestController@test') -> name('profile');
 Route::Post('/createpost', 'PostController@createPost');
 
 # 	update post
-Route::Post('/updatepost', 'TestController@test');
+Route::Post('/updatepost', 'PostController@updatePost');
 
 #	delete post
-Route::Post('/deletepost', 'TestController@test');
+Route::Post('/deletepost', 'PostController@deletePost');
 
 #	create a new comment
 Route::Post('/createcomment', 'TestController@test');

@@ -9,7 +9,59 @@
         </div>
     </div>
 </div>
-<div id="postmodal" class="modal modal-fixed-header modal-fixed-footer">
+<div id="postmodal" class="modal modal-fixed-header modal-fixed-footer post-modal">
+</div>
+
+<div id="report-post-modal" class="modal report-modal report-post-modal">
+    <div class="modal-content">
+        <div class="container">
+            <h5>Report This Post</h5>
+            <form id="report-post-form" method="post" action="/rest/report" novalidate="novalidate">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="report_comment" id="report_comment" class="materialize-textarea"></textarea>
+                        <label for="report_comment">Reason for report</label>
+                    </div>
+                </div>
+                <input name="reported_id" id="reported_id_post" type="text" value="" hidden>
+                <input name="report_type" type="text" value="post" hidden>
+                <div class="row right">
+                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action" id="submitBtn">
+                        <i class="material-icons right">send</i>Send Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="report-comment-modal" class="modal report-modal report-comment-modal">
+    <div class="modal-content">
+        <div class="container">
+            <h5>Report This Comment</h5>
+            <form id="report-comment-form" method="post" action="/rest/report" novalidate="novalidate">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <textarea name="report_comment" id="report_comment" class="materialize-textarea"></textarea>
+                        <label for="report_comment">Reason for report</label>
+                    </div>
+                </div>
+                <input name="reported_id" id="reported_id_comment" type="text" value="" hidden>
+                <input name="report_type" type="text" value="comment" hidden>
+                <div class="row right">
+                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action" id="submitBtn">
+                        <i class="material-icons right">send</i>Send Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="report-tag-modal" class="modal report-modal report-tag-modal">
+    <div class="modal-content">
+        <h4>Report This Tag</h4>
+    </div>
 </div>
 @stop
 
@@ -28,6 +80,8 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/home.js"></script>
@@ -109,11 +163,6 @@
                             <span class="light-green-text">(@{{{this.tagCount}}})</span> 
                         </a>
                     </li>
-                    <li class="tab">
-                        <a href="#post-report"  class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Report this post">
-                            <i class="material-icons light-green-text" style="vertical-align:middle">flag</i>
-                        </a>
-                    </li>
                 </a>
                 </ul>
             </div>
@@ -146,11 +195,20 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
+                        <span>top tags for this post</span><br>
                         @{{#each this.tags}}
                             <div class="chip light-green lighten-3">
                                 @{{{this.tag}}} (@{{this.votes}})
                             </div>
                         @{{~/each}}
+                    </div>
+                    <div class="divider"></div>
+                    <div class="section">
+                            <div class="right">
+                                <a href="#report-post-modal"  class="light-green-text" data-postid="@{{this.postId}}">Report this post
+                                <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
+                            </div>
+                        </a>
                     </div>
                 </div>
                 
@@ -160,12 +218,12 @@
                 
                 <div id="post-comments" class="col s12">
                     <div class="row">
-                        <form id="commentForm">
+                        <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
                             <div class="input-field col s12">
-                                <textarea id="comment" class="materialize-textarea"></textarea>
+                                <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
                                 <label for="comment">add a comment</label>
                             </div>
-                            <input id="postId" type="text" value="@{{{this.postId}}}"hidden>
+                            <input name="post_id" id="post_id" type="text" value="@{{{this.postId}}}" hidden>
                             <div>
                                 <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
                                     <i class="material-icons right">send</i>Post Comment
@@ -182,7 +240,12 @@
                                 <img data-src="@{{{this.profilePic}}}" alt="" class="circle">
                                 <span class="title">@{{this.username}}</span>
                                 <p>@{{this.commentText}}</p>
-                                <p class="light-green-text">@{{timeSince this.commentTime.date}}</p>
+                                <p class="light-green-text">@{{timeSince this.commentTime.date}}
+                                    <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
+                                        data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{this.id}}">
+                                        <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
+                                    </a>
+                                </p>
                             </li>
                             @{{~/each}}
                         </ul>
@@ -190,9 +253,6 @@
                 </div>
                 
                 <div id="post-tags" class="col s12">
-
-                </div>
-                <div id="post-report" class="col s12">
 
                 </div>
             </div>

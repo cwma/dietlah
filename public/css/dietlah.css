@@ -239,7 +239,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 /* modal */
 
 @media screen and (max-width: 600px){
-    .modal {
+    .post-modal {
       width: 90% !important;
       height: 90% !important;
       max-height: 90% !important;
@@ -247,7 +247,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 }
 
 @media screen and (min-width: 601px) and (max-width: 992px) {
-    .modal {
+    .post-modal {
       width: 85% !important;
       height: 90% !important;
       max-height: 90% !important;
@@ -255,7 +255,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 }
 
 @media screen and (min-width: 993px) and (max-width: 1280px) {
-    .modal {
+    .post-modal {
       width: 90% !important;
       height: 90% !important;
       max-height: 90% !important;
@@ -263,7 +263,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1600px) {
-    .modal {
+    .post-modal {
       width: 80% !important;
       height: 90% !important;
       max-height: 90% !important;
@@ -272,7 +272,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 
 
 @media screen and (min-width: 1601px) {
-    .modal {
+    .post-modal {
       width: 80% !important;
       height: 90% !important;
       max-height: 90% !important;
@@ -286,24 +286,47 @@ height: 64px !important; /* fix for search in navbar on chrome */
   margin: 0 auto;
 }
 
+.post-modal .modal-header, .post-modal .row {
+  margin-bottom: 5px !important;
+}
+
+.post-modal .modal-footer {
+  height: 48px;
+}
+
+.post-modal .modal-footer .row {
+  margin-top: 5px !important;
+}
+
+.post-modal .modal-content {
+  height: calc(100% - 110px) !important;
+  padding: 12px !important;
+}
 /* modal header */
 
-.modal.modal-fixed-header {
+.post-modal .modal-fixed-header {
   padding: 0;
   height: 70%;
+  overflow-x: hidden;
 }
-.modal.modal-fixed-header .modal-header {
+
+.post-modal .modal-header .row .col .tabs {
+  overflow-x: hidden;
+}
+
+
+.post-modal .modal-fixed-header .modal-header {
   border-top: 1px solid rgba(0, 0, 0, 0.1);
   position: absolute;
   top: 0;
 }
-.modal.modal-fixed-header .modal-header {
+.post-modal .modal-fixed-header .modal-header {
   border-radius: 0 0 2px 2px;
   padding: 4px 6px;
   height: 56px;
   width: 100%;
 }
-.modal.modal-fixed-header .modal-content {
+.post-modal .modal-fixed-header .modal-content {
   position: absolute;
   top: 56px;
   height: calc(85%);
@@ -315,4 +338,33 @@ height: 64px !important; /* fix for search in navbar on chrome */
 /* tab indicator */
 .indicator {
     background-color: #8bc34a !important;
+}
+
+/* report modal */
+
+.reportmodal {
+  z-index: 2000;
+}
+
+/* report comment */
+.report-comment {
+  display: none;
+}
+
+.collection-item:hover .report-comment {
+  display: block;
+}
+
+/* form error messages */
+
+ label {
+    width: 100%;
+}
+.input-field label {
+    font-size: 0.8rem;
+    -webkit-transform: translateY(-140%);
+    -moz-transform: translateY(-140%);
+    -ms-transform: translateY(-140%);
+    -o-transform: translateY(-140%);
+    transform: translateY(-140%);
 }
