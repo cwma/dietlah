@@ -9,6 +9,10 @@ class Comment extends Model
     protected $dates = ['deleted_at'];
 
     public function post() {
-        return $this->belongsTo('App\Post', 'post_comments');
+        return $this->belongsTo('App\Post');
+    }
+
+    public function user() {
+        return $this->belongsTo('App\User');
     }
 }

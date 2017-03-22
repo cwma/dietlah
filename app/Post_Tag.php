@@ -6,11 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Post_Tag extends Model
 {
-    public function posts() {
-        return $this->belongsToMany('App\Post');
+    public function tag() {
+	return $this->belongsTo('App\Tag');
     }
 
-    public function tags() {
-        return $this->belongsToMany('App\Tag');
+    public function post() {
+	return $this->belongsTo('App\Post');
     }
 }
