@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Post;
+use App\Comment;
 class PostController extends Controller {
 	public function newpost() {
         if (!Auth::check()) {
@@ -64,6 +65,11 @@ class PostController extends Controller {
     }
 
 	public function deletePost(Request $request) {
+        $post = Post::findOrFail($request->post_id);
+        $comments = $post->comments;
+        foreach ($comments as $comment){
+            Comment::destroy($comment->id);
+        }
         Post::destroy($request->post_id);
 
         $response = ["status" => "successful"];
