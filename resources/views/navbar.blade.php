@@ -26,20 +26,21 @@
                 @if (Route::currentRouteNamed('home.default'))
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-order-select" class="post-filter">
-                        <option value="1" selected>New</option>
-                        <option value="2">Popular</option>
-                        <option value="3">Favourites</option>
-                        <option value="4">Comments</option>
-                        <option value="5">Relevance</option>
+                        <option value="new" selected>New</option>
+                        <option value="popular">Popular</option>
+                        <option value="favourites">Favourites</option>
+                        <option value="comments">Comments</option>
+                        <option value="relevance">Relevance</option>
+                        <option value="myposts">My Posts</option>
                     </select>
                 </li>
                 <li>&nbsp;</li>
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-range-select" class="post-filter">
-                        <option value="1" selected>All Time</option>
-                        <option value="2">Today</option>
-                        <option value="3">This week</option>
-                        <option value="4">This month</option>
+                        <option value="all" selected>All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This week</option>
+                        <option value="month">This month</option>
                     </select>
                 </li>
                 <li>&nbsp;</li>
