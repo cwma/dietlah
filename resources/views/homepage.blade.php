@@ -20,7 +20,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea name="report_comment" id="report_comment" class="materialize-textarea"></textarea>
-                        <label for="report_comment">Reason for report</label>
+                        <label id="input-validate-label" for="report_comment">Please write a short explanation on why you are reporting this post</label>
                     </div>
                 </div>
                 <input name="reported_id" id="reported_id_post" type="text" value="" hidden>
@@ -43,7 +43,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea name="report_comment" id="report_comment" class="materialize-textarea"></textarea>
-                        <label for="report_comment">Reason for report</label>
+                        <label id="input-validate-label" for="report_comment">Please write a short explanation on why you are reporting this comment</label>
                     </div>
                 </div>
                 <input name="reported_id" id="reported_id_comment" type="text" value="" hidden>
@@ -51,6 +51,26 @@
                 <div class="row right">
                     <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action" id="submitBtn">
                         <i class="material-icons right">send</i>Send Report
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="edit-comment-modal" class="modal report-modal edit-comment-modal">
+    <div class="modal-content">
+        <div class="container">
+            <h5>Edit Comment</h5>
+            <form id="edit-comment-form" method="post" action="/rest/updatecomment" novalidate="novalidate">
+                <div class="input-field col s12">
+                    <textarea name="comment" id="edit-comment" class="materialize-textarea"></textarea>
+                    <label id="input-validate-label" for="comment">your updated comment here</label>
+                </div>
+                <input name="comment_id" id="edit-comment-id" type="text" value="" hidden>
+                <div class="row right">
+                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                        <i class="material-icons right">send</i>Update Comment
                     </button>
                 </div>
             </form>
@@ -147,11 +167,6 @@
                         </a>
                     </li>
                     <li class="tab">
-                        <a href="#post-edit">
-                            <span class="light-green-text">Edit</span> 
-                        </a>
-                    </li>
-                    <li class="tab">
                         <a href="#post-comments" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments">
                             <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
                             <span class="light-green-text">(@{{{this.commentCount}}})</span> 
@@ -204,6 +219,10 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
+                            <div class="left">
+                                <a href="/update/@{{this.postId}}"  class="light-green-text">Edit Post
+                                <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                            </div>
                             <div class="right">
                                 <a href="#report-post-modal"  class="light-green-text" data-postid="@{{this.postId}}">Report this post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
@@ -211,11 +230,7 @@
                         </a>
                     </div>
                 </div>
-                
-                <div id="post-edit" class="col s12">
 
-                </div>
-                
                 <div id="post-comments" class="col s12">
                     <div class="row">
                         <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
@@ -239,8 +254,12 @@
                             <li class="collection-item avatar">
                                 <img data-src="@{{{this.profilePic}}}" alt="" class="circle">
                                 <span class="title">@{{this.username}}</span>
-                                <p>@{{this.commentText}}</p>
+                                <p id="comment-text">@{{this.commentText}}</p>
                                 <p class="light-green-text">@{{timeSince this.commentTime.date}}
+                                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                                        data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{this.id}}">
+                                        <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                                    </a>
                                     <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
                                         data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{this.id}}">
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>

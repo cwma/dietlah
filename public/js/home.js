@@ -148,7 +148,26 @@ function initializeHomeModals() {
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
         },
         complete: function(modal) { 
+            $("#reported_id_comment").val("");
         } // Callback for Modal close
+    });
+    $('.edit-comment-modal').modal({
+        dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        opacity: .5, // Opacity of modal background
+        inDuration: 300, // Transition in duration
+        outDuration: 200, // Transition out duration
+        startingTop: '5%', // Starting top style attribute
+        endingTop: '45%', // Ending top style attribute
+        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            $("#edit-comment-id").val($(trigger).attr('comment-id'));
+            $('#edit-comment').val($(trigger).parent().prev().html());
+            $('#edit-comment').trigger('autoresize');
+        },
+        complete: function(modal) { 
+            $("#edit-comment-id").val("");
+            $('#edit-comment').val("");
+            $('#edit-comment').trigger('autoresize');
+        }
     });
     $('.report-tag-modal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
@@ -171,26 +190,7 @@ function initializeCardClickModalOpen() {
     })
 }
 
-function initializeSubmitComment() {
-    $('#comment-form').validate({
-        rules: {
-            comment: "required",
-            post_id: "required",
-        },
-        submitHandler: function(form) {
-            $(form).ajaxSubmit({
-                clearForm: true,
-                error: function(e){
-                    Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
-                },
-                success: function (data, textStatus, jqXHR, form){
-                    Materialize.toast(data["test"], 4000);
-                    console.log(data);
-                }
-            });
-        }
-    }); 
-}
+/* on click events for likes/favs */
 
 function handleLikeClickEvent(elementId) {
     $(elementId).on('click', function(e) {
@@ -248,6 +248,8 @@ function handleFavouriteClickEvent(elementId) {
     })
 }
 
+/* ajax form submits */
+
 function handleReportPostSubmit() {
     $('#report-post-form').validate({
         rules: {
@@ -285,6 +287,48 @@ function handleReportCommentSubmit() {
                 },
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your report has been submitted.", 4000);
+                    console.log(data);
+                }
+            });
+        }
+    }); 
+}
+
+function initializeSubmitComment() {
+    $('#comment-form').validate({
+        rules: {
+            comment: "required",
+            post_id: "required",
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                clearForm: true,
+                error: function(e){
+                    Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    Materialize.toast(data["test"], 4000);
+                    console.log(data);
+                }
+            });
+        }
+    }); 
+}
+
+function handleEditCommentSubmit() {
+    $('#edit-comment-form').validate({
+        rules: {
+            comment_id: "required",
+            comment: "required",
+        },
+        submitHandler: function(form) {
+            $(form).ajaxSubmit({
+                clearForm: true,
+                error: function(e){
+                    Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    Materialize.toast("Your comment has been updated.", 4000);
                     console.log(data);
                 }
             });
@@ -373,12 +417,9 @@ function reinitializeInfiniteScroll() {
     if(dietlah.pageEnd){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     }
-    // var order = $("#post-order-select").val();
-    // var range = $("#post-range-select").val();
-    // var tags = $("#post-tag-select").val();
-    var order = $("#post-order-select option:selected").text();
-    var range = $("#post-range-select option:selected").text();
-    var tags = $("#post-tag-select option:selected").text();
+    var order = $("#post-order-select").val();
+    var range = $("#post-range-select").val();
+    var tags = $("#post-tag-select").val();
     $('#marker').off();
     $('.end-of-page').hide();
     $('.cards-container').children().html("")
@@ -432,6 +473,7 @@ $(document).ready(function(){
     overrideBackButtonForModal();
     handleReportPostSubmit();
     handleReportCommentSubmit();
+    handleEditCommentSubmit();
     dietlah.cardTemplate = compileCardTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll("new", "all", []);
