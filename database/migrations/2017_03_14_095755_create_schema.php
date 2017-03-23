@@ -26,8 +26,8 @@ class CreateSchema extends Migration
             $table->string('location')->nullable();
 	    $table->integer('likes_count')->unsigned();
 	    $table->index('likes_count');
-	    $table->integer('favourites_count')->unsigned();
-	    $table->index('favourites_count');
+	    $table->integer('comments_count')->unsigned();
+	    $table->index('comments_count');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 	    $table->softDeletes();
