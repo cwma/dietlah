@@ -35,21 +35,13 @@ Route::get('/', 'HomePageController@index') -> name('home.default');
 #	Home/Main page view all: order by sort type
 Route::get('/view/{sort}/{page?}', 'HomePageController@homeAll') -> name('home.sorted');
 
-#	View user favourites
-Route::get('/favourites/{sort}/{page?}', 'HomePageController@homeFavourites') -> name('favourites');
-
-#	View according to user defined list of tags
-Route::get('/list/{listname}/{sort}/{page?}', 'HomePageController@homeLists') -> name('userlist');
-
-#	View according to tags
-Route::get('/tag/{tag}/{sort}/{page?}', 'HomePageController@homeTags') -> name('tag');
-
 #	View according to search
 Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
 
 #	Post direct link: include post title in url to make it user/SEO friendly. 
 //Route::get('/post/{postId}/{postTitle}', 'TestController@test') -> name('post');
 Route::get('/post/{postId}', 'PostController@post') -> name('post');//without title for now, easier to nagivate 
+
 Route::get('/createpost', 'PostController@newpost') -> name('post');
 
 #	update an existing post
