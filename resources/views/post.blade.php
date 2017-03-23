@@ -19,6 +19,23 @@
             <button class="btn btn-success" type="submit">delete</button>
         {!! Form::close() !!}
     @endif
-    
+    @if (count($post->comments))
+    	<div class="row">
+    	@foreach($post->comments as $comment)
+    		<p>{{$comment['comment']}} by {{$comment->user->username}}</p>
+    	@endforeach
+    	</div>
+    @endif
+   <div class="row">
+    	 {!! Form::open(['action' => ['CommentController@createComment', $post->id]]) !!}
+
+        <div class="input-field">
+            {!! Form::label('comment', 'Say something...') !!}
+            {!! Form::text('comment', null, ['class' => '']) !!}
+        </div>
+        <button class="btn btn-success" type="submit">Comment...</button>
+        {!! Form::close() !!}
+    </div>
+
 </div>
 @stop

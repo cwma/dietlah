@@ -92,7 +92,7 @@ Route::post('/deletepost', 'PostController@deletePost');
 
 #	create a new comment
 Route::post('/createcomment', 'TestController@test');
-
+Route::post('post/{postId}/comments', 'CommentController@createComment');
 #	update comment
 Route::post('/updatecomment', 'TestController@test');
 

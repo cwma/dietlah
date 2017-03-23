@@ -38,6 +38,7 @@ class PostController extends Controller {
     	$post->title = $request->title;
     	$post->text = $request->text;
 //    	$post->location = $request->location;
+        $post->summary = 'To be update';
         $post->likes_count = 0;
         $post->favourites_count = 0;
         $post->user_id = Auth::user()->id;
