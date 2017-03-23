@@ -22,7 +22,7 @@
     @if (count($post->comments))
     	<div class="row">
     	@foreach($post->comments as $comment)
-    		<p>{{$comment['comment']}} by {{$comment->user->username}}</p>
+    		<p>"{{$comment['comment']}}" by {{$comment->user->username}}</p>
     	@endforeach
     	</div>
     @endif
