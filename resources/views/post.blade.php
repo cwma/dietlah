@@ -24,9 +24,17 @@
     	@foreach($post->comments as $comment)
     		<p>"{{$comment['comment']}}" by {{$comment->user->username}}
     		@if (Auth::check() && Auth::user()->id == $comment->user->id)
-        		{!! Form::open(['action' => ['CommentController@deleteComment', $post->id]]) !!}
+        		{!! Form::open(['url' => 'deletecomment']) !!}
         		{!! Form::hidden('commentId', $comment['id'], ['class' => 'form-control']) !!}
+        		{!! Form::hidden('postId', $post['id'], ['class' => 'form-control']) !!}
            		 <button class="btn btn-success" type="submit">delete</button>
+        		{!! Form::close() !!}
+    		@endif
+    		@if (Auth::check() && Auth::user()->id == $comment->user->id)
+        		{!! Form::open(['url' => 'comment']) !!}
+        		{!! Form::hidden('commentId', $comment['id'], ['class' => 'form-control']) !!}
+        		{!! Form::hidden('postId', $post['id'], ['class' => 'form-control']) !!}
+           		 <button class="btn btn-success" type="submit">edit</button>
         		{!! Form::close() !!}
     		@endif
     		</p>
@@ -35,7 +43,7 @@
     	</div>
     @endif
    <div class="row">
-    	 {!! Form::open(['action' => ['CommentController@createComment', $post->id]]) !!}
+    	 {!! Form::open(['url' => 'createcomment']) !!}
 
         <div class="input-field">
             {!! Form::label('comment', 'Say something...') !!}
