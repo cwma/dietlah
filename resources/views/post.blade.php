@@ -22,7 +22,15 @@
     @if (count($post->comments))
     	<div class="row">
     	@foreach($post->comments as $comment)
-    		<p>"{{$comment['comment']}}" by {{$comment->user->username}}</p>
+    		<p>"{{$comment['comment']}}" by {{$comment->user->username}}
+    		@if (Auth::check() && Auth::user()->id == $comment->user->id)
+        		{!! Form::open(['action' => ['CommentController@deleteComment', $post->id]]) !!}
+        		{!! Form::hidden('commentId', $comment['id'], ['class' => 'form-control']) !!}
+           		 <button class="btn btn-success" type="submit">delete</button>
+        		{!! Form::close() !!}
+    		@endif
+    		</p>
+
     	@endforeach
     	</div>
     @endif
@@ -32,6 +40,7 @@
         <div class="input-field">
             {!! Form::label('comment', 'Say something...') !!}
             {!! Form::text('comment', null, ['class' => '']) !!}
+            {!! Form::hidden('postId', $post['id'], ['class' => 'form-control']) !!}
         </div>
         <button class="btn btn-success" type="submit">Comment...</button>
         {!! Form::close() !!}

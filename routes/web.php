@@ -91,14 +91,14 @@ Route::post('/updatepost', 'PostController@updatePost');
 Route::post('/deletepost', 'PostController@deletePost');
 
 #	create a new comment
-Route::post('/createcomment', 'TestController@test');
-Route::post('post/{postId}/comments', 'CommentController@createComment');
+//Route::post('/createcomment', 'TestController@test');
+Route::post('post/{postId}', 'CommentController@createComment');
 #	update comment
 Route::post('/updatecomment', 'TestController@test');
 
 #	delete comment
-Route::post('/deletecomment', 'TestController@test');
-
+//Route::post('/deletecomment', 'TestController@test');
+Route::post('post/{postId}', 'CommentController@deleteComment');
 #	report post
 Route::post('/reportpost', 'TestController@test');
 
