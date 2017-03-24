@@ -126,9 +126,11 @@
             </div>
         </div>
     </div>
-    <div class="card-image" data-postid="@{{{this.postId}}}">
-        <img data-src="@{{{this.cardPic}}}">
-    </div>
+    @{{#if (containsImage this.cardPic)}}
+        <div class="card-image" data-postid="@{{{this.postId}}}">
+            <img data-src="@{{{this.cardPic}}}">
+        </div>
+    @{{/if}}
     <div class="card-content" data-postid="@{{{this.postId}}}">
         <span class="card-title truncate">@{{{this.title}}}</span>
         <p>@{{{linkify this.summary}}}</p>
@@ -194,11 +196,13 @@
         <div class="container">
             <div class="row">
                 <div id="post-content" class="col s12">
-                    <div class="center-align">
-                        <div class="img-container">
-                            <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                    @{{#if (containsImage this.postPic)}}
+                        <div class="center-align">
+                            <div class="img-container">
+                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                            </div>
                         </div>
-                    </div>
+                    @{{/if}}
                     <div class="article-header">
                         <div class="article-user left">
                             <div class="chip white">

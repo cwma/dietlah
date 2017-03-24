@@ -65,6 +65,16 @@ function registerTopTagsView() {
     });
 }
 
+function registerContainsImage() {
+    Handlebars.registerHelper("containsImage", function(image) {
+        if (image != "") {
+            return true;
+        } else { 
+            return false;
+        }
+    });
+}
+
 /* page rendering functions */
 
 function compileCardTemplate() {
@@ -623,6 +633,7 @@ function registerHandleBarsHelpers() {
     registerDateTimeHelper();
     registerLinkifyHelper();
     registerTopTagsView();
+    registerContainsImage();
 }
 
 $(document).ready(function(){
