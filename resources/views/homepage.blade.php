@@ -24,10 +24,12 @@
                 </div>
                 <input name="reported_id" id="reported_id_post" type="text" value="" hidden>
                 <input name="report_type" type="text" value="post" hidden>
-                <div class="row right">
-                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action" id="submitBtn">
-                        <i class="material-icons right">send</i>Send Report
-                    </button>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
+                            <i class="material-icons right">send</i>Send Report
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -46,10 +48,12 @@
                 </div>
                 <input name="reported_id" id="reported_id_comment" type="text" value="" hidden>
                 <input name="report_type" type="text" value="comment" hidden>
-                <div class="row right">
-                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action" id="submitBtn">
-                        <i class="material-icons right">send</i>Send Report
-                    </button>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
+                            <i class="material-icons right">send</i>Send Report
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -65,10 +69,12 @@
                     <label id="input-validate-label" for="comment">your updated comment here</label>
                 </div>
                 <input name="comment_id" id="edit-comment-id" type="text" value="" hidden>
-                <div class="row right">
-                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
-                        <i class="material-icons right">send</i>Update Comment
-                    </button>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
+                            <i class="material-icons right">send</i>Update Comment
+                        </button>
+                    </div>
                 </div>
             </form>
         </div>
@@ -289,14 +295,16 @@
                         <h5> Add your own tags to this post </h4>
                         <div class="section">
                             <form id="suggest-tags" method="post" action="/rest/addtag" novalidate="novalidate">
-                                <div class="input-field col s12">
-                                    <input name id="suggested-tags" class="materialize-textarea" data-role="materialtags"></input>
-                                    <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
+                                <div class="row">
+                                    <div class="input-field col s12">
+                                        <textarea name id="suggested-tags" class="materialize-textarea" data-role="materialtags"></textarea>
+                                        <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
+                                    </div>
                                 </div>
                                 <input name="post_id" id="suggest-tags-post-id" type="text" value="@{{{this.postId}}}" hidden>
                                 <div class="row">
-                                    <div class="right">
-                                        <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                                    <div class="col s12">
+                                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
                                             <i class="material-icons right">send</i>Save Tags
                                         </button>
                                     </div>
