@@ -77,6 +77,11 @@ function compilePostTemplate() {
     return Handlebars.compile(source);
 }
 
+function compileCommentsTemplate() {
+    var source = $("#comments_template").html();
+    return Handlebars.compile(source);
+}
+
 function showNavLoadingBar() {
     $('.progress').show();
 }
@@ -96,6 +101,11 @@ function renderCards(grid, cardJson) {
 function renderPost(modal, postJson, postTemplate) {
     $(modal).html(postTemplate(postJson));
     $("#postWrapper").fadeIn();
+}
+
+function renderComments(commentsJson){
+    $('.comments-list').append(dietlah.commentsTemplate(commentsJson));
+    $("#commentsWrapper").fadeIn();
 }
 
 function clearPost(modal) {
@@ -269,12 +279,12 @@ function handleReportPostSubmit() {
         },
         submitHandler: function(form) {
             $(form).ajaxSubmit({
-                clearForm: true,
                 error: function(e){
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your report has been submitted.", 4000);
+                    $(form).resetForm();
                     console.log(data);
                 }
             });
@@ -291,12 +301,12 @@ function handleReportCommentSubmit() {
         },
         submitHandler: function(form) {
             $(form).ajaxSubmit({
-                clearForm: true,
                 error: function(e){
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your report has been submitted.", 4000);
+                    $(form).resetForm();
                     console.log(data);
                 }
             });
@@ -312,12 +322,13 @@ function initializeSubmitComment() {
         },
         submitHandler: function(form) {
             $(form).ajaxSubmit({
-                clearForm: true,
                 error: function(e){
                     Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast(data["test"], 4000);
+                    $(form).resetForm();
+                    reinitializeCommentsScroll($(form).find('#post_id').val());
                     console.log(data);
                 }
             });
@@ -333,12 +344,12 @@ function handleEditCommentSubmit() {
         },
         submitHandler: function(form) {
             $(form).ajaxSubmit({
-                clearForm: true,
                 error: function(e){
                     Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your comment has been updated.", 4000);
+                    $(form).resetForm();
                     console.log(data);
                 }
             });
@@ -399,14 +410,26 @@ function loadPostJavascriptElements(modal, response) {
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip({delay: 50});
     $('.collapsible').collapsible();
+    initializeCommentsScroll(response['postId']);
     initializeSubmitComment();
     initializeTagChips(response['userTags']);
     handleSuggestTagsSubmit();
 }
 
+function loadCommentsJavascriptElements(){
+    $(".comments-list").find('img').lazyLoadXT();
+    $('#comments-marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    $('.tooltipped').tooltip({delay: 50});
+}
+
 function disableInfiniteScroll() {
     $('#marker').off();
     $('.end-of-page').fadeIn();
+}
+
+function disableCommentsScroll() {
+    $('#comments-marker').off();
+    $('.end-of-comments').fadeIn();
 }
 
 function paginationFailure(jqXHR, textStatus) {
@@ -437,12 +460,50 @@ function ajaxLoadPageFeed(order, range, tags) {
     });
 }
 
+function ajaxLoadComments(postid) {
+    //showPostModalLoadingBar();
+    start = new Date().getTime();
+    $.ajax({
+        url: "/rest/comments/" + postid + "/" + start + "/" + dietlah.commentsPage,
+        dataType: "json",
+    }).done(function (response) {
+        renderComments(response);
+        loadCommentsJavascriptElements();
+        dietlah.commentsPage += 1;
+        if (!response["hasMore"]) {
+            disableCommentsScroll();
+            dietlah.commentsEnd = true;
+        }
+    }).fail(function(jqXHR, textStatus) {
+        paginationFailure(jqXHR, textStatus);
+    });
+}
+
+function initializeCommentsScroll(postId) {
+    dietlah.commentsEnd = false;
+    dietlah.commentsPage = 1;
+    $('#comments-marker').on('lazyshow', function () {
+        ajaxLoadComments(postId);
+    }).lazyLoadXT({visibleOnly: false});
+}
+
 function initializeInfiniteScroll(order, range, tags) {
     dietlah.pageEnd = false;
     var grid = document.querySelector('#grid');
     $('#marker').on('lazyshow', function () {
         ajaxLoadPageFeed(order, range, tags);
     }).lazyLoadXT({visibleOnly: false});
+}
+
+function reinitializeCommentsScroll(postId) {
+    if(dietlah.commentsEnd){
+        $('#comments-marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    }
+    $('#comments-marker').off();
+    $('.end-of-comments').hide();
+    $('.comments-list').html("")
+    initializeCommentsScroll(postId);
+    $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
 }
 
 function reinitializeInfiniteScroll() {
@@ -543,6 +604,7 @@ $(document).ready(function(){
     handleReportCommentSubmit();
     handleEditCommentSubmit();
     dietlah.cardTemplate = compileCardTemplate();
+    dietlah.commentsTemplate = compileCommentsTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll("new", "all", []);
     setupPostsFiltering();

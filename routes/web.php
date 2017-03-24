@@ -138,6 +138,11 @@ Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
 #	Post content ajax endpoint
 Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
 
+#	post comment content ajax endpoint
+Route::get('/rest/comments/{postId}/{datetime}/{page}', 'HomePageController@restComments');
+
+
+
 ####################################################################################
 
 ### RESTful Form POST endpoints

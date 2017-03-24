@@ -14,7 +14,7 @@ class TestController extends Controller {
     }
 
     public function testCreateComment(Request $request) {
-        $response = ["test" => "Received comment [".$request->comment."] for post id ".$request->postId.". successfully"];
+        $response = ["test" => "Received comment [".$request->comment."] for post id ".$request->post_id.". successfully"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 

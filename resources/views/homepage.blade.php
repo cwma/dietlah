@@ -256,42 +256,32 @@
                 </div>
 
                 <div id="post-comments" class="col s12">
-                    <div class="row">
-                        <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
-                            <div class="input-field col s12">
-                                <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
-                                <label for="comment">add a comment</label>
-                            </div>
-                            <input name="post_id" id="post_id" type="text" value="@{{{this.postId}}}" hidden>
-                            <div>
-                                <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
-                                    <i class="material-icons right">send</i>Post Comment
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                    <br>
-                    <div class="divider"></div>
-                    <div class="row">
-                        <ul class="collection">
-                            @{{#each this.comments}}
-                            <li class="collection-item avatar">
-                                <img data-src="@{{{this.profilePic}}}" alt="" class="circle">
-                                <span class="title">@{{this.username}}</span>
-                                <p id="comment-text">@{{this.commentText}}</p>
-                                <p class="light-green-text">@{{timeSince this.commentTime.date}}
-                                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
-                                        data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{this.id}}">
-                                        <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
-                                    </a>
-                                    <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
-                                        data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{this.id}}">
-                                        <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
-                                    </a>
-                                </p>
-                            </li>
-                            @{{~/each}}
-                        </ul>
+                    <div class="commentsWrapper">
+                        <div class="row">
+                            <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
+                                <div class="input-field col s12">
+                                    <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
+                                    <label for="comment" id="input-validate-label">add a comment</label>
+                                </div>
+                                <input name="post_id" id="post_id" type="text" value="@{{this.postId}}" hidden>
+                                <div>
+                                    <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                                        <i class="material-icons right">send</i>Post Comment
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                        <br>
+                        <div class="divider"></div>
+                        <div class="row">
+                            <ul class="collection comments-list">
+                            </ul>
+                        </div>
+                        <div id="comments-marker"></div>
+                        <div class="end-of-comments center" hidden>
+                            <hr>
+                            <p> end of comments </p>
+                        </div>
                     </div>
                 </div>
                 
@@ -358,5 +348,24 @@
         </div>
     </div>
 </div>
+</script>
+<script id="comments_template" type="text/x-handlebars-template">
+        @{{#each comments}}
+        <li class="collection-item avatar">
+            <img data-src="@{{{profilePic}}}" alt="" class="circle">
+            <span class="title">@{{username}}</span>
+            <p id="comment-text">@{{commentText}}</p>
+            <p class="light-green-text">@{{timeSince commentTime.date}}
+                <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                    data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
+                    <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                </a>
+                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
+                    data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
+                    <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
+                </a>
+            </p>
+        </li>
+        @{{~/each}}
 </script>
 @stop
