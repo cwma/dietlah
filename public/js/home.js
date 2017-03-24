@@ -406,6 +406,7 @@ function loadPostJavascriptElements(modal, response) {
     $('ul.tabs').tabs({
         onShow: function(tab) {
             $(tab).find('img').lazyLoadXT();
+            $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
         }
     });
    $('#modal-close').on('click', function(e) {;
