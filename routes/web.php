@@ -150,7 +150,7 @@ Route::get('/rest/comments/{postId}/{datetime}/{page}', 'HomePageController@rest
 ####################################################################################
 
 # 	create a new post
-Route::post('/rest/createpost', 'TestController@test');
+Route::post('/rest/createpost', 'PostController@createPost');
 
 # 	update post
 Route::post('/rest/updatepost', 'TestController@test');

@@ -7,13 +7,24 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Post;
 use App\Comment;
+use App\Tag;
+use JavaScript;
+
 class PostController extends Controller {
 	public function newpost() {
         if (!Auth::check()) {
             $response = ["status" => "unsuccessful", "error" => "user not logged in"];
+            // change to login screen...
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
+        // for autocomplete of tags
+        // make sure you run composer install
+        // this facade just helps put the variables into the javascript namespace "dietlah"
+        // can access tags by calling dietlah.tags in browser
+        JavaScript::put([
+            "tags" => Tag::all()->pluck('tag_name')
+        ]);
 		return view('newpost');
 	}
 
@@ -41,9 +52,11 @@ class PostController extends Controller {
 //    	$post->location = $request->location;
         $post->summary = 'To be update';
         $post->likes_count = 0;
-        $post->favourites_count = 0;
+        $post->comments_count = 0;
         $post->user_id = Auth::user()->id;
     	$post->save();
+
+        // TODO: save tags!!
 
         $response = ["status" => "successful", "post_id" => $post->id];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
