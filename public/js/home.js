@@ -55,6 +55,16 @@ function registerLinkifyHelper() {
     });
 }
 
+function registerTopTagsView() {
+    Handlebars.registerHelper("top5", function(index) {
+        if (index < 5) {
+            return true;
+        } else { 
+            return false;
+        }
+    });
+}
+
 /* page rendering functions */
 
 function compileCardTemplate() {
@@ -112,7 +122,7 @@ function initializeHomeModals() {
                 dataType: "json"
             }).done(function (response) {
                 renderPost(modal, response, postTemplate);
-                loadPostJavascriptElements(modal);
+                loadPostJavascriptElements(modal, response);
                 hideNavLoadingBar();
             }).fail(function(jqXHR, textStatus) {
                 paginationFailure(jqXHR, textStatus);
@@ -336,6 +346,24 @@ function handleEditCommentSubmit() {
     }); 
 }
 
+function handleSuggestTagsSubmit() {
+    $('#suggest-tags').submit(function(){
+        $(this).ajaxSubmit({
+            data : {
+                tags: $('#suggested-tags').materialtags('items')
+            },
+            error: function(e){
+                Materialize.toast("There was an error attempting to suggest tags: " + e.statusText, 4000);
+            },
+            success: function (data, textStatus, jqXHR, form){
+                console.log(data);
+                Materialize.toast("your suggested tags have been saved", 4000);
+            }
+        });
+        return false;
+    });
+}
+
 /* load scripts on home page */
 
 function loadHomeJavascriptElements() {
@@ -352,7 +380,7 @@ function loadHomeJavascriptElements() {
     })
 }
 
-function loadPostJavascriptElements(modal) {
+function loadPostJavascriptElements(modal, response) {
     /* called whenever a post modal is opened */
     dietlah.postModalOpen = true;
     history.pushState({modal:"open"}, "modal", "#modal");
@@ -372,6 +400,8 @@ function loadPostJavascriptElements(modal) {
     $('.tooltipped').tooltip({delay: 50});
     $('.collapsible').collapsible();
     initializeSubmitComment();
+    initializeTagChips(response['userTags']);
+    handleSuggestTagsSubmit();
 }
 
 function disableInfiniteScroll() {
@@ -469,10 +499,44 @@ function setupValidationErrorFormatting() {
     });
 }
 
-$(document).ready(function(){
-    setupValidationErrorFormatting();
+function initializeTagChips(userTags) {
+    var tags = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: dietlah.tags
+    });
+    $('#suggested-tags').materialtags({
+        typeaheadjs: [{
+            highlight: true,
+        },{
+            source: tags.ttAdapter()
+        }],
+        freeInput: true,
+        maxChars: 20,
+        trimValue: true,
+    });
+    $('.add-tag').on('click', function(e) {
+        $('#suggested-tags').materialtags('add', $(this).parent().attr("tag"));
+    })
+    $('#suggested-tags').on('beforeItemAdd', function(event) {
+        if(event.item.length < 3) {
+            event.cancel = true;
+        }
+    });
+    for(i in userTags) {
+        $('#suggested-tags').materialtags('add', userTags[i]);
+    }
+}
+
+function registerHandleBarsHelpers() {
     registerDateTimeHelper();
     registerLinkifyHelper();
+    registerTopTagsView();
+}
+
+$(document).ready(function(){
+    registerHandleBarsHelpers();
+    setupValidationErrorFormatting();
     overrideBackButtonForModal();
     initializeHomeModals();
     handleReportPostSubmit();

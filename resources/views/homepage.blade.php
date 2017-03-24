@@ -102,8 +102,10 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
+<script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/home.js"></script>
 <script id="card_template" type="text/x-handlebars-template">
 @{{~#each posts~}}
@@ -125,7 +127,7 @@
         <img data-src="@{{{this.cardPic}}}">
     </div>
     <div class="card-content" data-postid="@{{{this.postId}}}">
-        <span class="card-title">@{{{this.title}}}</span>
+        <span class="card-title truncate">@{{{this.title}}}</span>
         <p>@{{{linkify this.summary}}}</p>
         <br>
         <p class="light-green-text">@{{timeSince this.postTime.date}}</p>
@@ -210,12 +212,34 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <span>top tags for this post</span><br>
-                        @{{#each this.tags}}
-                            <div class="chip light-green lighten-3">
-                                @{{{this.tag}}} (@{{this.votes}})
-                            </div>
-                        @{{~/each}}
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header active">
+                                    <i class="material-icons">keyboard_arrow_down</i>Top Tags</span>
+                                </div>
+                                <div class="collapsible-body"><span>
+                                    @{{#each this.tags}}
+                                        @{{#if (top5 @index)}}
+                                            <div class="chip light-green lighten-3">
+                                                @{{{this.tag}}}
+                                            </div>
+                                        @{{/if}}
+                                    @{{~/each}}
+                                </span></div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header">
+                                    <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
+                                </div>
+                                <div class="collapsible-body"><span>
+                                    @{{#each this.tags}}
+                                        <div class="chip light-green lighten-3">
+                                            @{{{this.tag}}}
+                                        </div>
+                                    @{{~/each}}
+                                </span></div>
+                            </li>
+                        </ul>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
@@ -272,7 +296,36 @@
                 </div>
                 
                 <div id="post-tags" class="col s12">
-
+                    <div class="container">
+                        <h5> Add your own tags to this post </h4>
+                        <div class="section">
+                            <form id="suggest-tags" method="post" action="/rest/addtag" novalidate="novalidate">
+                                <div class="input-field col s12">
+                                    <input name id="suggested-tags" class="materialize-textarea" data-role="materialtags"></input>
+                                    <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
+                                </div>
+                                <input name="post_id" id="suggest-tags-post-id" type="text" value="@{{{this.postId}}}" hidden>
+                                <div class="row">
+                                    <div class="right">
+                                        <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                                            <i class="material-icons right">send</i>Save Tags
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                        <br>
+                        <div class="divider"></div>
+                        <div class="section">
+                            <h5>Tags suggested by other users</h4>
+                            @{{#each this.tags}}
+                            <div class="chip light-green lighten-3" tag="@{{{this.tag}}}">
+                                @{{{this.tag}}}
+                                <i id="add-tag" class="material-icons add-tag">add</i>
+                            </div>
+                            @{{~/each}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

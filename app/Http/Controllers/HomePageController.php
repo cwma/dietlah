@@ -9,9 +9,12 @@ use Faker;
 class HomePageController extends Controller {
 
     public function index(Request $request, $page = 1) {
+        $tags = ["keto", "dining", "low carb", "salad"];
+
         JavaScript::put([
             "page" => 1,
             "restUrl" => "/rest/postfeed/",
+            "tags" => $tags
         ]);
 	$request->session()->put('username', 'temp');
         return view('homepage');
@@ -86,7 +89,8 @@ class HomePageController extends Controller {
                 "comments" => $comments,
                 "userLiked" => $faker->boolean($chanceOfGettingTrue = 50),
                 "userFavourited" => $faker->boolean($chanceOfGettingTrue = 50),
-                "postId" => $postId, "tags" => $tags, "tagCount" => $tagCount
+                "postId" => $postId, "tags" => $tags, "tagCount" => $tagCount,
+                "userTags" => ["hello", "world", "testing"]
                 ];
         return response(json_encode($post)) ->header('Content-Type', 'application/json');
     }
