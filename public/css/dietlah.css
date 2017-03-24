@@ -101,6 +101,13 @@
     margin: 0;
 }
 
+.post-progress {
+    position: fixed;
+    margin: 0;
+    top: 48px;
+    wdith: 97.5%;
+}
+
 @media screen and (min-width: 601px){
     .navbar-fixed {
       height: 48px;

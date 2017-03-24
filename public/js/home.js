@@ -83,11 +83,19 @@ function compileCommentsTemplate() {
 }
 
 function showNavLoadingBar() {
-    $('.progress').show();
+    $('.nav-progress').show();
 }
 
 function hideNavLoadingBar() {
-    $('.progress').hide();
+    $('.nav-progress').hide();
+}
+
+function showPostLoadingBar() {
+    $('.post-progress').show();
+}
+
+function hidePostLoadingBar() {
+    $('.post-progress').hide();
 }
 
 function renderCards(grid, cardJson) {
@@ -125,7 +133,7 @@ function initializeHomeModals() {
         startingTop: '0%', // Starting top style attribute
         endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-            showNavLoadingBar();
+            showPostLoadingBar();
             postid = $(trigger).attr('data-postid');
             $.ajax({
                 url: "/rest/post/" + postid,
@@ -133,10 +141,10 @@ function initializeHomeModals() {
             }).done(function (response) {
                 renderPost(modal, response, postTemplate);
                 loadPostJavascriptElements(modal, response);
-                hideNavLoadingBar();
+                hidePostLoadingBar();
             }).fail(function(jqXHR, textStatus) {
                 paginationFailure(jqXHR, textStatus);
-                hideNavLoadingBar();
+                hidePostLoadingBar();
             });
         },
         complete: function(modal) { 
@@ -279,11 +287,14 @@ function handleReportPostSubmit() {
             report_type: "required"
         },
         submitHandler: function(form) {
+            showPostLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
+                    hidePostLoadingBar();
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
+                    hidePostLoadingBar();
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
@@ -302,11 +313,14 @@ function handleReportCommentSubmit() {
             report_type: "required"
         },
         submitHandler: function(form) {
+            showPostLoadingBar();
             $(form).ajaxSubmit({
-                error: function(e){
+                error: function(e) {
+                    hidePostLoadingBar();
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
+                    hidePostLoadingBar();
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
@@ -324,11 +338,14 @@ function initializeSubmitComment() {
             post_id: "required",
         },
         submitHandler: function(form) {
+            showPostLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
+                    hidePostLoadingBar();
                     Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
+                    hidePostLoadingBar();
                     Materialize.toast(data["test"], 4000);
                     $(form).resetForm();
                     $(form).find('#comment').trigger('autoresize');
@@ -347,11 +364,14 @@ function handleEditCommentSubmit() {
             comment: "required",
         },
         submitHandler: function(form) {
+            showPostLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
+                    hidePostLoadingBar();
                     Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
+                    hidePostLoadingBar();
                     Materialize.toast("Your comment has been updated.", 4000);
                     $(form).resetForm();
                     $(form).find('#edit_comment').trigger('autoresize');
@@ -364,14 +384,17 @@ function handleEditCommentSubmit() {
 
 function handleSuggestTagsSubmit() {
     $('#suggest-tags').submit(function(){
+        showPostLoadingBar();
         $(this).ajaxSubmit({
             data : {
                 tags: $('#suggested-tags').materialtags('items')
             },
             error: function(e){
+                hidePostLoadingBar();
                 Materialize.toast("There was an error attempting to suggest tags: " + e.statusText, 4000);
             },
             success: function (data, textStatus, jqXHR, form){
+                hidePostLoadingBar();
                 console.log(data);
                 Materialize.toast("your suggested tags have been saved", 4000);
             }
@@ -467,12 +490,13 @@ function ajaxLoadPageFeed(order, range, tags) {
 }
 
 function ajaxLoadComments(postid) {
-    //showPostModalLoadingBar();
+    showPostLoadingBar();
     start = new Date().getTime();
     $.ajax({
         url: "/rest/comments/" + postid + "/" + start + "/" + dietlah.commentsPage,
         dataType: "json",
     }).done(function (response) {
+        hidePostLoadingBar();
         renderComments(response);
         loadCommentsJavascriptElements();
         dietlah.commentsPage += 1;

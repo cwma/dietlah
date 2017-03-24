@@ -177,8 +177,10 @@
                             <span class="light-green-text">(@{{{this.tagCount}}})</span> 
                         </a>
                     </li>
-                </a>
                 </ul>
+                <div class="progress post-progress light-green lighten-4">
+                    <div class="indeterminate light-green"></div>
+                </div>
             </div>
         </div>
     </div>
