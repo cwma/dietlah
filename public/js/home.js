@@ -93,7 +93,7 @@ function clearPost(modal) {
     dietlah.postModalOpen = false;
 }
 
-/* javascript/ajax handling */
+/* initialize modals on home page */
 
 function initializeHomeModals() {
     postTemplate = compilePostTemplate();
@@ -336,7 +336,10 @@ function handleEditCommentSubmit() {
     }); 
 }
 
+/* load scripts on home page */
+
 function loadHomeJavascriptElements() {
+    /* called after every ajax paginate */
     handleLikeClickEvent('.post-like');
     handleFavouriteClickEvent('.post-fav');
     initializeCardClickModalOpen();
@@ -347,10 +350,10 @@ function loadHomeJavascriptElements() {
         e.preventDefault(); 
         $('#postmodal').modal('close');
     })
-    initializeHomeModals();
 }
 
 function loadPostJavascriptElements(modal) {
+    /* called whenever a post modal is opened */
     dietlah.postModalOpen = true;
     history.pushState({modal:"open"}, "modal", "#modal");
     handleLikeClickEvent('.full-post-like');
@@ -471,6 +474,7 @@ $(document).ready(function(){
     registerDateTimeHelper();
     registerLinkifyHelper();
     overrideBackButtonForModal();
+    initializeHomeModals();
     handleReportPostSubmit();
     handleReportCommentSubmit();
     handleEditCommentSubmit();
