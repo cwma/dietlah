@@ -348,8 +348,22 @@
 </script>
 <script id="comments_template" type="text/x-handlebars-template">
         @{{#each comments}}
-        <li class="collection-item avatar">
+        <li class="collection-item collection-item-comments avatar hide-on-small-only">
             <img data-src="@{{{profilePic}}}" alt="" class="circle">
+            <span class="title">@{{username}}</span>
+            <p id="comment-text">@{{commentText}}</p>
+            <p class="light-green-text">@{{timeSince commentTime.date}}
+                <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                    data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
+                    <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                </a>
+                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop" 
+                    data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
+                    <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
+                </a>
+            </p>
+        </li>
+        <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
             <p id="comment-text">@{{commentText}}</p>
             <p class="light-green-text">@{{timeSince commentTime.date}}

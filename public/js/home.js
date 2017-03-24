@@ -150,7 +150,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '5%', // Ending top style attribute
+        endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_post").val($(trigger).attr('data-postid'));
         },
@@ -164,7 +164,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '5%', // Ending top style attribute
+        endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
         },
@@ -178,7 +178,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '5%', // Ending top style attribute
+        endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#edit-comment-id").val($(trigger).attr('comment-id'));
             $('#edit-comment').val($(trigger).parent().prev().html());
@@ -196,7 +196,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '5%', // Ending top style attribute
+        endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
 
         },

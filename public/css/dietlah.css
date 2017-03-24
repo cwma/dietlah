@@ -240,7 +240,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 
 @media screen and (max-width: 600px){
     .post-modal {
-      width: 90% !important;
+      width: 100% !important;
       height: 90% !important;
       max-height: 90% !important;
     }
@@ -248,7 +248,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
 
 @media screen and (min-width: 601px) and (max-width: 992px) {
     .post-modal {
-      width: 85% !important;
+      width: 95% !important;
       height: 90% !important;
       max-height: 90% !important;
     }
@@ -347,11 +347,11 @@ height: 64px !important; /* fix for search in navbar on chrome */
 }
 
 /* report comment */
-.report-comment {
+.report-comment-desktop {
   display: none;
 }
 
-.collection-item:hover .report-comment {
+.collection-item-comments:hover .report-comment {
   display: block;
 }
 
