@@ -141,6 +141,7 @@ function initializeHomeModals() {
         },
         complete: function(modal) { 
             clearPost(modal);
+            $('#comments-marker').off();
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -149,7 +150,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '45%', // Ending top style attribute
+        endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_post").val($(trigger).attr('data-postid'));
         },
@@ -163,7 +164,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '45%', // Ending top style attribute
+        endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
         },
@@ -177,7 +178,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '45%', // Ending top style attribute
+        endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#edit-comment-id").val($(trigger).attr('comment-id'));
             $('#edit-comment').val($(trigger).parent().prev().html());
@@ -195,7 +196,7 @@ function initializeHomeModals() {
         inDuration: 300, // Transition in duration
         outDuration: 200, // Transition out duration
         startingTop: '5%', // Starting top style attribute
-        endingTop: '45%', // Ending top style attribute
+        endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
 
         },
@@ -285,6 +286,7 @@ function handleReportPostSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
+                    $(form).find('#report_comment').trigger('autoresize');
                     console.log(data);
                 }
             });
@@ -307,6 +309,7 @@ function handleReportCommentSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
+                    $(form).find('#report_comment').trigger('autoresize');
                     console.log(data);
                 }
             });
@@ -328,6 +331,7 @@ function initializeSubmitComment() {
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast(data["test"], 4000);
                     $(form).resetForm();
+                    $(form).find('#comment').trigger('autoresize');
                     reinitializeCommentsScroll($(form).find('#post_id').val());
                     console.log(data);
                 }
@@ -350,6 +354,7 @@ function handleEditCommentSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     Materialize.toast("Your comment has been updated.", 4000);
                     $(form).resetForm();
+                    $(form).find('#edit_comment').trigger('autoresize');
                     console.log(data);
                 }
             });

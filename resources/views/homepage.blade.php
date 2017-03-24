@@ -15,7 +15,6 @@
 <div id="report-post-modal" class="modal report-modal report-post-modal">
     <div class="modal-content">
         <div class="container">
-            <h5>Report This Post</h5>
             <form id="report-post-form" method="post" action="/rest/report" novalidate="novalidate">
                 <div class="row">
                     <div class="input-field col s12">
@@ -38,7 +37,6 @@
 <div id="report-comment-modal" class="modal report-modal report-comment-modal">
     <div class="modal-content">
         <div class="container">
-            <h5>Report This Comment</h5>
             <form id="report-comment-form" method="post" action="/rest/report" novalidate="novalidate">
                 <div class="row">
                     <div class="input-field col s12">
@@ -61,7 +59,6 @@
 <div id="edit-comment-modal" class="modal report-modal edit-comment-modal">
     <div class="modal-content">
         <div class="container">
-            <h5>Edit Comment</h5>
             <form id="edit-comment-form" method="post" action="/rest/updatecomment" novalidate="novalidate">
                 <div class="input-field col s12">
                     <textarea name="comment" id="edit-comment" class="materialize-textarea"></textarea>
