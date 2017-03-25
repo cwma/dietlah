@@ -40,6 +40,8 @@ class AllSeeder extends Seeder
 	    $user->username = $faker->userName;
 	    $user->email = $faker->unique->freeEmail;
 	    $user->password = $faker->password;
+	    $user->profile_pic = $faker->imageUrl($width = 400, $height = 400, 'people');
+	    $user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	    $user->save();
 	}
     }
@@ -49,6 +51,7 @@ class AllSeeder extends Seeder
 	$faker = Faker\Factory::create();
 	for ($i = 0; $i < $limit; $i++) {
 	    $post = new Post;
+	    $post->image = $faker->imageUrl($width = 400, $height = 400, 'food');
 	    $post->title = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	    $post->summary = $faker->text($maxNbChars = 100);
 	    $post->text = $faker->text($maxNbChars = 1000);
