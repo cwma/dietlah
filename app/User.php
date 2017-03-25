@@ -39,7 +39,7 @@ class User extends Authenticatable
 	return $this->hasMany('App\Report');
     }
 
-    public function tagReports() {
+    public function tag_reports() {
 	return $this->hasMany('App\TagReport');
     }
 }
