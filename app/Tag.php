@@ -13,6 +13,6 @@ class Tag extends Model
     }
 
     public function post_tags() {
-	return $this->hasMany('App\Post_Tag');
+	return $this->hasMany('App\PostTag');
     }
 }
