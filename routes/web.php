@@ -17,7 +17,7 @@
 #	be regular page changes as there needs to be substantial client side routing code
 #	to handle browser history properly (backbone.js router)
 #	If this is too complicated we can drop it.
-#	
+#
 #	For forms we can do regular post first. Once everything works we'll add AJAX.
 
 #	Home/Main page default view all: Order by top(favourites)
@@ -38,9 +38,9 @@ Route::get('/view/{sort}/{page?}', 'HomePageController@homeAll') -> name('home.s
 #	View according to search
 Route::get('/search/{query}/{page?}', 'TestController@test') -> name('search');
 
-#	Post direct link: include post title in url to make it user/SEO friendly. 
+#	Post direct link: include post title in url to make it user/SEO friendly.
 //Route::get('/post/{postId}/{postTitle}', 'TestController@test') -> name('post');
-Route::get('/post/{postId}', 'PostController@post') -> name('post');//without title for now, easier to nagivate 
+Route::get('/post/{postId}', 'PostController@post') -> name('post');//without title for now, easier to nagivate
 
 Route::get('/createpost', 'PostController@newpost') -> name('post');
 
@@ -56,7 +56,7 @@ Route::get('/login', 'TestController@test') -> name('login');
 Route::get('/register', 'TestController@test') -> name('register');
 
 #	view and send messages
-Route::get('/messages', 'TestController@test') -> name('messages');
+Route::get('/messages', 'MessageController@displayContacts') -> name('messages');
 
 #	For user to manage lists
 Route::get('/manage', 'TestController@test') -> name('manage');
@@ -108,7 +108,7 @@ Route::post('/sendmessage', 'TestController@test');
 #	You may have noticed that all the URIs take in a datetime parameter
 #	This is the time at which the first page was loaded
 #	we do this to select the next set of items and exclude items that have been
-#	created after that particular datetime. This prevents duplicates for showing up 
+#	created after that particular datetime. This prevents duplicates for showing up
 #
 #	Example:
 #	User A Browses page 1. User B creates new item. User A scrolls to page 2
@@ -204,4 +204,3 @@ Route::get('/admin', 'TestController@test') -> name('admin');
 
 
 Auth::routes();
-
