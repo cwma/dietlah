@@ -94,7 +94,7 @@ class AllSeeder extends Seeder
 	$faker = Faker\Factory::create();
 	for ($i = 1; $i <= $limit; $i++) {
 	    for ($j = 0; $j <= $limit; $j++) {
-	    	$favourite = new Like;
+	    	$favourite = new Favourite;
 	        $favourite->user_id = $faker->numberBetween($min = 1, $max = $limit);
 		$favourite->post_id = $i;
 	    	$favourite->save();
