@@ -248,8 +248,9 @@ height: 64px !important; /* fix for search in navbar on chrome */
 @media screen and (max-width: 600px){
     .post-modal {
       width: 100% !important;
-      height: 90% !important;
-      max-height: 90% !important;
+      height: 100% !important;
+      max-height: 100% !important;
+      top: 0% !important;
     }
 }
 
@@ -258,6 +259,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
       width: 95% !important;
       height: 90% !important;
       max-height: 90% !important;
+      top: 5% !important;
     }
 }
 
@@ -266,6 +268,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
       width: 90% !important;
       height: 90% !important;
       max-height: 90% !important;
+      top: 5% !important;
     }
 }
 
@@ -274,6 +277,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
       width: 80% !important;
       height: 90% !important;
       max-height: 90% !important;
+      top: 5% !important;
     }
 }
 
@@ -283,6 +287,7 @@ height: 64px !important; /* fix for search in navbar on chrome */
       width: 80% !important;
       height: 90% !important;
       max-height: 90% !important;
+      top: 5% !important;
     }
 }
 
