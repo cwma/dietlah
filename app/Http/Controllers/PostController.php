@@ -33,7 +33,7 @@ class PostController extends Controller {
 
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->with('post_tags')->findOrFail($postId);
-        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>$post->text,
+        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
                    "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
                    "created_at"=>$post->created_at, "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
 
@@ -59,12 +59,12 @@ class PostController extends Controller {
         if(Auth::check()) {
             $userid = Auth::user()->id;
             $likers = $post->likes->pluck('id', 'user_id')->all();
-            if(array_key_exists("41", $likers)) {
+            if(array_key_exists($userid, $likers)) {
                 $result['liked'] = true;
             } else {
                 $result['liked'] = false;
             }
-            $favs = $post->favourites->pluck('id', 'user_id');
+            $favs = $post->favourites->pluck('id', 'user_id')->all();
             if(array_key_exists($userid, $favs)) {
                 $result['favourited'] = true;
             } else {
@@ -164,4 +164,28 @@ class PostController extends Controller {
         $response = ["status" => "failed", "reason" => "unauthorized"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
+
+    public function favouritePost(Request $request) {
+        if(Auth::check()) {
+            $postid = $request->postId;
+            $userid = Auth::user()->id;
+            if ($request->favourited === "no") {
+                $fav_post = Favourite::firstOrNew(["user_id" => $userid, "post_id" => $postid]);
+                if(!$fav_post->exists) {
+                    $fav_post->save();
+                }
+
+                $response = ["status" => "success", "response" => "You added this post to favourites!"];
+            } else {
+                $fav_post = Favourite::where("user_id", $userid)->where("post_id", $postid)->delete();
+
+                $response = ["status" => "success", "response" => "You removed this post from favourites!"];
+            }
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+        $response = ["status" => "failed", "reason" => "unauthorized"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    }
+
+
 }

@@ -65,7 +65,7 @@
                             <div class="divider"></div>
                             <div class="section">
                                 <h5>{{$post['title']}}</h5>
-                                <p>{{$post['text']}}</p>
+                                <p>{!!$post['text']!!}</p>
                             </div>
                             <div class="divider"></div>
                             <div class="section">
@@ -192,7 +192,7 @@
                     </div>
                     <div class="col s6 center">
                         <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                            favourited="{{$post['favourited'] ? true : false}}" post-id="{{$post['id']}}">
+                            favourited="{{$post['favourited'] ?  'yes' : 'no'}}" post-id="{{$post['id']}}">
                             <i style="vertical-align:middle" class="material-icons light-green-text">@if ($post['favourited']) bookmark @else bookmark_border @endif</i>
                         </a>
                     </div>
@@ -302,11 +302,11 @@
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/post.js"></script>
 <script id="comments_template" type="text/x-handlebars-template">
-        @{{#each comments}}
+    @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
             <img data-src="@{{{profile_pic}}}" alt="" class="circle">
             <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{text}}</p>
+            <p id="comment-text">@{{{linkify text}}}</p>
             <p class="light-green-text">@{{timeSince time.date}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
@@ -324,7 +324,7 @@
         </li>
         <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{text}}</p>
+            <p id="comment-text">@{{{linkify text}}}</p>
             <p class="light-green-text">@{{timeSince commentTime.date}}
                 @if(Auth::check())
                 <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
@@ -338,6 +338,6 @@
                 </a>
             </p>
         </li>
-        @{{~/each}}
+    @{{~/each}}
 </script>
 @stop
