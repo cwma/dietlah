@@ -180,6 +180,11 @@ return [
 
         Laracasts\Utilities\JavaScript\JavaScriptServiceProvider::class,
         App\Providers\ComposerServiceProvider::class,
+
+        /*
+        * Laravel talk provider
+        */
+        Nahid\Talk\TalkServiceProvider::class,
     ],
 
     /*
@@ -231,6 +236,7 @@ return [
         'JavaScript' => Laracasts\Utilities\JavaScript\JavaScriptFacade::class,
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
+        'Talk'      => Nahid\Talk\Facades\Talk::class,
 
     ],
 
