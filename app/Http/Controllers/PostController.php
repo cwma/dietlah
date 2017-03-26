@@ -42,7 +42,6 @@ class PostController extends Controller {
         $result["tags"] = $post->tags->pluck('tag_name');
         $result["tags_count"] = $post->tags->count();
 
-
         // for user tags and auto complete
         if(Auth::check()) {
             $userid = Auth::user()->id;
@@ -91,19 +90,32 @@ class PostController extends Controller {
 //             ->withInput(); // the previously entered input remains
 //    	}
 
-        // TODO yy add image and location when UI ready
+        $user_id = Auth::id();
+
+        // TODO yy check where the images shld be stored
     	$post = new Post;
 //    	$post->image = $request->file('portrait')->store('public/images/postimages');
     	$post->title = $request->title;
     	$post->text = $request->text;
 //    	$post->location = $request->location;
-        $post->summary = 'To be update';
+        $post->summary = 'To be updated';
         $post->likes_count = 0;
         $post->comments_count = 0;
-        $post->user_id = Auth::user()->id;
+        $post->user_id = $user_id;
     	$post->save();
+    	$post_id = $post->id;
 
-        // TODO: save tags!!
+        $tags = $request->tags;
+        // TODO yy check how the tags are passed
+        //  assuming tagnames are passed as array
+        foreach ($tags as $tagname) {
+            $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
+            $post_tag = new PostTag;
+            $post_tag->user_id = $user_id;
+            $post_tag->post_id = $post_id;
+            $post_tag->tag_id = $tag->id;
+            $post_tag->save();
+        }
 
         $response = ["status" => "successful", "post_id" => $post->id];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
@@ -188,4 +200,29 @@ class PostController extends Controller {
     }
 
 
+    public function updatePostTags(Request $request) {
+        $user_id = Auth::user()->id;
+        $post_id = $request->post_id;
+        $tags = $request->tags;
+
+        // assuming tags are passed as array
+        // what about if the user removes tags?
+        // assuming array tags is
+        // eg. [[tag_name => tagA, action => remove], [tag_name => tagB, action => add]]
+        foreach ($tags as $tagAction) {
+            $tag_name = $tagAction["tag_name"];
+            if ($tagAction["action"] === "remove") {
+                $tag_id = Tag::where("tag_name", $tag_name)->firstOrFail()->id;
+                $post_tag = PostTag::where(["user_id" => $user_id, "post_id" => $post_id, "tag_id" => $tag_id]);
+                $post_tag->delete();
+            } else if ($tagAction["action"] === "add"){
+                $tag = Tag::firstOrCreate(["tag_name" => $tag_name]);
+                $post_tag = new PostTag;
+                $post_tag->user_id = $user_id;
+                $post_tag->post_id = $post_id;
+                $post_tag->tag_id = $tag->id;
+                $post_tag->save();
+            }
+        }
+    }
 }
