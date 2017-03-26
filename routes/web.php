@@ -130,7 +130,7 @@ Route::post('/sendmessage', 'TestController@test');
 #	Alternatively load all IDs and lazy load paginate as user scrolls using those IDs
 
 #	main home page ajax endpoint
-Route::get('/rest/postfeed/{order}/{range}/{datetime}/{page}', 'HomePageController@restPostFeed');
+Route::get('/rest/postfeed/{order}/{range}', 'HomePageController@restPostFeed');
 
 #	View according to search ajax endpoint
 Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
@@ -170,7 +170,7 @@ Route::post('/rest/updatecomment', 'TestController@test');
 Route::post('/rest/deletecomment', 'TestController@test');
 
 #	Favourite post
-Route::post('/rest/favourite', 'TestController@testFavourite');
+Route::post('/rest/favourite', 'PostController@favouritePost');
 
 #	Like post
 Route::post('/rest/like', 'PostController@likePost');
@@ -179,11 +179,11 @@ Route::post('/rest/like', 'PostController@likePost');
 Route::post('/rest/addtag', 'TestController@test');
 
 Route::group(['middleware' => 'auth'], function () {
-#	Report content
-Route::post('/rest/report', 'ReportController@report');
+	#	Report content
+	Route::post('/rest/report', 'ReportController@report');
 
-#	Report inaccurate tagging for removal
-Route::post('/rest/remove_tag', 'ReportController@remove_tag');
+	#	Report inaccurate tagging for removal
+	Route::post('/rest/remove_tag', 'ReportController@remove_tag');
 });
 ####################################################################################
 

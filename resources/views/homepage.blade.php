@@ -116,48 +116,61 @@
     <div class="article-header">
         <div class="article-user left">
             <div class="chip white">
-                <img data-src="@{{{this.profilePic}}}" alt="Contact Person">
-                @{{{this.username}}}
+                <img data-src="@{{{profile_pic}}}" alt="Contact Person">
+                @{{{username}}}
             </div>
         </div>
         <div class="article-tag right">
             <div class="chip light-green lighten-3">
-                @{{{this.tag}}}
+                @{{{tag}}}
             </div>
         </div>
     </div>
-    @{{#if (containsImage this.cardPic)}}
-        <div class="card-image" data-postid="@{{{this.postId}}}">
-            <img data-src="@{{{this.cardPic}}}">
+    @{{#if (containsImage image)}}
+        <div class="card-image" data-postid="@{{{id}}}">
+            <img data-src="@{{{image}}}">
         </div>
     @{{/if}}
-    <div class="card-content" data-postid="@{{{this.postId}}}">
-        <span class="card-title truncate">@{{{this.title}}}</span>
-        <p>@{{{linkify this.summary}}}</p>
+    <div class="card-content" data-postid="@{{{id}}}">
+        <span class="card-title truncate">@{{{title}}}</span>
+        <p>@{{{linkify summary}}}</p>
         <br>
-        <p class="light-green-text">@{{timeSince this.postTime.date}}</p>
+        <p class="light-green-text">@{{timeSince time.date}}</p>
     </div>
     <div class="card-action">
         <div class="col s3 center">
-            <a class="modal-trigger light-green-text" href="#postmodal" data-postid="@{{{this.postId}}}">More</a>
+            <a class="modal-trigger light-green-text" href="#postmodal" data-postid="@{{{id}}}">More</a>
         </div>
         <div class="col s3 center">
             <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments" href="#">
-                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{this.comments}}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{comments}}}</span>
             </a>
         </div>
+        @if (Auth::check())
         <div class="col s3 center">
             <a class="tooltipped light-green-text post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
-                liked="@{{#if this.userLiked}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
+                liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{{likes}}}</span>
             </a>
         </div>
         <div class="col s3 center">
             <a class="tooltipped light-green-text post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                favourited="@{{#if this.userFavourited}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+                favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
             </a>
         </div>
+        @else
+        <div class="col s3 center">
+            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
+                <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+            </a>
+        </div>
+        <div class="col s3 center">
+            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
+                <i style="vertical-align:middle" class="material-icons light-green-text">bookmark_border</i>
+            </a>
+        </div>
+        @endif
     </div>
 </div>
 @{{/each}}
@@ -176,13 +189,13 @@
                     <li class="tab">
                         <a href="#post-comments" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments">
                             <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
-                            <span class="light-green-text">(@{{{this.commentCount}}})</span> 
+                            <span class="light-green-text">(@{{comments_count}})</span> 
                         </a>
                     </li>
                     <li class="tab">
                         <a href="#post-tags" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
                             <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
-                            <span class="light-green-text">(@{{{this.tagCount}}})</span> 
+                            <span class="light-green-text">(@{{tags_count}})</span> 
                         </a>
                     </li>
                 </ul>
@@ -196,28 +209,28 @@
         <div class="container">
             <div class="row">
                 <div id="post-content" class="col s12">
-                    @{{#if (containsImage this.postPic)}}
+                    @{{#if (containsImage image)}}
                         <div class="center-align">
                             <div class="img-container">
-                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{{this.postPic}}}">
+                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{image}}">
                             </div>
                         </div>
                     @{{/if}}
                     <div class="article-header">
                         <div class="article-user left">
                             <div class="chip white">
-                                <img data-src="@{{{this.authorPic}}}" alt="Contact Person">
-                                @{{{this.username}}}
+                                <img data-src="@{{profile_pic}}" alt="Contact Person">
+                                @{{username}}
                             </div>
                         </div>
                         <div class="article-tag right">
-                            <p class="light-green-text" style="line-height: 5px">@{{timeSince this.postTime.date}}</p>
+                            <p class="light-green-text" style="line-height: 5px">@{{timeSince created_at.date}}</p>
                         </div>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
-                        <h5>@{{{this.title}}}</h5>
-                        <p>@{{{linkify this.fulltext}}}</p>
+                        <h5>@{{title}}</h5>
+                        <p>@{{{linkify text}}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="section">
@@ -227,10 +240,10 @@
                                     <i class="material-icons">keyboard_arrow_down</i>Top Tags</span>
                                 </div>
                                 <div class="collapsible-body"><span>
-                                    @{{#each this.tags}}
+                                    @{{#each tags}}
                                         @{{#if (top5 @index)}}
                                             <div class="chip light-green lighten-3">
-                                                @{{{this.tag}}}
+                                                @{{this}}
                                             </div>
                                         @{{/if}}
                                     @{{~/each}}
@@ -241,9 +254,9 @@
                                     <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
                                 </div>
                                 <div class="collapsible-body"><span>
-                                    @{{#each this.tags}}
+                                    @{{#each tags}}
                                         <div class="chip light-green lighten-3">
-                                            @{{{this.tag}}}
+                                            @{{this}}
                                         </div>
                                     @{{~/each}}
                                 </span></div>
@@ -253,11 +266,11 @@
                     <div class="divider"></div>
                     <div class="section">
                             <div class="left">
-                                <a href="/update/@{{this.postId}}"  class="light-green-text">Edit Post
+                                <a href="/update/@{{id}}"  class="light-green-text">Edit Post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                             </div>
                             <div class="right">
-                                <a href="#report-post-modal"  class="light-green-text" data-postid="@{{this.postId}}">Report this post
+                                <a href="#report-post-modal"  class="light-green-text" data-postid="@{{id}}">Report this post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                             </div>
                         </a>
@@ -272,7 +285,7 @@
                                     <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
                                     <label for="comment" id="input-validate-label">add a comment</label>
                                 </div>
-                                <input name="post_id" id="post_id" type="text" value="@{{this.postId}}" hidden>
+                                <input name="post_id" id="post_id" type="text" value="@{{id}}" hidden>
                                 <div>
                                     <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
                                         <i class="material-icons right">send</i>Post Comment
@@ -305,7 +318,7 @@
                                         <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
                                     </div>
                                 </div>
-                                <input name="post_id" id="suggest-tags-post-id" type="text" value="@{{{this.postId}}}" hidden>
+                                <input name="post_id" id="suggest-tags-post-id" type="text" value="@{{id}}" hidden>
                                 <div class="row">
                                     <div class="col s12">
                                         <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
@@ -319,9 +332,9 @@
                         <div class="divider"></div>
                         <div class="section">
                             <h5>Tags suggested by other users</h4>
-                            @{{#each this.tags}}
-                            <div class="chip light-green lighten-3" tag="@{{{this.tag}}}">
-                                @{{{this.tag}}}
+                            @{{#each tags}}
+                            <div class="chip light-green lighten-3" tag="@{{tag}}">
+                                @{{this}}
                                 <i id="add-tag" class="material-icons add-tag">add</i>
                             </div>
                             @{{~/each}}
@@ -333,21 +346,35 @@
     </div>
     <div class="modal-footer">
         <div class="row vertical-align">
+            @if (Auth::check())
             <div class="col s3 center">
                 <a class="tooltipped light-green-text full-post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
-                    liked="@{{#if this.userLiked}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userLiked}}star@{{else}}star_border@{{/if}}</i><span>@{{{this.likes}}}</span>
+                    liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes}}</span>
                 </a>
             </div>
             <div class="col s3 center">
-            <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                favourited="@{{#if this.userFavourited}}true@{{else}}false@{{/if}}" post-id="@{{{this.postId}}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if this.userFavourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
-            </a>
+                <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                    favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+                </a>
+            </div>
+            @else
+            <div class="col s3 center">
+                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
+                    <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+                </a>
             </div>
             <div class="col s3 center">
+                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
+                    <i style="vertical-align:middle" class="material-icons light-green-text">bookmark_border</i>
+                </a>
+            </div>
+            @endif
+
+            <div class="col s3 center">
                 <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="open post in new window" 
-                    target="_blank" href="/post/@{{{this.postId}}}/@{{{this.title}}}">
+                    target="_blank" href="/post/@{{id}}">
                 <i class="material-icons light-green-text" style="vertical-align:middle">open_in_new</i>
                 </a>
             </div>
@@ -361,16 +388,20 @@
 </div>
 </script>
 <script id="comments_template" type="text/x-handlebars-template">
-        @{{#each comments}}
+    @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
-            <img data-src="@{{{profilePic}}}" alt="" class="circle">
+            <img data-src="@{{{profile_pic}}}" alt="" class="circle">
             <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{commentText}}</p>
-            <p class="light-green-text">@{{timeSince commentTime.date}}
-                <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
-                    data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
-                    <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
-                </a>
+            <p id="comment-text">@{{{linkify text}}}</p>
+            <p class="light-green-text">@{{timeSince time.date}}
+                @if(Auth::check())
+                    @{{#if (canEdit user_id ../current_user_id)}}
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                        data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
+                        <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                    </a>
+                    @{{/if}}
+                @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
@@ -379,18 +410,20 @@
         </li>
         <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{commentText}}</p>
+            <p id="comment-text">@{{{text}}}</p>
             <p class="light-green-text">@{{timeSince commentTime.date}}
+                @if(Auth::check())
                 <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
                     data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                 </a>
+                @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                 </a>
             </p>
         </li>
-        @{{~/each}}
+    @{{~/each}}
 </script>
 @stop
