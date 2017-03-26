@@ -25,8 +25,8 @@ class CommentController extends Controller {
 	        $response = ["status" => "success", "response" => "comment created!"];
 	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		}
-		return redirect('/');
-		
+        $response = ["status" => "failed", "reason" => "unauthorized"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 
 	public function deleteComment (Request $request){
@@ -54,9 +54,17 @@ class CommentController extends Controller {
 
 
 	public function updateComment (Request $request){
-		$comment = Comment::findOrFail($request->commentId);
-		$comment->comment = $request->comment;
-		$comment->save();
-		return redirect()->action('PostController@post', ['postId' => $request->postId]);
+
+		// TODO: validate userid actually owns this comment before updating!!
+		if (Auth::check()){
+			$comment = Comment::findOrFail($request->comment_id);
+			$comment->comment = $request->comment;
+			$comment->save();
+
+	        $response = ["status" => "success", "response" => "comment updated!"];
+	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		}
+        $response = ["status" => "failed", "reason" => "unauthorized"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 }

@@ -167,7 +167,7 @@ Route::post('/rest/deletepost', 'TestController@test');
 Route::post('/rest/createcomment', 'CommentController@createComment');
 
 #	update comment
-Route::post('/rest/updatecomment', 'TestController@test');
+Route::post('/rest/updatecomment', 'CommentController@updateComment');
 
 #	delete comment
 Route::post('/rest/deletecomment', 'TestController@test');
@@ -179,7 +179,7 @@ Route::post('/rest/favourite', 'PostController@favouritePost');
 Route::post('/rest/like', 'PostController@likePost');
 
 #	Add/+1 tag to post
-Route::post('/rest/addtag', 'TestController@test');
+Route::post('/rest/addtag', 'PostController@updatePostTags');
 
 Route::group(['middleware' => 'auth'], function () {
 	#	Report content

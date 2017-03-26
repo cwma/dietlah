@@ -366,7 +366,6 @@ function initializeSubmitComment() {
                     $(form).resetForm();
                     $(form).find('#comment').trigger('autoresize');
                     reinitializeCommentsScroll($(form).find('#post_id').val());
-                    console.log(data);
                 }
             });
         }
@@ -388,10 +387,12 @@ function handleEditCommentSubmit() {
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
-                    Materialize.toast("Your comment has been updated.", 4000);
-                    $(form).resetForm();
+                    if(data['status'] == "success") {
+                        Materialize.toast(data["response"], 4000);
+                    } else {
+                        Materialize.toast(data["reason"], 4000);
+                    }
                     $(form).find('#edit_comment').trigger('autoresize');
-                    console.log(data);
                 }
             });
         }
@@ -411,8 +412,11 @@ function handleSuggestTagsSubmit() {
             },
             success: function (data, textStatus, jqXHR, form){
                 hidePostLoadingBar();
-                console.log(data);
-                Materialize.toast("your suggested tags have been saved", 4000);
+                if(data['status'] == "success") {
+                    Materialize.toast(data["response"], 4000);
+                } else {
+                    Materialize.toast(data["reason"], 4000);
+                }
             }
         });
         return false;

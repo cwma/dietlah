@@ -298,10 +298,12 @@ function handleEditCommentSubmit() {
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
-                    Materialize.toast("Your comment has been updated.", 4000);
-                    $(form).resetForm();
+                    if(data['status'] == "success") {
+                        Materialize.toast(data["response"], 4000);
+                    } else {
+                        Materialize.toast(data["reason"], 4000);
+                    }
                     $(form).find('#edit_comment').trigger('autoresize');
-                    console.log(data);
                 }
             });
         }
@@ -321,8 +323,11 @@ function handleSuggestTagsSubmit() {
             },
             success: function (data, textStatus, jqXHR, form){
                 hideNavLoadingBar();
-                console.log(data);
-                Materialize.toast("your suggested tags have been saved", 4000);
+                if(data['status'] == "success") {
+                    Materialize.toast(data["response"], 4000);
+                } else {
+                    Materialize.toast(data["reason"], 4000);
+                }
             }
         });
         return false;
