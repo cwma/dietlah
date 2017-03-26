@@ -28,6 +28,13 @@
                                     <span class="light-green-text">({{$post['tags_count']}})</span> 
                                 </a>
                             </li>
+                            @else
+                            <li class="tab">
+                                <a href="/login" target="_self" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
+                                    <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
+                                    <span class="light-green-text">({{$post['tags_count']}})</span> 
+                                </a>
+                            </li>
                             @endif
                         </ul>
                     </div>
@@ -135,7 +142,7 @@
                                 </div>
                             </div>
                         </div>
-                        
+                        @if(Auth::check())
                         <div id="post-tags" class="col s12">
                             <div class="container">
                                 <h5> Add your own tags to this post </h4>
@@ -159,7 +166,6 @@
                                 </div>
                                 <br>
                                 <div class="divider"></div>
-                                @if(Auth::check())
                                 <div class="section">
                                     <h5>Tags suggested by other users</h4>
                                     @foreach ($post['tags'] as $tag)
@@ -169,13 +175,14 @@
                                             </div>
                                     @endforeach
                                 </div>
-                                @endif
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="modal-footer">
+                @if(Auth::check())
                 <div class="row vertical-align">
                     <div class="col s6 center">
                         <a class="tooltipped light-green-text full-post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
@@ -184,12 +191,26 @@
                         </a>
                     </div>
                     <div class="col s6 center">
-                    <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                        favourited="{{$post['favourited'] ? true : false}}" post-id="{{$post['id']}}">
-                        <i style="vertical-align:middle" class="material-icons light-green-text">@if ($post['favourited']) bookmark @else bookmark_border @endif</i>
-                    </a>
+                        <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                            favourited="{{$post['favourited'] ? true : false}}" post-id="{{$post['id']}}">
+                            <i style="vertical-align:middle" class="material-icons light-green-text">@if ($post['favourited']) bookmark @else bookmark_border @endif</i>
+                        </a>
                     </div>
                 </div>
+                @else
+                <div class="row vertical-align">
+                    <div class="col s6 center">
+                        <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
+                            <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+                        </a>
+                    </div>
+                    <div class="col s6 center">
+                        <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
+                            <i style="vertical-align:middle" class="material-icons light-green-text">bookmark_border</i>
+                        </a>
+                    </div>
+                </div>
+                @endif
             </div>
         </div>
     </div>
