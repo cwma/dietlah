@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -205,7 +206,7 @@ class PostController extends Controller {
             $user_id = Auth::user()->id;
             $post_id = $request->post_id;
             $tags = $request->tags;
-
+            
             // its just a list of tags
             // so clear existing tags from user and repopulate
             PostTag::where("user_id", $user_id)->where("post_id", $post_id)->delete();
