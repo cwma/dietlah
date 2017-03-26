@@ -35,11 +35,10 @@ class CommentController extends Controller {
 	}
 
 	public function restComments(Request $request, $postid){
-		$items_per_page = 10;
-		$comments = Comment::with('user')->where('post_id', $postid)->orderBy('created_at')->paginate(5);
+		$comments = Comment::with('user')->where('post_id', $postid)->orderBy('created_at', 'desc')->paginate(10);
 		$results = [];
 		foreach ($comments as $comment) {
-			$item = ["text"=>$comment->comment, "time"=>$comment->created_at, "id"=>$comment->id,
+			$item = ["text"=>nl2br(e($comment->comment)), "time"=>$comment->created_at, "id"=>$comment->id,
 						 "user_id"=>$comment->user_id, "profile_pic"=>$comment->user->profile_pic,
 						 "username"=>$comment->user->username];
 			array_push($results, $item);
