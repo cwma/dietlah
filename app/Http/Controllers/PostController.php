@@ -201,28 +201,28 @@ class PostController extends Controller {
 
 
     public function updatePostTags(Request $request) {
-        $user_id = Auth::user()->id;
-        $post_id = $request->post_id;
-        $tags = $request->tags;
+        if(Auth::check()) {
+            $user_id = Auth::user()->id;
+            $post_id = $request->post_id;
+            $tags = $request->tags;
 
-        // assuming tags are passed as array
-        // what about if the user removes tags?
-        // assuming array tags is
-        // eg. [[tag_name => tagA, action => remove], [tag_name => tagB, action => add]]
-        foreach ($tags as $tagAction) {
-            $tag_name = $tagAction["tag_name"];
-            if ($tagAction["action"] === "remove") {
-                $tag_id = Tag::where("tag_name", $tag_name)->firstOrFail()->id;
-                $post_tag = PostTag::where(["user_id" => $user_id, "post_id" => $post_id, "tag_id" => $tag_id]);
-                $post_tag->delete();
-            } else if ($tagAction["action"] === "add"){
-                $tag = Tag::firstOrCreate(["tag_name" => $tag_name]);
+            // its just a list of tags
+            // so clear existing tags from user and repopulate
+            PostTag::where("user_id", $user_id)->where("post_id", $post_id)->delete();
+
+            foreach ($tags as $tag) {
+                $tag = Tag::firstOrCreate(["tag_name" => $tag]);
                 $post_tag = new PostTag;
                 $post_tag->user_id = $user_id;
                 $post_tag->post_id = $post_id;
                 $post_tag->tag_id = $tag->id;
                 $post_tag->save();
             }
+            $response = ["status" => "success", "response" => "tags saved!"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
+
+        $response = ["status" => "failed", "reason" => "unauthorized"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 }
