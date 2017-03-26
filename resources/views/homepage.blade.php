@@ -192,12 +192,21 @@
                             <span class="light-green-text">(@{{comments_count}})</span> 
                         </a>
                     </li>
+                    @if (Auth::check())
                     <li class="tab">
                         <a href="#post-tags" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
                             <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
                             <span class="light-green-text">(@{{tags_count}})</span> 
                         </a>
                     </li>
+                    @else
+                    <li class="tab">
+                        <a href="/login" target="_self" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
+                            <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
+                            <span class="light-green-text">(@{{tags_count}})</span> 
+                        </a>
+                    </li>
+                    @endif
                 </ul>
                 <div class="progress post-progress light-green lighten-4">
                     <div class="indeterminate light-green"></div>
@@ -280,6 +289,7 @@
                 <div id="post-comments" class="col s12">
                     <div class="commentsWrapper">
                         <div class="row">
+                            @if (Auth::check())
                             <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
                                 <div class="input-field col s12">
                                     <textarea name="comment" id="comment" class="materialize-textarea"></textarea>
@@ -292,6 +302,7 @@
                                     </button>
                                 </div>
                             </form>
+                            @endif
                         </div>
                         <br>
                         <div class="divider"></div>
@@ -306,7 +317,7 @@
                         </div>
                     </div>
                 </div>
-                
+                @if(Auth::check())
                 <div id="post-tags" class="col s12">
                     <div class="container">
                         <h5> Add your own tags to this post </h4>
@@ -341,6 +352,7 @@
                         </div>
                     </div>
                 </div>
+                @endif
             </div>
         </div>
     </div>

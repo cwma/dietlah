@@ -115,6 +115,7 @@
 
                         <div id="post-comments" class="col s12">
                             <div class="commentsWrapper">
+                                @if(Auth::check())
                                 <div class="row">
                                     <form id="comment-form" method="post" action="/rest/createcomment" novalidate="novalidate">
                                         <div class="input-field col s12">
@@ -129,6 +130,7 @@
                                         </div>
                                     </form>
                                 </div>
+                                @endif
                                 <br>
                                 <div class="divider"></div>
                                 <div class="row">
