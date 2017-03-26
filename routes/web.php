@@ -138,8 +138,10 @@ Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
 #	Post content ajax endpoint
 Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
 
+Route::get('/test/post/{postId}/', 'TestController@testPost');
+
 #	post comment content ajax endpoint
-Route::get('/rest/comments/{postId}/{datetime}/{page}', 'HomePageController@restComments');
+Route::get('/rest/comments/{postId}', 'CommentController@restComments');
 
 
 
@@ -159,7 +161,7 @@ Route::post('/rest/updatepost', 'TestController@test');
 Route::post('/rest/deletepost', 'TestController@test');
 
 #	create a new comment
-Route::post('/rest/createcomment', 'TestController@testCreateComment');
+Route::post('/rest/createcomment', 'CommentController@createComment');
 
 #	update comment
 Route::post('/rest/updatecomment', 'TestController@test');
@@ -171,7 +173,7 @@ Route::post('/rest/deletecomment', 'TestController@test');
 Route::post('/rest/favourite', 'TestController@testFavourite');
 
 #	Like post
-Route::post('/rest/like', 'TestController@testLike');
+Route::post('/rest/like', 'PostController@likePost');
 
 #	Add/+1 tag to post
 Route::post('/rest/addtag', 'TestController@test');

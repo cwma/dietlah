@@ -6,8 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use App\Post;
+use App\Like;
+use App\Favourite;
 use App\Comment;
 use App\Tag;
+use App\PostTag;
 use JavaScript;
 
 class PostController extends Controller {
@@ -29,8 +32,52 @@ class PostController extends Controller {
 	}
 
     public function post($postId) {
-        $post = Post::findOrFail($postId);
-        return view('post', ['post'=> $post]);
+        $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->with('post_tags')->findOrFail($postId);
+        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>$post->text,
+                   "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
+                   "created_at"=>$post->created_at, "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
+
+        // handle tags
+        // TODO: sort by tag count some how
+        $result["tags"] = $post->tags->pluck('tag_name');
+        $result["tags_count"] = $post->tags->count();
+
+
+        // for user tags and auto complete
+        if(Auth::check()) {
+            $userid = Auth::user()->id;
+            $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
+            $tags = Tag::all()->pluck("tag_name");
+            JavaScript::put([
+                "tags" => $tags,
+                "userTags" => $userTags,
+                "postId" => $postId
+            ]);
+        } 
+
+        // handle user liked and favourite
+        if(Auth::check()) {
+            $userid = Auth::user()->id;
+            $likers = $post->likes->pluck('id', 'user_id')->all();
+            if(array_key_exists("41", $likers)) {
+                $result['liked'] = true;
+            } else {
+                $result['liked'] = false;
+            }
+            $favs = $post->favourites->pluck('id', 'user_id');
+            if(array_key_exists($userid, $favs)) {
+                $result['favourited'] = true;
+            } else {
+                $result['favourited'] = false;
+            }
+        }
+
+        // for comments infinite scroll
+        JavaScript::put([
+            "postId" => $postId
+        ]);
+
+        return view('post', ['post'=> $result]);
     }
 
 	public function createPost(Request $request) {
@@ -86,6 +133,35 @@ class PostController extends Controller {
         Post::destroy($request->post_id);
 
         $response = ["status" => "successful"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    }
+
+    public function likePost(Request $request) {
+        if(Auth::check()) {
+            $postid = $request->postId;
+            $userid = Auth::user()->id;
+            if ($request->liked === "no") {
+                $like_post = Like::firstOrNew(["user_id" => $userid, "post_id" => $postid]);
+                if(!$like_post->exists) {
+                    $like_post->save();
+                }
+                $likes = Like::where("post_id", $postid)->count();
+                $post = Post::findOrFail($postid);
+                $post->likes_count = $likes;
+                $post->save();
+
+                $response = ["status" => "success", "response" => "You liked this post!", "likes" => $likes];
+            } else {
+                $like_post = Like::where("user_id", $userid)->where("post_id", $postid)->delete();
+                $likes = Like::where("post_id", $postid)->count();
+                $post = Post::findOrFail($postid);
+                $post->likes_count = $likes;
+                $post->save();
+                $response = ["status" => "success", "response" => "You unliked this post!", "likes" => $likes];
+            }
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+        $response = ["status" => "failed", "reason" => "unauthorized"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 }
