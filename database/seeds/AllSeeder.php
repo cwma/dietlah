@@ -38,7 +38,8 @@ class AllSeeder extends Seeder
 	for ($i = 0; $i < $limit; $i++) {
 	    $user = new User;
 	    $user->username = $faker->userName;
-	    $user->email = $faker->unique->freeEmail;
+	    //$user->email = $faker->unique->freeEmail;
+	    $user->email = "test".$i;
 	    $user->password = Hash::make('test');
 	    $user->profile_pic = $faker->imageUrl($width = 400, $height = 400, 'people');
 	    $user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
