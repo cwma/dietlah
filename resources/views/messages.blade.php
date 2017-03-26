@@ -11,7 +11,7 @@
 
     <div class="row">
         <span class="inbox-window">
-            
+
         </span>
 
         <span class="message-window">

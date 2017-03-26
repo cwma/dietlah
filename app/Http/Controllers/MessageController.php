@@ -16,7 +16,7 @@ class MessageController extends Controller {
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
         else {
-            return view('messages');
+            return view('newmessage');
         }
     }
 
