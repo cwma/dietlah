@@ -124,13 +124,14 @@ class AllSeeder extends Seeder
 
     private function generatePostTags() {
 	$limit = 100;
+	$tag_limit = 20;
 	$faker = Faker\Factory::create();
 	for ($i = 1; $i <= $limit; $i++) {
-	    for ($j = 1; $j <= $limit; $j++) {
+	    for ($j = 1; $j <= $tag_limit; $j++) {
 	    	$post_tag = new PostTag;
 		$post_tag->user_id = $faker->numberBetween($min = 1, $max = $limit);
 		$post_tag->post_id = $i;
-		$post_tag->tag_id = $j;
+		$post_tag->tag_id = $faker->numberBetween($min = 1, $max = $limit);
 		$post_tag->save();
 	    }
 	}
