@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -94,15 +93,16 @@ class PostController extends Controller {
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
-        //		$validator = Validator::make($request->all(), [
-//      		'title' => 'required|min:3|max:100',
-//      		'text' => 'required',
-//    	]);
-//    	if ($validator->fails()) {
-//      	return redirect('createpost') // redisplay the form
-//             ->withErrors($validator) // to see the error messages
-//             ->withInput(); // the previously entered input remains
-//    	}
+        $validator = Validator::make($request->all(), [
+      		'title' => 'required',
+      		'text' => 'required|max:10000',
+            'summary' => 'max:5000',
+    	]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
 
         $user_id = Auth::id();
 
@@ -224,7 +224,6 @@ class PostController extends Controller {
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 
-
     public function updatePostTags(Request $request) {
         if(Auth::check()) {
             $user_id = Auth::user()->id;
@@ -249,5 +248,15 @@ class PostController extends Controller {
 
         $response = ["status" => "failed", "reason" => "unauthorized"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    }
+
+    public function removeTag(Request $request) {
+        if (!Auth::check() || !Auth::user()->is_admin) {
+            // if user is not admin, disallow delete of tags
+            $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        Tag::where("tag_name", $request->tag_name)->delete();
     }
 }
