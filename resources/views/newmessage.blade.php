@@ -12,19 +12,19 @@
         </div>
 
         <div class="row">
-            <!--for each users here-->
+            @foreach ($users as $user)
                 <table class="table">
                     <tr>
                         <td>
-                            <!-- user image here--><p>User pic</p>
-                            <!-- user name here --><p>User name</p>
+                            <img src="{{$user->profile_pic}}">
+                            {{$user->username}}
                         </td>
                         <td>
-                            <!--send message link here--><a href="./newmessage">Send Message</a>
+                            <a href="./newmessage">Send Message</a>
                         </td>
                     </tr>
                 </table>
-            <!--end for each-->
+            @endforeach
         </div>
     </div>
 
