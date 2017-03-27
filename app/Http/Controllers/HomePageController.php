@@ -31,7 +31,29 @@ class HomePageController extends Controller {
     # RESTFUL end points
 
     public function restPostFeed($order, $range, Request $request) {
-        $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
+        $auth = Auth::check();
+        if($auth) {
+            $userid = Auth::user()->id;
+        }
+
+        # TODO: range, relevance
+        if($order == "new") {
+            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
+        } else if ($order == "popular") {
+            $posts = Post::with('tags')->orderBy('likes_count', 'desc')->paginate(12);
+        } else if ($order == "favourites") {
+            $posts = Post::with('tags','favourites')->whereHas('favourites', function($query) use ($userid) {
+                $query->where("user_id", $userid);
+            })->orderBy('created_at', 'desc')->paginate(12);
+        } else if ($order == "comments") {
+            $posts = Post::with('tags')->orderBy('comments_count', 'desc')->paginate(12);
+        } else if ($order == "relevance") {
+            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
+        } else if ($order == "myposts") {
+            $posts = Post::with('tags')->where('user_id', $userid)->orderBy('created_at', 'desc')->paginate(12);
+        } else {
+            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
+        }
 
         $auth = Auth::check();
         if($auth) {
