@@ -261,6 +261,15 @@ height: 64px !important; /* fix for search in navbar on chrome */
       max-height: 100% !important;
       top: 0% !important;
     }
+
+    .report-modal {
+      width: 95%;
+    }
+
+    .report-modal .modal-content {
+      padding: 30px 5px 5px 5px;
+    }
+
 }
 
 @media screen and (min-width: 601px) and (max-width: 992px) {
@@ -269,6 +278,15 @@ height: 64px !important; /* fix for search in navbar on chrome */
       height: 90% !important;
       max-height: 90% !important;
       top: 5% !important;
+    }
+
+
+    .report-modal {
+      width: 90%;
+    }
+
+    .report-modal .modal-content {
+      padding: 30px 5px 5px 5px;
     }
 }
 
@@ -279,6 +297,14 @@ height: 64px !important; /* fix for search in navbar on chrome */
       max-height: 90% !important;
       top: 5% !important;
     }
+
+    .report-modal {
+      width: 80%;
+    }
+
+    .report-modal .modal-content {
+      padding: 30px 5px 5px 5px;
+    }
 }
 
 @media screen and (min-width: 1281px) and (max-width: 1600px) {
@@ -287,6 +313,14 @@ height: 64px !important; /* fix for search in navbar on chrome */
       height: 90% !important;
       max-height: 90% !important;
       top: 5% !important;
+    }
+
+    .report-modal {
+      width: 70%;
+    }
+
+    .report-modal .modal-content {
+      padding: 30px 5px 5px 5px;
     }
 }
 
@@ -298,6 +332,15 @@ height: 64px !important; /* fix for search in navbar on chrome */
       max-height: 90% !important;
       top: 5% !important;
     }
+
+    .report-modal {
+      width: 60%;
+    }
+
+    .report-modal .modal-content {
+      padding: 30px 5px 5px 5px;
+    }
+
 }
 
 .img-container {
@@ -359,12 +402,6 @@ height: 64px !important; /* fix for search in navbar on chrome */
 /* tab indicator */
 .indicator {
     background-color: #8bc34a !important;
-}
-
-/* report modal */
-
-.reportmodal {
-  z-index: 2000;
 }
 
 /* report comment */
