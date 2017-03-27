@@ -474,11 +474,13 @@ function loadCommentsJavascriptElements(){
 function disableInfiniteScroll() {
     $('#marker').off();
     $('.end-of-page').fadeIn();
+    dietlah.pageScrollDisabled = true;
 }
 
 function disableCommentsScroll() {
     $('#comments-marker').off();
     $('.end-of-comments').fadeIn();
+    dietlah.commentScrollDisabled = true;
 }
 
 function paginationFailure(jqXHR, textStatus) {
@@ -487,51 +489,52 @@ function paginationFailure(jqXHR, textStatus) {
 }
 
 function ajaxLoadPageFeed(order, range, tags) {
-    showNavLoadingBar();
-    $.ajax({
-        url: dietlah.nextPage,
-        dataType: "json",
-        data: {
-            tags: tags
-        }
-    }).done(function (response) {
-        renderCards(grid, response);
-        loadHomeJavascriptElements();
-        dietlah.page += 1;
-        dietlah.nextPage = response["next"];
-        if (response["next"] == null) {
-            disableInfiniteScroll();
-            dietlah.pageEnd = true;
-        }
-        hideNavLoadingBar();
-    }).fail(function(jqXHR, textStatus) {
-        paginationFailure(jqXHR, textStatus);
-        hideNavLoadingBar();
-    });
+    if (dietlah.nextPage != null) {
+        showNavLoadingBar();
+        $.ajax({
+            url: dietlah.nextPage,
+            dataType: "json",
+            data: {
+                tags: tags
+            }
+        }).done(function (response) {
+            renderCards(grid, response);
+            loadHomeJavascriptElements();
+            dietlah.page += 1;
+            dietlah.nextPage = response["next"];
+            hideNavLoadingBar();
+        }).fail(function(jqXHR, textStatus) {
+            paginationFailure(jqXHR, textStatus);
+            hideNavLoadingBar();
+        });
+    } else {
+        disableInfiniteScroll();
+    }
 }
 
 
 function ajaxLoadComments(postid) {
-    showPostLoadingBar();
-    $.ajax({
-        url: dietlah.nextComments,
-        dataType: "json",
-    }).done(function (response) {
-        hidePostLoadingBar();
-        renderComments(response);
-        loadCommentsJavascriptElements();
-        dietlah.nextComments = response["next"]
-        if (response["next"] == null) {
-            disableCommentsScroll();
-            dietlah.commentsEnd = true;
-        }
-    }).fail(function(jqXHR, textStatus) {
-        paginationFailure(jqXHR, textStatus);
-    });
+    if(dietlah.nextComments != null) {
+        showPostLoadingBar();
+        $.ajax({
+            url: dietlah.nextComments,
+            dataType: "json",
+        }).done(function (response) {
+            hidePostLoadingBar();
+            renderComments(response);
+            loadCommentsJavascriptElements();
+            dietlah.nextComments = response["next"]
+        }).fail(function(jqXHR, textStatus) {
+            hidePostLoadingBar();
+            paginationFailure(jqXHR, textStatus);
+        });
+    } else {
+        disableCommentsScroll();
+    }
 }
 
 function initializeCommentsScroll(postid) {
-    dietlah.commentsEnd = false;
+    dietlah.commentScrollDisabled = false;
     dietlah.nextComments = "/rest/comments/" + postid
     $('#comments-marker').on('lazyshow', function () {
         ajaxLoadComments(postid);
@@ -539,7 +542,7 @@ function initializeCommentsScroll(postid) {
 }
 
 function initializeInfiniteScroll(order, range, tags) {
-    dietlah.pageEnd = false;
+    dietlah.pageScrollDisabled = false;
     dietlah.nextPage = "/rest/postfeed/"+ order + "/" +range;
     var grid = document.querySelector('#grid');
     $('#marker').on('lazyshow', function () {
@@ -548,7 +551,7 @@ function initializeInfiniteScroll(order, range, tags) {
 }
 
 function reinitializeCommentsScroll(postId) {
-    if(dietlah.commentsEnd){
+    if(dietlah.commentScrollDisabled){
         $('#comments-marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     }
     $('#comments-marker').off();
@@ -560,7 +563,7 @@ function reinitializeCommentsScroll(postId) {
 
 function reinitializeInfiniteScroll() {
     dietlah.page = 1;
-    if(dietlah.pageEnd){
+    if(dietlah.pageScrollDisabled){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     }
     var order = $("#post-order-select").val();
