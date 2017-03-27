@@ -131,8 +131,21 @@
                     <a class="collapsible-header">Account<i class="material-icons">account_box</i></a>
                     <div class="collapsible-body" style="padding:0px!important">
                         <ul>
-                            <li style="padding-left:43px"><a href="#">Login</a></li>
-                            <li style="padding-left:43px"><a href="#">Register</a></li>
+                         @if (Auth::guest())
+                            <li style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
+                            <li style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
+                        @else
+                            <li style="padding-left:43px">
+                                <a href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                Logout
+                                </a>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                    {{ csrf_field() }}
+                                </form>
+                            </li>
+                        @endif           
                         </ul>
                     </div>
                 </li>
