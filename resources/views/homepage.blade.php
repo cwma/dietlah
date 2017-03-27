@@ -344,7 +344,7 @@
                         <div class="section">
                             <h5>Tags suggested by other users</h4>
                             @{{#each tags}}
-                            <div class="chip light-green lighten-3" tag="@{{tag}}">
+                            <div class="chip light-green lighten-3" tag="@{{this}}">
                                 @{{this}}
                                 <i id="add-tag" class="material-icons add-tag">add</i>
                             </div>
