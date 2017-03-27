@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use JavaScript;
@@ -26,6 +27,18 @@ class HomePageController extends Controller {
         return view('homepage');
     }
 
+    private function findTopTag($tags) {
+        $top = 0;
+        $top_tag = "";
+        foreach ($tags as $name => $vals) {
+            $count = sizeOf($vals);
+            if($count > $top) {
+                $top = $count;
+                $top_tag = $name;
+            }
+        }
+        return $top_tag;
+    }
 
 
     # RESTFUL end points
@@ -82,10 +95,10 @@ class HomePageController extends Controller {
                 }
             }
 
-            // tag, sort and get top tag later
-            $tags = $post->tags->pluck('tag_name')->all();
+            // the slow way for now... TODO: Optimize!
+            $tags = $post->tags->groupby('tag_name')->all();
             if(sizeof($tags) > 0) {
-                $item["tag"] = $tags[0];
+                $item['tag'] = self::findTopTag($tags);
             }
 
             array_push($results, $item);
@@ -96,16 +109,17 @@ class HomePageController extends Controller {
     }
 
     public function restPost($postId) {
-        $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->with('post_tags')->findOrFail($postId);
+        $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
         $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
                    "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
                    "created_at"=>$post->created_at, "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
 
         // handle tags
         // TODO: sort by tag count some how
-        $result["tags"] = $post->tags->pluck('tag_name');
-        $result["tags_count"] = $post->tags->count();
-
+        $result['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate from post_tags, tags
+                            where post_tags.tag_id = tags.id and post_id = ? group by post_tags.tag_id 
+                            ORDER BY aggregate DESC, tags.id DESC', [$postId]))->pluck("tag_name");
+        $result["tags_count"] = sizeOf($result["tags"]);
 
         // handle user liked and favourite
         if(Auth::check()) {
@@ -123,7 +137,6 @@ class HomePageController extends Controller {
                 $result['favourited'] = false;
             }
 
-            // tags, sort later
             $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
             $result['user_tags'] = $userTags;
 
