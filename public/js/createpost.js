@@ -20,7 +20,7 @@ function handleFormSubmit() {
                     tags: $('#tags').materialtags('items')
                 },
                 error: function(e){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("There was an error creating this post: " + e.statusText, 4000);
                     $(form).find(':submit').attr('enabled','enabled');
                 },

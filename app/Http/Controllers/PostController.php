@@ -32,6 +32,13 @@ class PostController extends Controller {
 		return view('newpost');
 	}
 
+	public function editpost($postId) {
+        $post = Post::with('User')->with('tags')->with('post_tags')->findOrFail($postId);
+        // TODO yy do sth about the image
+        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary];
+
+    }
+
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->with('post_tags')->findOrFail($postId);
         $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
@@ -81,7 +88,13 @@ class PostController extends Controller {
     }
 
 	public function createPost(Request $request) {
-//		$validator = Validator::make($request->all(), [
+        if (!Auth::check()) {
+            // only logged in user can create post
+            $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        //		$validator = Validator::make($request->all(), [
 //      		'title' => 'required|min:3|max:100',
 //      		'text' => 'required',
 //    	]);
@@ -107,8 +120,6 @@ class PostController extends Controller {
     	$post_id = $post->id;
 
         $tags = $request->tags;
-        // TODO yy check how the tags are passed
-        //  assuming tagnames are passed as array
         foreach ($tags as $tagname) {
             $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
             $post_tag = new PostTag;
@@ -123,9 +134,16 @@ class PostController extends Controller {
 	}
 
 	public function updatePost(Request $request) {
-        // TODO yy add image and location when UI ready
         $post_id = $request->post_id;
         $post = Post::findOrFail($post_id);
+
+        if (!Auth::check() || Auth::id() != $post->user_id) {
+            // user can only delete his own post
+            $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        // TODO yy add image and location when UI ready
         // TODO yy delete the old image?
 //    	$post->image = $request->file('portrait')->store('public/images/postimages');
         $post->title = $request->title;
@@ -139,6 +157,12 @@ class PostController extends Controller {
 
 	public function deletePost(Request $request) {
         $post = Post::findOrFail($request->post_id);
+        if (!Auth::check() || Auth::id() != $post->user_id) {
+            // user can only delete his own post
+            $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
         $comments = $post->comments;
         foreach ($comments as $comment){
             Comment::destroy($comment->id);
