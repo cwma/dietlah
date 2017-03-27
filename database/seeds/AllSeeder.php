@@ -45,6 +45,15 @@ class AllSeeder extends Seeder
 	    $user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	    $user->save();
 	}
+	//make an admin
+	$user = new User;
+	$user->username = "admin";
+	$user->email = "admin@dietlah.sg";
+	$user->password = Hash::make("admin123");
+	$user->profile_pic = $faker->imageUrl($width = 400, $height = 400, 'people');
+	$user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
+	$user->is_admin = true;
+	$user->save();
     }
 
     private function generatePosts() {
