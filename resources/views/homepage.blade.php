@@ -138,35 +138,35 @@
         <p class="light-green-text">@{{timeSince time.date}}</p>
     </div>
     <div class="card-action">
-        <div class="col s3 center">
-            <a class="modal-trigger light-green-text" href="#postmodal" data-postid="@{{{id}}}">More</a>
+        <div class="col s3 center card-icon-container">
+            <a class="modal-trigger light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}">More</a>
         </div>
-        <div class="col s3 center">
-            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments" href="#">
+        <div class="col s3 center card-icon-container">
+            <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Comments" href="#">
                 <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{comments}}}</span>
             </a>
         </div>
         @if (Auth::check())
-        <div class="col s3 center">
-            <a class="tooltipped light-green-text post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
+        <div class="col s3 center card-icon-container">
+            <a class="tooltipped light-green-text post-like card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
                 liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
                 <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{{likes}}}</span>
             </a>
         </div>
-        <div class="col s3 center">
-            <a class="tooltipped light-green-text post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+        <div class="col s3 center card-icon-container">
+            <a class="tooltipped light-green-text post-fav card-icon center" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
                 favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
                 <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
             </a>
         </div>
         @else
-        <div class="col s3 center">
-            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
+        <div class="col s3 center card-icon-container">
+            <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
                 <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
             </a>
         </div>
-        <div class="col s3 center">
-            <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
+        <div class="col s3 center card-icon-container">
+            <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
                 <i style="vertical-align:middle" class="material-icons light-green-text">bookmark_border</i>
             </a>
         </div>
@@ -187,7 +187,7 @@
                         </a>
                     </li>
                     <li class="tab">
-                        <a href="#post-comments" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments">
+                        <a href="#post-comments" class="tooltipped light-green-text post" data-position="bottom" data-delay="50" data-tooltip="Comments">
                             <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
                             <span class="light-green-text">(@{{comments_count}})</span> 
                         </a>
@@ -360,32 +360,32 @@
         <div class="row vertical-align">
             @if (Auth::check())
             <div class="col s3 center">
-                <a class="tooltipped light-green-text full-post-like" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
+                <a class="tooltipped light-green-text full-post-like" data-position="top" data-delay="50" data-tooltip="Like this post!" href="#"
                     liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
                     <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes}}</span>
                 </a>
             </div>
             <div class="col s3 center">
-                <a class="tooltipped light-green-text full-post-fav" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                <a class="tooltipped light-green-text full-post-fav" data-position="top" data-delay="50" data-tooltip="Add to Favourites!" href="#"
                     favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
                     <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
                 </a>
             </div>
             @else
             <div class="col s3 center">
-                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
+                <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="Like this post!" href="/login">
                     <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
                 </a>
             </div>
             <div class="col s3 center">
-                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
+                <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="Add to Favourites!" href="/login">
                     <i style="vertical-align:middle" class="material-icons light-green-text">bookmark_border</i>
                 </a>
             </div>
             @endif
 
             <div class="col s3 center">
-                <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="open post in new window" 
+                <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="open post in new window" 
                     target="_blank" href="/post/@{{id}}">
                 <i class="material-icons light-green-text" style="vertical-align:middle">open_in_new</i>
                 </a>
