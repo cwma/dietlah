@@ -374,7 +374,7 @@
             @else
             <div class="col s3 center">
                 <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="Like this post!" href="/login">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+                    <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{likes}}</span>
                 </a>
             </div>
             <div class="col s3 center">
@@ -422,13 +422,15 @@
         </li>
         <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{{text}}}</p>
-            <p class="light-green-text">@{{timeSince commentTime.date}}
+            <p id="comment-text">@{{{linkify text}}}</p>
+            <p class="light-green-text">@{{timeSince time.date}}
                 @if(Auth::check())
-                <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
-                    data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
-                    <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
-                </a>
+                    @{{#if (canEdit user_id ../current_user_id)}}
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                        data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
+                        <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                    </a>
+                    @{{/if}}
                 @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
