@@ -40,6 +40,49 @@ class HomePageController extends Controller {
         return $top_tag;
     }
 
+    private function pageQueryHandler($order, $range, $request) {
+        $auth = Auth::check();
+        if($auth) {
+            $userid = Auth::user()->id;
+        }
+
+        $posts = Post::with('tags');
+
+        // TODO: better pagination
+
+        // handle tag filtering
+        $tag_filters = $request->tags;
+        if(sizeof($tag_filters)>0){
+            foreach($tag_filters as $tag) {
+                $posts = $posts->whereHas('tags', function ($query) use ($tag) {
+                    $query->where("tag_id", $tag);
+                });
+            }
+        }
+
+
+        // handle $order
+        if($order == "new") {
+            $posts = $posts->orderBy('created_at', 'desc');
+        } else if ($order == "popular") {
+            $posts = $posts->orderBy('likes_count', 'desc');
+        } else if ($order == "comments") {
+            $posts = $posts->orderBy('comments_count', 'desc');
+        } else if ($order == "relevance") {
+            $posts = $posts->orderBy('created_at', 'desc'); // scrap relevance no time
+        } else if ($order == "myposts") {
+            $posts = $posts->where('user_id', $userid)->orderBy('created_at', 'desc');
+        } else if ($order == "favourites") {
+            $posts = $posts->whereHas('favourites', function($query) use ($userid) {
+                $query->where("user_id", $userid);
+            })->orderBy('created_at', 'desc')->paginate(12);
+        } else {
+            $posts = Post::with('tags')->orderBy('created_at', 'desc');
+        }
+
+        return $posts->paginate(12);
+    }
+
 
     # RESTFUL end points
 
@@ -49,29 +92,7 @@ class HomePageController extends Controller {
             $userid = Auth::user()->id;
         }
 
-        # TODO: range, relevance
-        if($order == "new") {
-            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
-        } else if ($order == "popular") {
-            $posts = Post::with('tags')->orderBy('likes_count', 'desc')->paginate(12);
-        } else if ($order == "favourites") {
-            $posts = Post::with('tags','favourites')->whereHas('favourites', function($query) use ($userid) {
-                $query->where("user_id", $userid);
-            })->orderBy('created_at', 'desc')->paginate(12);
-        } else if ($order == "comments") {
-            $posts = Post::with('tags')->orderBy('comments_count', 'desc')->paginate(12);
-        } else if ($order == "relevance") {
-            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
-        } else if ($order == "myposts") {
-            $posts = Post::with('tags')->where('user_id', $userid)->orderBy('created_at', 'desc')->paginate(12);
-        } else {
-            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
-        }
-
-        $auth = Auth::check();
-        if($auth) {
-            $userid = Auth::user()->id;
-        }
+        $posts = self::pageQueryHandler($order, $range, $request);
 
         $results = [];
         foreach ($posts as $post) {

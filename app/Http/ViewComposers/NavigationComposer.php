@@ -9,7 +9,7 @@ class NavigationComposer
 {
     public function compose(View $view)
     {
-        $tags = Tag::all();
+        $tags = Tag::orderBy("tag_name")->get();
         $view->with('tags', $tags);
     }
 }
