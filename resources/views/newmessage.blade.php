@@ -12,15 +12,15 @@
         </div>
 
         <div class="row">
-            @foreach ($users as $user)
+            @foreach($users as $user)
                 <table class="table">
                     <tr>
                         <td>
-                            <img src="{{$user->profile_pic}}">
+                            <!--<img src="{{$user->profile_pic}}" class="chat-profile-pic">--> <!--todo resize -->
                             {{$user->username}}
                         </td>
                         <td>
-                            <a href="./newmessage">Send Message</a>
+                            <a href="{{route('messages', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
                         </td>
                     </tr>
                 </table>
