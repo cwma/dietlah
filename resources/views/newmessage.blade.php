@@ -12,19 +12,19 @@
         </div>
 
         <div class="row">
-            <!--for each users here-->
+            @foreach($users as $user)
                 <table class="table">
                     <tr>
                         <td>
-                            <!-- user image here--><p>User pic</p>
-                            <!-- user name here --><p>User name</p>
+                            <!--<img src="{{$user->profile_pic}}" class="chat-profile-pic">--> <!--todo resize -->
+                            {{$user->username}}
                         </td>
                         <td>
-                            <!--send message link here--><a href="./newmessage">Send Message</a>
+                            <a href="{{route('messages', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
                         </td>
                     </tr>
                 </table>
-            <!--end for each-->
+            @endforeach
         </div>
     </div>
 

@@ -16,6 +16,7 @@ class CreateSchema extends Migration
 	Schema::table('users', function(Blueprint $table) {
 	    $table->string('profile_pic')->nullable();
 	    $table->string('bio')->nullable();
+	    $table->boolean('is_admin')->default(false);
 	});
 	Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');

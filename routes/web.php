@@ -59,7 +59,7 @@ Route::get('/register', 'TestController@test') -> name('register');
 Route::get('/newmessage', 'MessageController@displayContacts') -> name('newmessage');
 
 #	view and send messages
-Route::get('/messages', 'MessageController@displayContacts') -> name('messages');
+Route::get('/messages/{id}', 'MessageController@displayChat') -> name('messages');
 
 #	For user to manage lists
 Route::get('/manage', 'TestController@test') -> name('manage');
