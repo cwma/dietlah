@@ -243,6 +243,15 @@ height: 64px !important; /* fix for search in navbar on chrome */
 .card-action {
   height: 50px;
 }
+
+.card-icon-container {
+  padding: 0px !important;
+}
+
+.card-icon {
+  margin-right: 0px !important;
+}
+
 /* modal */
 
 @media screen and (max-width: 600px){
