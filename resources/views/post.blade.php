@@ -203,7 +203,7 @@
                 <div class="row vertical-align">
                     <div class="col s6 center">
                         <a class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
-                            <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+                            <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>{{$post['likes_count']}}</span>
                         </a>
                     </div>
                     <div class="col s6 center">

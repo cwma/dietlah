@@ -162,7 +162,7 @@
         @else
         <div class="col s3 center card-icon-container">
             <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
-                <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i>
+                <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{{likes}}}</span>
             </a>
         </div>
         <div class="col s3 center card-icon-container">
@@ -362,7 +362,7 @@
             <div class="col s3 center">
                 <a class="tooltipped light-green-text full-post-like" data-position="top" data-delay="50" data-tooltip="Like this post!" href="#"
                     liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes}}</span>
+                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes_count}}</span>
                 </a>
             </div>
             <div class="col s3 center">
@@ -374,7 +374,7 @@
             @else
             <div class="col s3 center">
                 <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="Like this post!" href="/login">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{likes}}</span>
+                    <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{likes_count}}</span>
                 </a>
             </div>
             <div class="col s3 center">
