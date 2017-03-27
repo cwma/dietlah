@@ -22,4 +22,12 @@ class Post extends Model
     public function post_tags() {
 	    return $this->hasMany('App\PostTag');
     }
+
+    public function likes() {
+        return $this->hasMany('App\Like');
+    }
+
+    public function favourites() {
+        return $this->hasMany('App\Favourite');
+    }
 }

@@ -28,10 +28,12 @@
                     <select id="post-order-select" class="post-filter">
                         <option value="new" selected>New</option>
                         <option value="popular">Popular</option>
+                        @if(Auth::check())
                         <option value="favourites">Favourites</option>
+                        <option value="myposts">My Posts</option>
+                        @endif
                         <option value="comments">Comments</option>
                         <option value="relevance">Relevance</option>
-                        <option value="myposts">My Posts</option>
                     </select>
                 </li>
                 <li>&nbsp;</li>
@@ -48,7 +50,7 @@
                     <select multiple id="post-tag-select" class="post-filter">
                         <option value="" disabled selected>All Tags</option>
                         @foreach ($tags as $tag) 
-                            <option value="{{$tag['id']}}">{{$tag['name']}} ({{$tag['count']}})</option>
+                            <option value="{{$tag['id']}}">{{$tag['tag_name']}}</option>
                         @endforeach
                     </select>
                 </li>
@@ -89,11 +91,14 @@
         @if (Route::currentRouteNamed('home.default'))
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
             <select id="post-order-select-mobile" class="post-filter">
-                <option value="1" selected>New</option>
-                <option value="2">Popular</option>
-                <option value="3">Favourites</option>
-                <option value="4">Comments</option>
-                <option value="5">Relevance</option>
+                <option value="new" selected>New</option>
+                <option value="popular">Popular</option>
+                @if(Auth::check())
+                <option value="favourites">Favourites</option>
+                <option value="myposts">My Posts</option>
+                @endif
+                <option value="comments">Comments</option>
+                <option value="relevance">Relevance</option>
             </select>
         </li>
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
@@ -108,7 +113,7 @@
             <select multiple id="post-tag-select-mobile" class="post-filter">
                 <option value="" disabled selected>All Tags</option>
                 @foreach ($tags as $tag) 
-                    <option value="{{$tag['id']}}">{{$tag['name']}} ({{$tag['count']}})</option>
+                    <option value="{{$tag['id']}}">{{$tag['tag_name']}}</option>
                 @endforeach
             </select>
         </li>

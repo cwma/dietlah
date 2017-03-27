@@ -61,37 +61,7 @@ function registerCanEditHelper() {
     });
 }
 
-function registerTopTagsView() {
-    Handlebars.registerHelper("top5", function(index) {
-        if (index < 5) {
-            return true;
-        } else { 
-            return false;
-        }
-    });
-}
-
-function registerContainsImage() {
-    Handlebars.registerHelper("containsImage", function(image) {
-        if (image != "" && image != null) {
-            return true;
-        } else { 
-            return false;
-        }
-    });
-}
-
 /* page rendering functions */
-
-function compileCardTemplate() {
-    var source = $("#card_template").html();
-    return Handlebars.compile(source);
-}
-
-function compilePostTemplate() {
-    var source = $("#post_template").html();
-    return Handlebars.compile(source);
-}
 
 function compileCommentsTemplate() {
     var source = $("#comments_template").html();
@@ -106,68 +76,14 @@ function hideNavLoadingBar() {
     $('.nav-progress').hide();
 }
 
-function showPostLoadingBar() {
-    $('.post-progress').show();
-}
-
-function hidePostLoadingBar() {
-    $('.post-progress').hide();
-}
-
-function renderCards(grid, cardJson) {
-    var div = document.createElement('div');
-    div.innerHTML = dietlah.cardTemplate(cardJson);
-    var elements = div.childNodes;
-    salvattore.appendElements(grid, elements);
-    $('.card').fadeIn();
-}
-
-function renderPost(modal, postJson, postTemplate) {
-    $(modal).html(postTemplate(postJson));
-    $("#postWrapper").fadeIn();
-}
-
 function renderComments(commentsJson){
     $('.comments-list').append(dietlah.commentsTemplate(commentsJson));
     $("#commentsWrapper").fadeIn();
 }
 
-function clearPost(modal) {
-    $(modal).html("");
-    dietlah.postModalOpen = false;
-}
-
 /* initialize modals on home page */
 
-function initializeHomeModals() {
-    postTemplate = compilePostTemplate();
-    $('.post-modal').modal({
-        dismissible: true, // Modal can be dismissed by clicking outside of the modal
-        opacity: .5, // Opacity of modal background
-        inDuration: 300, // Transition in duration
-        outDuration: 200, // Transition out duration
-        startingTop: '0%', // Starting top style attribute
-        endingTop: '5%', // Ending top style attribute
-        ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
-            showPostLoadingBar();
-            postid = $(trigger).attr('data-postid');
-            $.ajax({
-                url: "/rest/post/" + postid,
-                dataType: "json"
-            }).done(function (response) {
-                renderPost(modal, response, postTemplate);
-                loadPostJavascriptElements(modal, response);
-                hidePostLoadingBar();
-            }).fail(function(jqXHR, textStatus) {
-                paginationFailure(jqXHR, textStatus);
-                hidePostLoadingBar();
-            });
-        },
-        complete: function(modal) { 
-            clearPost(modal);
-            $('#comments-marker').off();
-        } // Callback for Modal close
-    });
+function initializePostModals() {
     $('.report-post-modal').modal({
         dismissible: true, // Modal can be dismissed by clicking outside of the modal
         opacity: .5, // Opacity of modal background
@@ -227,12 +143,6 @@ function initializeHomeModals() {
         complete: function(modal) { 
         } // Callback for Modal close
     });
-}
-
-function initializeCardClickModalOpen() {
-    $('.card-image, .card-content').on('click', function() {
-        $("a[data-postid="+$(this).attr("data-postid")+"]").click();
-    })
 }
 
 /* on click events for likes/favs */
@@ -303,14 +213,14 @@ function handleReportPostSubmit() {
             report_type: "required"
         },
         submitHandler: function(form) {
-            showPostLoadingBar();
+            showNavLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
@@ -329,14 +239,14 @@ function handleReportCommentSubmit() {
             report_type: "required"
         },
         submitHandler: function(form) {
-            showPostLoadingBar();
+            showNavLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e) {
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
@@ -354,18 +264,19 @@ function initializeSubmitComment() {
             post_id: "required",
         },
         submitHandler: function(form) {
-            showPostLoadingBar();
+            showNavLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
-                    hidePostLoadingBar();
-                    Materialize.toast(data["test"], 4000);
+                    hideNavLoadingBar();
+                    Materialize.toast(data["response"], 4000);
                     $(form).resetForm();
                     $(form).find('#comment').trigger('autoresize');
                     reinitializeCommentsScroll($(form).find('#post_id').val());
+                    console.log(data);
                 }
             });
         }
@@ -379,14 +290,14 @@ function handleEditCommentSubmit() {
             comment: "required",
         },
         submitHandler: function(form) {
-            showPostLoadingBar();
+            showNavLoadingBar();
             $(form).ajaxSubmit({
                 error: function(e){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
-                    hidePostLoadingBar();
+                    hideNavLoadingBar();
                     if(data['status'] == "success") {
                         Materialize.toast(data["response"], 4000);
                     } else {
@@ -401,17 +312,17 @@ function handleEditCommentSubmit() {
 
 function handleSuggestTagsSubmit() {
     $('#suggest-tags').submit(function(){
-        showPostLoadingBar();
+        showNavLoadingBar();
         $(this).ajaxSubmit({
             data : {
                 tags: $('#suggested-tags').materialtags('items')
             },
             error: function(e){
-                hidePostLoadingBar();
+                hideNavLoadingBar();
                 Materialize.toast("There was an error attempting to suggest tags: " + e.statusText, 4000);
             },
             success: function (data, textStatus, jqXHR, form){
-                hidePostLoadingBar();
+                hideNavLoadingBar();
                 if(data['status'] == "success") {
                     Materialize.toast(data["response"], 4000);
                 } else {
@@ -425,43 +336,24 @@ function handleSuggestTagsSubmit() {
 
 /* load scripts on home page */
 
-function loadHomeJavascriptElements() {
-    /* called after every ajax paginate */
-    handleLikeClickEvent('.post-like');
-    handleFavouriteClickEvent('.post-fav');
-    initializeCardClickModalOpen();
-    $(window).lazyLoadXT();
-    $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
-    $('.tooltipped').tooltip({delay: 50});
-    $('#post-fav').on('click', function(e) {
-        e.preventDefault(); 
-        $('#postmodal').modal('close');
-    })
-}
-
-function loadPostJavascriptElements(modal, response) {
+function loadPostJavascriptElements() {
     /* called whenever a post modal is opened */
     dietlah.postModalOpen = true;
-    history.pushState({modal:"open"}, "modal", "#modal");
     handleLikeClickEvent('.full-post-like');
     handleFavouriteClickEvent('.full-post-fav');
-    $(modal).find('#post-content img').lazyLoadXT();
+    $(window).lazyLoadXT();
     $('ul.tabs').tabs({
         onShow: function(tab) {
             $(tab).find('img').lazyLoadXT();
             $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
         }
     });
-   $('#modal-close').on('click', function(e) {;
-        e.preventDefault(); 
-        $('#postmodal').modal('close');
-    })
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip({delay: 50});
     $('.collapsible').collapsible();
-    initializeCommentsScroll(response['id']);
+    initializeCommentsScroll(dietlah.postId);
     initializeSubmitComment();
-    initializeTagChips(response['user_tags']);
+    initializeTagChips(dietlah.userTags);
     handleSuggestTagsSubmit();
 }
 
@@ -486,38 +378,13 @@ function paginationFailure(jqXHR, textStatus) {
     console.log(jqXHR);
 }
 
-function ajaxLoadPageFeed(order, range, tags) {
-    showNavLoadingBar();
-    $.ajax({
-        url: dietlah.nextPage,
-        dataType: "json",
-        data: {
-            tags: tags
-        }
-    }).done(function (response) {
-        renderCards(grid, response);
-        loadHomeJavascriptElements();
-        dietlah.page += 1;
-        dietlah.nextPage = response["next"];
-        if (response["next"] == null) {
-            disableInfiniteScroll();
-            dietlah.pageEnd = true;
-        }
-        hideNavLoadingBar();
-    }).fail(function(jqXHR, textStatus) {
-        paginationFailure(jqXHR, textStatus);
-        hideNavLoadingBar();
-    });
-}
-
-
 function ajaxLoadComments(postid) {
-    showPostLoadingBar();
+    showNavLoadingBar();
     $.ajax({
         url: dietlah.nextComments,
         dataType: "json",
     }).done(function (response) {
-        hidePostLoadingBar();
+        hideNavLoadingBar();
         renderComments(response);
         loadCommentsJavascriptElements();
         dietlah.nextComments = response["next"]
@@ -538,15 +405,6 @@ function initializeCommentsScroll(postid) {
     }).lazyLoadXT({visibleOnly: false});
 }
 
-function initializeInfiniteScroll(order, range, tags) {
-    dietlah.pageEnd = false;
-    dietlah.nextPage = "/rest/postfeed/"+ order + "/" +range;
-    var grid = document.querySelector('#grid');
-    $('#marker').on('lazyshow', function () {
-        ajaxLoadPageFeed(order, range, tags);
-    }).lazyLoadXT({visibleOnly: false});
-}
-
 function reinitializeCommentsScroll(postId) {
     if(dietlah.commentsEnd){
         $('#comments-marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
@@ -556,51 +414,6 @@ function reinitializeCommentsScroll(postId) {
     $('.comments-list').html("")
     initializeCommentsScroll(postId);
     $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
-}
-
-function reinitializeInfiniteScroll() {
-    dietlah.page = 1;
-    if(dietlah.pageEnd){
-        $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
-    }
-    var order = $("#post-order-select").val();
-    var range = $("#post-range-select").val();
-    var tags = $("#post-tag-select").val();
-    $('#marker').off();
-    $('.end-of-page').hide();
-    $('.cards-container').children().html("")
-    initializeInfiniteScroll(order, range, tags);
-    $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
-}
-
-function setupPostsFiltering() {
-    $('#post-order-select, #post-order-select-mobile').on('change', function(e) {
-        $('#post-order-select, #post-order-select-mobile').val(this.value);
-        $('#post-order-select, #post-order-select-mobile').material_select();
-        reinitializeInfiniteScroll();
-    });
-    $('#post-range-select, #post-range-select-mobile').on('change', function(e) {
-        $('#post-range-select, #post-range-select-mobile').val(this.value);
-        $('#post-range-select, #post-range-select-mobile').material_select();
-        reinitializeInfiniteScroll();
-    });
-    $('#post-tag-select, #post-tag-select-mobile').on('change', function(e) {
-        $('#post-tag-select, #post-tag-select-mobile').val($(this).val());
-        if($(this).attr("id") == "post-tag-select") {
-            $('#post-tag-select-mobile').material_select();
-        } else {
-            $('#post-tag-select').material_select();
-        }
-        reinitializeInfiniteScroll();
-    });
-}
-
-function overrideBackButtonForModal(){
-    $(window).on('popstate', function() {
-        if(dietlah.postModalOpen) {
-            $('#postmodal').modal('close');
-        }
-    });
 }
 
 function setupValidationErrorFormatting() {
@@ -644,22 +457,18 @@ function initializeTagChips(userTags) {
 function registerHandleBarsHelpers() {
     registerDateTimeHelper();
     registerLinkifyHelper();
-    registerTopTagsView();
-    registerContainsImage();
     registerCanEditHelper();
 }
 
 $(document).ready(function(){
+    console.log(dietlah.postId)
+    loadPostJavascriptElements();
     registerHandleBarsHelpers();
+    initializePostModals();
     setupValidationErrorFormatting();
-    overrideBackButtonForModal();
-    initializeHomeModals();
     handleReportPostSubmit();
     handleReportCommentSubmit();
     handleEditCommentSubmit();
-    dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
-    $.lazyLoadXT.scrollContainer = '.modal-content';
-    initializeInfiniteScroll("new", "all", []);
-    setupPostsFiltering();
+    hideNavLoadingBar();
 });
