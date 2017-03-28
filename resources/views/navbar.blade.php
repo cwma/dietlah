@@ -103,10 +103,10 @@
         </li>
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
             <select id="post-range-select-mobile" class="post-filter">
-                <option value="1" selected>All Time</option>
-                <option value="2">Today</option>
-                <option value="3">This week</option>
-                <option value="4">This month</option>
+                <option value="all" selected>All Time</option>
+                <option value="today">Today</option>
+                <option value="week">This week</option>
+                <option value="month">This month</option>
             </select>
         </li>
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
