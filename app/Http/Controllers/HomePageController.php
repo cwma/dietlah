@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 use JavaScript;
 use Faker;
 
@@ -60,6 +61,14 @@ class HomePageController extends Controller {
             }
         }
 
+        // handle range
+        if($range == "today"){
+            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subDay());
+        } else if ($range == "week") {
+            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subWeek());
+        } else if ($range == "month") {
+            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subMonth());
+        } 
 
         // handle $order
         if($order == "new") {
