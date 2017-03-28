@@ -135,7 +135,7 @@
         <span class="card-title truncate">@{{{title}}}</span>
         <p>@{{{linkify summary}}}</p>
         <br>
-        <p class="light-green-text">@{{timeSince time.date}}</p>
+        <p class="light-green-text">@{{time}}</p>
     </div>
     <div class="card-action">
         <div class="col s3 center card-icon-container">
@@ -233,7 +233,7 @@
                             </div>
                         </div>
                         <div class="article-tag right">
-                            <p class="light-green-text" style="line-height: 5px">@{{timeSince created_at.date}}</p>
+                            <p class="light-green-text" style="line-height: 5px">@{{created_at}}</p>
                         </div>
                     </div>
                     <div class="divider"></div>
@@ -405,7 +405,7 @@
             <img data-src="@{{{profile_pic}}}" alt="" class="circle">
             <span class="title">@{{username}}</span>
             <p id="comment-text">@{{{linkify text}}}</p>
-            <p class="light-green-text">@{{timeSince time.date}}
+            <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
                     <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
@@ -423,7 +423,7 @@
         <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
             <p id="comment-text">@{{{linkify text}}}</p>
-            <p class="light-green-text">@{{timeSince time.date}}
+            <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
                     <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 

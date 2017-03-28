@@ -105,7 +105,7 @@ class HomePageController extends Controller {
 
         $results = [];
         foreach ($posts as $post) {
-            $item = ["title"=>$post->title, "summary"=>$post->summary, "time"=>$post->created_at, "id"=>$post->id,
+            $item = ["title"=>$post->title, "summary"=>$post->summary, "time"=>$post->created_at->diffForHumans(), "id"=>$post->id,
                          "user_id"=>$post->user_id, "profile_pic"=>$post->user->profile_pic,
                          "username"=>$post->user->username, "likes"=>$post->likes_count, 
                          "comments"=>$post->comments_count, "image"=>$post->image];
@@ -142,7 +142,7 @@ class HomePageController extends Controller {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
         $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
                    "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
-                   "created_at"=>$post->created_at, "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
+                   "created_at"=>$post->created_at->diffForHumans(), "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
 
         // handle tags
         // TODO: sort by tag count some how

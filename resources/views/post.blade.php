@@ -309,7 +309,7 @@
             <img data-src="@{{{profile_pic}}}" alt="" class="circle">
             <span class="title">@{{username}}</span>
             <p id="comment-text">@{{{linkify text}}}</p>
-            <p class="light-green-text">@{{timeSince time.date}}
+            <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
                     <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
@@ -327,7 +327,7 @@
         <li class="collection-item hide-on-med-and-up">
             <span class="title">@{{username}}</span>
             <p id="comment-text">@{{{linkify text}}}</p>
-            <p class="light-green-text">@{{timeSince time.date}}
+            <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
                     <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
