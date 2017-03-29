@@ -59,7 +59,12 @@ Route::get('/register', 'TestController@test') -> name('register');
 Route::get('/newmessage', 'MessageController@displayContacts') -> name('newmessage');
 
 #	view and send messages
-Route::get('/messages/{id}', 'MessageController@displayChat') -> name('messages');
+Route::get('message/{id}', 'MessageController@chatHistory')->name('message.read');
+
+Route::group(['prefix'=>'ajax', 'as'=>'ajax::'], function() {
+   Route::post('message/send', 'MessageController@ajaxSendMessage')->name('message.new');
+   Route::delete('message/delete/{id}', 'MessageController@ajaxDeleteMessage')->name('message.delete');
+});
 
 #	For user to manage lists
 Route::get('/manage', 'TestController@test') -> name('manage');

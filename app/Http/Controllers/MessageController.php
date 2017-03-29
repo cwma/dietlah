@@ -16,43 +16,98 @@ use App\User;
 use App\Message;
 use App\Conversation;
 use JavaScript;
+Use View;
 
 class MessageController extends Controller {
 
+    protected $authUser;
+    public function __construct()
+    {
+        if (Auth::check())
+        {
+            $this->middleware('auth');
+            Talk::setAuthUserId(Auth::user()->id);
+
+            View::composer('partials.peoplelist', function($view) {
+                $threads = Talk::threads();
+                $view->with(compact('threads'));
+            });
+        }
+        else
+        {
+            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
+            // change to login screen...
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+    }
+
     public function displayContacts(){
-        if (false/*!Auth::check()*/){ // disabled for testing
+        if (!Auth::check()){ // disabled for testing
             $response = ["status" => "unsuccessful", "error" => "user not logged in"];
             // change to login screen...
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
         else {
             $users = User::all();
-            return view('newmessage')->with('users', $users);
+            return view('newmessage', compact('users'));
         }
     }
 
-    public function displayChat(){
-        if (false/*!Auth::check()*/){ // disabled for testing
-            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
-            // change to login screen...
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    public function chatHistory($id)
+    {
+        $conversations = Talk::getMessagesByUserId($id);
+        $user = '';
+        $messages = [];
+        if(!$conversations) {
+            $user = User::find($id);
+        } else {
+            $user = $conversations->withUser;
+            $messages = $conversations->messages;
         }
-        else {
-            //get conversation between users
-            $uid = 1;
-            $conversations = Talk::getMessagesByUserId($uid);
-            $user = '';
-            $messages = [];
-            if(!$conversations) {
-                $user = User::find($uid);
-            } else {
-                $user = $conversations->withUser;
-                $messages = $conversations->messages;
+
+        Talk::setAuthUserId(Auth::user()->id);
+
+        View::composer('partials.peoplelist', function($view) {
+            $threads = Talk::threads();
+            $view->with(compact('threads'));
+        });
+
+        return view('messages.conversations', compact('messages', 'user', 'threads'));
+    }
+
+    public function ajaxSendMessage(Request $request)
+    {
+        if ($request->ajax()) {
+            $rules = [
+                'message-data'=>'required',
+                '_id'=>'required'
+            ];
+
+            $this->validate($request, $rules);
+
+            $body = $request->input('message-data');
+            $userId = $request->input('_id');
+
+            if ($message = Talk::sendMessageByUserId($userId, $body)) {
+                $html = view('ajax.newMessageHtml', compact('message'))->render();
+                return response()->json(['status'=>'success', 'html'=>$html], 200);
+            }
+        }
+    }
+
+    public function ajaxDeleteMessage(Request $request, $id)
+    {
+        if ($request->ajax()) {
+            if(Talk::deleteMessage($id)) {
+                return response()->json(['status'=>'success'], 200);
             }
 
-            return view('messages', compact('messages', $messages));
+            return response()->json(['status'=>'errors', 'msg'=>'something went wrong'], 401);
         }
     }
 
-
+    public function tests()
+    {
+        dd(Talk::channel());
+    }
 }

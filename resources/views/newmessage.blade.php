@@ -20,7 +20,7 @@
                             {{$user->username}}
                         </td>
                         <td>
-                            <a href="{{route('messages', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
+                            <a href="{{route('message.read', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
                         </td>
                     </tr>
                 </table>
