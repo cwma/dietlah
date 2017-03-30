@@ -23,6 +23,10 @@ class MessageController extends Controller {
     protected $authUser;
     public function __construct()
     {
+        $this->middleware(function ($request, $next) {
+            Talk::setAuthUserId(Auth::user()->id); return $next($request);
+        });
+        
         if (Auth::check())
         {
             $this->middleware('auth');
