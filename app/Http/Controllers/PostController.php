@@ -32,9 +32,33 @@ class PostController extends Controller {
 	}
 
 	public function editpost($postId) {
-        $post = Post::with('User')->with('tags')->with('post_tags')->findOrFail($postId);
+        $post = Post::with('User')->findOrFail($postId);
+
+        if (!Auth::check() || Auth::id() != $post->user_id) {
+            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
+            // redirect to login?
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
         // TODO yy do sth about the image
-        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary];
+        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
+                   "location"=>$post->location];
+
+        // get only tags for this post added by user
+        $result["tags"] = PostTag::with('tag')
+            ->where(['user_id' => Auth::id(), 'post_id' => $postId])->get()
+            ->pluck('tag')->pluck('tag_name');
+
+        // for autocomplete of tags
+        // make sure you run composer install
+        // this facade just helps put the variables into the javascript namespace "dietlah"
+        // can access tags by calling dietlah.tags in browser
+        JavaScript::put([
+            "tags" => Tag::all()->pluck('tag_name')
+        ]);
+
+        // TODO yy maybe refactor so edit and create post can use the same blade template
+        return view('editpost', ['post' => $result]);
 
     }
 

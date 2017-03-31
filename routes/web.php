@@ -45,7 +45,7 @@ Route::get('/post/{postId}', 'PostController@post') -> name('post');//without ti
 Route::get('/createpost', 'PostController@newpost') -> name('post');
 
 #	update an existing post
-Route::get('/update/{postid}', 'TestController@test') -> name('edit');
+Route::get('/update/{postid}', 'PostController@editpost') -> name('edit');
 
 ############################
 
