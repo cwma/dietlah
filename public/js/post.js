@@ -44,6 +44,7 @@ function initializePostModals() {
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_post").val($(trigger).attr('data-postid'));
+            $("#report-post-submit").prop("disabled", false);
         },
         complete: function(modal) { 
             $("#reported_id_post").val("");
@@ -58,6 +59,7 @@ function initializePostModals() {
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
+            $("#report-comment-submit").prop("disabled", false);
         },
         complete: function(modal) { 
             $("#reported_id_comment").val("");
@@ -76,12 +78,15 @@ function initializePostModals() {
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val($(trigger).attr('comment-id'));
             $('#delete-comment-confirm').attr('checked', false);
+            $("#edit-comment-submit").prop("disabled", false);
+            $("#delete-comment-submit").prop("disabled", false);
         },
         complete: function(modal) { 
             $("#edit-comment-id").val("");
             $('#edit-comment').val("");
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val("");
+            reinitializeCommentsScroll();
         }
     });
     $('.report-tag-modal').modal({
@@ -168,17 +173,20 @@ function handleReportPostSubmit() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
+            $("#report-post-submit").prop("disabled", true);
             $(form).ajaxSubmit({
                 error: function(e){
                     hideNavLoadingBar();
+                    $("#report-post-submit").prop("disabled", false);
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
+                    $("#report-post-submit").prop("disabled", false);
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
-                    console.log(data);
+                    $('#report-post-modal').modal('close');
                 }
             });
         }
@@ -194,17 +202,20 @@ function handleReportCommentSubmit() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
+            $("#report-comment-submit").prop("disabled", true);
             $(form).ajaxSubmit({
                 error: function(e) {
                     hideNavLoadingBar();
+                    $("#report-comment-submit").prop("disabled", false);
                     Materialize.toast("There was an error attempting to submit this report: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
+                    $("#report-comment-submit").prop("disabled", false);
                     Materialize.toast("Your report has been submitted.", 4000);
                     $(form).resetForm();
                     $(form).find('#report_comment').trigger('autoresize');
-                    console.log(data);
+                    $('#report-comment-modal').modal('close');
                 }
             });
         }
@@ -219,18 +230,20 @@ function initializeSubmitComment() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
+            $("#create-comment-submit").prop("disabled", true);
             $(form).ajaxSubmit({
                 error: function(e){
                     hideNavLoadingBar();
+                    $("#create-comment-submit").prop("disabled", false);
                     Materialize.toast("There was an error attempting to submit a comment " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
+                    $("#create-comment-submit").prop("disabled", false);
                     Materialize.toast(data["response"], 4000);
                     $(form).resetForm();
                     $(form).find('#comment').trigger('autoresize');
-                    reinitializeCommentsScroll($(form).find('#post_id').val());
-                    console.log(data);
+                    reinitializeCommentsScroll();
                 }
             });
         }
@@ -245,15 +258,19 @@ function handleEditCommentSubmit() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
+            $("#edit-comment-submit").prop("disabled", true);
             $(form).ajaxSubmit({
                 error: function(e){
                     hideNavLoadingBar();
+                    $("#edit-comment-submit").prop("disabled", false);
                     Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
+                    $("#edit-comment-submit").prop("disabled", false);
                     if(data['status'] == "success") {
                         Materialize.toast(data["response"], 4000);
+                        $('#edit-comment-modal').modal('close');
                     } else {
                         Materialize.toast(data["reason"], 4000);
                     }
@@ -275,15 +292,19 @@ function handleDeleteCommentSubmit() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
+            $("#delete-comment-submit").prop("disabled", true);
             $(form).ajaxSubmit({
                 error: function(e){
                     hideNavLoadingBar();
+                    $("#delete-comment-submit").prop("disabled", false);
                     Materialize.toast("There was an error attempting to delete this comment: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
+                    $("#delete-comment-submit").prop("disabled", false);
                     if(data['status'] == "success") {
                         Materialize.toast(data["response"], 4000);
+                        $('#edit-comment-modal').modal('close');
                     } else {
                         Materialize.toast(data["reason"], 4000);
                     }
@@ -322,6 +343,7 @@ function handleSuggestTagsSubmit() {
 function loadPostJavascriptElements() {
     /* called whenever a post modal is opened */
     dietlah.postModalOpen = true;
+    dietlah.currentPostModalId = dietlah.postId;
     handleLikeClickEvent('.full-post-like');
     handleFavouriteClickEvent('.full-post-fav');
     $(window).lazyLoadXT();
@@ -334,7 +356,7 @@ function loadPostJavascriptElements() {
     $('.materialboxed').materialbox();
     $('.tooltipped').tooltip({delay: 50});
     $('.collapsible').collapsible();
-    initializeCommentsScroll(dietlah.postId);
+    initializeCommentsScroll();
     initializeSubmitComment();
     initializeTagChips(dietlah.userTags);
     handleSuggestTagsSubmit();
@@ -380,11 +402,11 @@ function ajaxLoadComments(postid) {
     });
 }
 
-function initializeCommentsScroll(postid) {
+function initializeCommentsScroll() {
     dietlah.commentsEnd = false;
-    dietlah.nextComments = "/rest/comments/" + postid
+    dietlah.nextComments = "/rest/comments/" + dietlah.currentPostModalId
     $('#comments-marker').on('lazyshow', function () {
-        ajaxLoadComments(postid);
+        ajaxLoadComments(dietlah.currentPostModalId);
     }).lazyLoadXT({visibleOnly: false});
 }
 

@@ -378,6 +378,9 @@ height: 64px !important; /* fix for search in navbar on chrome */
   overflow-x: hidden;
 }
 
+.modal-header .row .col .tabs {
+  overflow-x: hidden;
+}
 
 .post-modal .modal-fixed-header .modal-header {
   border-top: 1px solid rgba(0, 0, 0, 0.1);

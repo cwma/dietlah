@@ -124,7 +124,7 @@
                                         </div>
                                         <input name="post_id" id="post_id" type="text" value="{{$post['id']}}" hidden>
                                         <div>
-                                            <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action">
+                                            <button class="btn waves-effect waves-ligh light-green lighten-1" type="submit" name="action"  id="create-comment-submit">
                                                 <i class="material-icons right">send</i>Post Comment
                                             </button>
                                         </div>
@@ -232,7 +232,7 @@
                 <input name="report_type" type="text" value="post" hidden>
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="report-post-submit">
                             <i class="material-icons right">send</i>Send Report
                         </button>
                     </div>
@@ -256,7 +256,7 @@
                 <input name="report_type" type="text" value="comment" hidden>
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="report-comment-submit">
                             <i class="material-icons right">send</i>Send Report
                         </button>
                     </div>
@@ -277,7 +277,7 @@
                 <input name="comment_id" id="edit-comment-id" type="text" value="" hidden>
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="edit-comment-submit">
                             <i class="material-icons right">send</i>Update Comment
                         </button>
                     </div>
@@ -292,7 +292,7 @@
                 <input name="comment_id" id="delete-comment-id" type="text" value="" hidden>
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="delete-comment-submit">
                             <i class="material-icons right">delete</i>Delete comment
                         </button>
                     </div>
