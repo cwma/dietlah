@@ -7,7 +7,7 @@
         <h4> Edit post </h4>
         <div class="row">
 
-            <form id="create-post" name="create-post" method="post" action="/rest/createpost" novalidate="novalidate">
+            <form id="create-post" name="create-post" method="post" action="/rest/updatepost" novalidate="novalidate">
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -69,5 +69,5 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
     <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-    <script type="text/javascript" src="js/createpost.js"></script>
+    <script type="text/javascript" src="js/editpost.js"></script>
 @stop

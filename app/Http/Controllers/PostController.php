@@ -14,6 +14,55 @@ use App\PostTag;
 use JavaScript;
 
 class PostController extends Controller {
+
+    public function post($postId) {
+        $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
+        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
+            "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
+            "created_at"=>$post->created_at->diffForHumans(), "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
+
+        // handle tags
+        // TODO: sort by tag count some how
+        $result["tags"] = $post->tags->pluck('tag_name');
+        $result["tags_count"] = $post->tags->count();
+
+        // for user tags and auto complete
+        if(Auth::check()) {
+            $userid = Auth::user()->id;
+            $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
+            $tags = Tag::all()->pluck("tag_name");
+            JavaScript::put([
+                "tags" => $tags,
+                "userTags" => $userTags,
+                "postId" => $postId
+            ]);
+        }
+
+        // handle user liked and favourite
+        if(Auth::check()) {
+            $userid = Auth::user()->id;
+            $likers = $post->likes->pluck('id', 'user_id')->all();
+            if(array_key_exists($userid, $likers)) {
+                $result['liked'] = true;
+            } else {
+                $result['liked'] = false;
+            }
+            $favs = $post->favourites->pluck('id', 'user_id')->all();
+            if(array_key_exists($userid, $favs)) {
+                $result['favourited'] = true;
+            } else {
+                $result['favourited'] = false;
+            }
+        }
+
+        // for comments infinite scroll
+        JavaScript::put([
+            "postId" => $postId
+        ]);
+
+        return view('post', ['post'=> $result]);
+    }
+
 	public function newpost() {
         if (!Auth::check()) {
             $response = ["status" => "unsuccessful", "error" => "user not logged in"];
@@ -45,69 +94,18 @@ class PostController extends Controller {
                    "location"=>$post->location];
 
         // get only tags for this post added by user
-        $result["tags"] = PostTag::with('tag')
+        $user_tags = PostTag::with('tag')
             ->where(['user_id' => Auth::id(), 'post_id' => $postId])->get()
             ->pluck('tag')->pluck('tag_name');
 
-        // for autocomplete of tags
-        // make sure you run composer install
-        // this facade just helps put the variables into the javascript namespace "dietlah"
-        // can access tags by calling dietlah.tags in browser
+        // for autocomplete of tags & to prepopulate tags
         JavaScript::put([
+            "user_tags" => $user_tags,
             "tags" => Tag::all()->pluck('tag_name')
         ]);
 
-        // TODO yy maybe refactor so edit and create post can use the same blade template
         return view('editpost', ['post' => $result]);
 
-    }
-
-    public function post($postId) {
-        $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
-        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
-                   "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
-                   "created_at"=>$post->created_at->diffForHumans(), "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
-
-        // handle tags
-        // TODO: sort by tag count some how
-        $result["tags"] = $post->tags->pluck('tag_name');
-        $result["tags_count"] = $post->tags->count();
-
-        // for user tags and auto complete
-        if(Auth::check()) {
-            $userid = Auth::user()->id;
-            $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
-            $tags = Tag::all()->pluck("tag_name");
-            JavaScript::put([
-                "tags" => $tags,
-                "userTags" => $userTags,
-                "postId" => $postId
-            ]);
-        } 
-
-        // handle user liked and favourite
-        if(Auth::check()) {
-            $userid = Auth::user()->id;
-            $likers = $post->likes->pluck('id', 'user_id')->all();
-            if(array_key_exists($userid, $likers)) {
-                $result['liked'] = true;
-            } else {
-                $result['liked'] = false;
-            }
-            $favs = $post->favourites->pluck('id', 'user_id')->all();
-            if(array_key_exists($userid, $favs)) {
-                $result['favourited'] = true;
-            } else {
-                $result['favourited'] = false;
-            }
-        }
-
-        // for comments infinite scroll
-        JavaScript::put([
-            "postId" => $postId
-        ]);
-
-        return view('post', ['post'=> $result]);
     }
 
 	public function createPost(Request $request) {
@@ -174,6 +172,8 @@ class PostController extends Controller {
         $post->text = $request->text;
 //    	$post->location = $request->location;
         $post->save();
+
+        // TODO yy edit tags
 
         $response = ["status" => "successful", "post_id" => $post_id];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
