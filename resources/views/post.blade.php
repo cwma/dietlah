@@ -65,7 +65,7 @@
                             <div class="divider"></div>
                             <div class="section">
                                 <h5>{{$post['title']}}</h5>
-                                <p>{!!$post['text']!!}</p>
+                                <p id="post-content">{!!$post['text']!!}</p>
                             </div>
                             <div class="divider"></div>
                             <div class="section">
@@ -316,6 +316,7 @@
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
+<script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/post.js"></script>
 <script id="comments_template" type="text/x-handlebars-template">

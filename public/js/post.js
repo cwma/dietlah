@@ -346,6 +346,7 @@ function loadPostJavascriptElements() {
     dietlah.currentPostModalId = dietlah.postId;
     handleLikeClickEvent('.full-post-like');
     handleFavouriteClickEvent('.full-post-fav');
+    $('#post-content').linkify();
     $(window).lazyLoadXT();
     $('ul.tabs').tabs({
         onShow: function(tab) {
