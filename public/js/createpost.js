@@ -14,7 +14,7 @@ function handleFormSubmit() {
         },
         submitHandler: function(form) {
             showNavLoadingBar();
-            $(form).find(':submit').attr('disabled','disabled');
+            $(form).find(':submit').prop('disabled', true);
             $(form).ajaxSubmit({
                 data : {
                     tags: $('#tags').materialtags('items')
@@ -22,13 +22,12 @@ function handleFormSubmit() {
                 error: function(e){
                     hideNavLoadingBar();
                     Materialize.toast("There was an error creating this post: " + e.statusText, 4000);
-                    $(form).find(':submit').attr('enabled','enabled');
+                    $(form).find(':submit').prop('disabled', false);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
-                    console.log(data);
                     Materialize.toast("your post has been created!", 4000);
-                    //redirect after
+                    window.location.href = "/post/" + data['post_id'];
                 }
             });
         }
