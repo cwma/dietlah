@@ -283,6 +283,21 @@
                     </div>
                 </div>
             </form>
+            <div class="divider"></div>
+            <form id="delete-comment-form" method="post" action="/rest/deletecomment" novalidate="novalidate">
+                <div class="input-field col s12">
+                    <input type="checkbox" class="filled-in" id="delete-comment-confirm" checked="checked" name="confirm" />
+                    <label for="delete-comment-confirm">check to confirm delete</label>
+                </div>
+                <input name="comment_id" id="delete-comment-id" type="text" value="" hidden>
+                <div class="row">
+                    <div class="col s12">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action">
+                            <i class="material-icons right">delete</i>Delete comment
+                        </button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

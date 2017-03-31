@@ -158,11 +158,14 @@ function initializeHomeModals() {
             $("#edit-comment-id").val($(trigger).attr('comment-id'));
             $('#edit-comment').val($(trigger).parent().prev().html());
             $('#edit-comment').trigger('autoresize');
+            $("#delete-comment-id").val($(trigger).attr('comment-id'));
+            $('#delete-comment-confirm').attr('checked', false);
         },
         complete: function(modal) { 
             $("#edit-comment-id").val("");
             $('#edit-comment').val("");
             $('#edit-comment').trigger('autoresize');
+            $("#delete-comment-id").val("");
         }
     });
     $('.report-tag-modal').modal({
@@ -334,7 +337,7 @@ function handleEditCommentSubmit() {
             $(form).ajaxSubmit({
                 error: function(e){
                     hidePostLoadingBar();
-                    Materialize.toast("There was an error attempting to update this reportt: " + e.statusText, 4000);
+                    Materialize.toast("There was an error attempting to update this comment: " + e.statusText, 4000);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
@@ -344,6 +347,36 @@ function handleEditCommentSubmit() {
                         Materialize.toast(data["reason"], 4000);
                     }
                     $(form).find('#edit_comment').trigger('autoresize');
+                }
+            });
+        }
+    }); 
+}
+
+
+function handleDeleteCommentSubmit() {
+    $('#delete-comment-form').validate({
+        rules: {
+            comment_id: "required",
+            confirm: "required",
+        }, 
+        messages: {
+            confirm: 'you must check this box to delete this comment'
+        },
+        submitHandler: function(form) {
+            showPostLoadingBar();
+            $(form).ajaxSubmit({
+                error: function(e){
+                    hidePostLoadingBar();
+                    Materialize.toast("There was an error attempting to delete this comment: " + e.statusText, 4000);
+                },
+                success: function (data, textStatus, jqXHR, form){
+                    hidePostLoadingBar();
+                    if(data['status'] == "success") {
+                        Materialize.toast(data["response"], 4000);
+                    } else {
+                        Materialize.toast(data["reason"], 4000);
+                    }
                 }
             });
         }
@@ -610,6 +643,7 @@ $(document).ready(function(){
     handleReportPostSubmit();
     handleReportCommentSubmit();
     handleEditCommentSubmit();
+    handleDeleteCommentSubmit();
     dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';

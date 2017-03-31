@@ -175,7 +175,7 @@ Route::post('/rest/createcomment', 'CommentController@createComment');
 Route::post('/rest/updatecomment', 'CommentController@updateComment');
 
 #	delete comment
-Route::post('/rest/deletecomment', 'TestController@test');
+Route::post('/rest/deletecomment', 'CommentController@deleteComment');
 
 #	Favourite post
 Route::post('/rest/favourite', 'PostController@favouritePost');

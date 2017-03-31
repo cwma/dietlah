@@ -30,8 +30,21 @@ class CommentController extends Controller {
 	}
 
 	public function deleteComment (Request $request){
-		Comment::destroy($request->commentId);
-		return redirect()->action('PostController@post', ['postId' => $request->postId]);
+		// TODO: validate userid actually owns this comment before deleting!!
+		if (Auth::check()){
+			$post_id = Comment::findOrFail($request->comment_id)->post->id;
+			Comment::destroy($request->comment_id);
+
+			$comments_count = Comment::where("post_id", $post_id)->count();
+            $post = Post::findOrFail($post_id);
+            $post->comments_count = $comments_count;
+            $post->save();
+
+	        $response = ["status" => "success", "response" => "comment deleted"];
+	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		}
+        $response = ["status" => "failed", "reason" => "unauthorized"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 
 	public function restComments(Request $request, $postid){
