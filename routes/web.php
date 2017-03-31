@@ -163,7 +163,7 @@ Route::get('/rest/comments/{postId}', 'CommentController@restComments');
 Route::post('/rest/createpost', 'PostController@createPost');
 
 # 	update post
-Route::post('/rest/updatepost', 'TestController@test');
+Route::post('/rest/updatepost', 'PostController@updatePost');
 
 #	delete post
 Route::post('/rest/deletepost', 'TestController@test');

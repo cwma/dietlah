@@ -173,7 +173,7 @@ class PostController extends Controller {
 //    	$post->location = $request->location;
         $post->save();
 
-        // TODO yy edit tags
+        $this->updateTags(Auth::id(), $post_id, $request->tags);
 
         $response = ["status" => "successful", "post_id" => $post_id];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
@@ -254,18 +254,8 @@ class PostController extends Controller {
             $post_id = $request->post_id;
             $tags = $request->tags;
 
-            // its just a list of tags
-            // so clear existing tags from user and repopulate
-            PostTag::where("user_id", $user_id)->where("post_id", $post_id)->delete();
+            $this->updateTags($user_id, $post_id, $tags);
 
-            foreach ($tags as $tag) {
-                $tag = Tag::firstOrCreate(["tag_name" => $tag]);
-                $post_tag = new PostTag;
-                $post_tag->user_id = $user_id;
-                $post_tag->post_id = $post_id;
-                $post_tag->tag_id = $tag->id;
-                $post_tag->save();
-            }
             $response = ["status" => "success", "response" => "tags saved!"];
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
@@ -282,5 +272,26 @@ class PostController extends Controller {
         }
 
         Tag::where("tag_name", $request->tag_name)->delete();
+    }
+
+    // update the user's tags for a post
+    private function updateTags($user_id, $post_id, $tags) {
+        // clear existing tags from user
+        PostTag::where("user_id", $user_id)->where("post_id", $post_id)->delete();
+
+        // if user deleted all existing tags, return because we don't need to add tags
+        if (empty($tags)) {
+            return;
+        }
+
+        // else repopulate tags from user
+        foreach ($tags as $tag) {
+            $tag = Tag::firstOrCreate(["tag_name" => $tag]);
+            $post_tag = new PostTag;
+            $post_tag->user_id = $user_id;
+            $post_tag->post_id = $post_id;
+            $post_tag->tag_id = $tag->id;
+            $post_tag->save();
+        }
     }
 }

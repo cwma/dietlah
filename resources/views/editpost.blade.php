@@ -9,6 +9,8 @@
 
             <form id="create-post" name="create-post" method="post" action="/rest/updatepost" novalidate="novalidate">
 
+                <input type="hidden" name="post_id" value="{{$post['id']}}">
+
                 <div class="row">
                     <div class="input-field col s12">
                         <input name="title" id="title" type="text" value="{{$post['title']}}">
