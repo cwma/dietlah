@@ -53,7 +53,7 @@ class CommentController extends Controller {
 		foreach ($comments as $comment) {
 			$item = ["text"=>nl2br(e($comment->comment)), "time"=>$comment->created_at->diffForHumans(), "id"=>$comment->id,
 						 "user_id"=>$comment->user_id, "profile_pic"=>$comment->user->profile_pic,
-						 "username"=>$comment->user->username];
+						 "username"=>$comment->user->username, "raw_text"=>$comment->comment];
 			array_push($results, $item);
 		}
 		$response = ["comments" => $results, "next"=>$comments->nextPageUrl()];
