@@ -58,11 +58,12 @@
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
+                @if (Route::currentRouteNamed('home.default'))
                 <li class="input-field">
-                    <input id="search nav-search" type="search" placeholder="search posts">
-                    <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-                    <i class="material-icons">close</i>
+                    <input id="nav-search" type="search" placeholder="search posts" name="nav-search">
+                    <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
                 </li>
+                @endif
                 <li>
                     <a class="tooltipped" href="#" data-position="bottom" data-delay="50" data-tooltip="About DietLah!">
                         <i class="material-icons">info</i>
@@ -118,9 +119,8 @@
             </select>
         </li>
         <li class="input-field z-depth-3" style="margin-left:10px;width:280px">
-            <input id="search nav-search" type="search" placeholder="search posts">
-            <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-            <i class="material-icons" style="line-height: 2">close</i>
+            <input id="nav-search-mobile" type="search" placeholder="search posts" name="nav-search">
+            <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
         </li>
         @endif
         <li><a href="/"><b>About DietLah!</b><i class="material-icons left">info</i></a></li>

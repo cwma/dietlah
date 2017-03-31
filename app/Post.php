@@ -2,11 +2,16 @@
 namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
     use SoftDeletes;
+    use Searchable;
+    
+
     protected $dates = ['deleted_at'];
+
     public function user() {
 	    return $this->belongsTo('App\User');
     }
@@ -25,5 +30,11 @@ class Post extends Model
 
     public function favourites() {
         return $this->hasMany('App\Favourite');
+    }
+
+    public function toSearchableArray()
+    {
+        $array = $this->toArray();
+        return $array;
     }
 }

@@ -138,6 +138,49 @@ class HomePageController extends Controller {
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 
+    public function restSearch(Request $request) {
+        $auth = Auth::check();
+        if($auth) {
+            $userid = Auth::user()->id;
+        }
+        
+        $posts = Post::search($request->search)->paginate(12);
+
+        $results = [];
+        foreach ($posts as $post) {
+            $item = ["title"=>$post->title, "summary"=>$post->summary, "time"=>$post->created_at->diffForHumans(), "id"=>$post->id,
+                         "user_id"=>$post->user_id, "profile_pic"=>$post->user->profile_pic,
+                         "username"=>$post->user->username, "likes"=>$post->likes_count, 
+                         "comments"=>$post->comments_count, "image"=>$post->image];
+
+            if ($auth) {
+                $likers = $post->likes->pluck('id', 'user_id')->all();
+                if(array_key_exists($userid, $likers)) {
+                    $item['liked'] = true;
+                } else {
+                    $item['liked'] = false;
+                }
+                $favs = $post->favourites->pluck('id', 'user_id')->all();
+                if(array_key_exists($userid, $favs)) {
+                    $item['favourited'] = true;
+                } else {
+                    $item['favourited'] = false;
+                }
+            }
+
+            // the slow way for now... TODO: Optimize!
+            $tags = $post->tags->groupby('tag_name')->all();
+            if(sizeof($tags) > 0) {
+                $item['tag'] = self::findTopTag($tags);
+            }
+
+            array_push($results, $item);
+        }
+        $response = ["posts" => $results, "next"=>$posts->nextPageUrl()];
+
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    }
+
     public function restPost($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
         $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),

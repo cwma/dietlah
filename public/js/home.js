@@ -519,6 +519,29 @@ function ajaxLoadPageFeed(order, range, tags) {
     }
 }
 
+function ajaxLoadPageFeedSearch(search) {
+    if (dietlah.nextPage != null) {
+        showNavLoadingBar();
+        $.ajax({
+            url: dietlah.nextPage,
+            dataType: "json",
+            data: {
+                search: search
+            }
+        }).done(function (response) {
+            renderCards(grid, response);
+            loadHomeJavascriptElements();
+            dietlah.page += 1;
+            dietlah.nextPage = response["next"];
+            hideNavLoadingBar();
+        }).fail(function(jqXHR, textStatus) {
+            paginationFailure(jqXHR, textStatus);
+            hideNavLoadingBar();
+        });
+    } else {
+        disableInfiniteScroll();
+    }
+}
 
 function ajaxLoadComments(postid) {
     if(dietlah.nextComments != null) {
@@ -557,6 +580,15 @@ function initializeInfiniteScroll(order, range, tags) {
     }).lazyLoadXT({visibleOnly: false});
 }
 
+function initializeInfiniteScrollSearch(search) {
+    dietlah.pageScrollDisabled = false;
+    dietlah.nextPage = "/rest/search";
+    var grid = document.querySelector('#grid');
+    $('#marker').on('lazyshow', function () {
+        ajaxLoadPageFeedSearch(search);
+    }).lazyLoadXT({visibleOnly: false});
+}
+
 function reinitializeCommentsScroll() {
     if(dietlah.commentScrollDisabled){
         $('#comments-marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
@@ -583,6 +615,19 @@ function reinitializeInfiniteScroll() {
     $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
 }
 
+function reinitializeInfiniteScrollSearch() {
+    dietlah.page = 1;
+    if(dietlah.pageScrollDisabled){
+        $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    }
+    $('#marker').off();
+    $('.end-of-page').hide();
+    $('.cards-container').children().html("")
+    initializeInfiniteScrollSearch($('#nav-search').val());
+    $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
+}
+
+
 function setupPostsFiltering() {
     $('#post-order-select, #post-order-select-mobile').on('change', function(e) {
         $('#post-order-select, #post-order-select-mobile').val(this.value);
@@ -602,6 +647,15 @@ function setupPostsFiltering() {
             $('#post-tag-select').material_select();
         }
         reinitializeInfiniteScroll();
+    });
+}
+
+function setupSearch() {
+    $('#nav-search, #nav-search-mobile').on('keypress', function (e) {
+        if(e.which === 13){
+            $('#nav-search, #nav-search-mobile').val($(this).val())
+            reinitializeInfiniteScrollSearch();
+        }
     });
 }
 
@@ -672,4 +726,5 @@ $(document).ready(function(){
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll("new", "all", []);
     setupPostsFiltering();
+    setupSearch();
 });

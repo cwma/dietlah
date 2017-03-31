@@ -141,7 +141,7 @@ Route::post('/sendmessage', 'TestController@test');
 Route::get('/rest/postfeed/{order}/{range}', 'HomePageController@restPostFeed');
 
 #	View according to search ajax endpoint
-Route::get('/rest/search/{query}/{datetime}/{page?}', 'TestController@test');
+Route::get('/rest/search', 'HomePageController@restSearch');
 
 #	Post content ajax endpoint
 Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
