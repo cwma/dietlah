@@ -4,9 +4,6 @@
             <li><a href="{{ route('login') }}">Login</a></li>
             <li><a href="{{ route('register') }}">Register</a></li>
         @else
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-                {{ Auth::user()->name }} <span class="caret"></span>
-            </a>
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -74,7 +71,7 @@
                         <i class="material-icons">create</i>
                     </a>
                 </li>
-                <li class="">
+                <li>
                     <a class="dropdown-button" href="#!" data-activates="accountdropdown">
                         <i class="material-icons">account_box</i>
                     </a>
