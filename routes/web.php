@@ -166,7 +166,7 @@ Route::post('/rest/createpost', 'PostController@createPost');
 Route::post('/rest/updatepost', 'PostController@updatePost');
 
 #	delete post
-Route::post('/rest/deletepost', 'TestController@test');
+Route::post('/rest/deletepost', 'PostController@deletePost');
 
 #	create a new comment
 Route::post('/rest/createcomment', 'CommentController@createComment');

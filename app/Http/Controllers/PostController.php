@@ -128,9 +128,7 @@ class PostController extends Controller {
 
         $user_id = Auth::id();
 
-        // TODO yy check where the images shld be stored
     	$post = new Post;
-//    	$post->image = $request->file('portrait')->store('public/images/postimages');
     	$post->title = $request->title;
     	$post->text = $request->text;
 //    	$post->location = $request->location;
@@ -138,6 +136,13 @@ class PostController extends Controller {
         $post->likes_count = 0;
         $post->comments_count = 0;
         $post->user_id = $user_id;
+
+        // store image
+        if($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images/postimages');
+            $post->image = basename($path);
+        }
+
     	$post->save();
     	$post_id = $post->id;
 

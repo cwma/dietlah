@@ -31,7 +31,7 @@
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" id="image-name">
-                        <label for="image-namee" style="margin-left:125px">You can add an image to your post (optional)</label>
+                        <label for="image-name" style="margin-left:125px">You can add an image to your post (optional)</label>
                     </div>
                 </div>
             </div>

@@ -47,7 +47,7 @@
                             @if ($post['image'] != "")
                                 <div class="center-align">
                                     <div class="img-container">
-                                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="{{$post['image']}}">
+                                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="storage/images/postimages/{{$post['image']}}">
                                     </div>
                                 </div>
                             @endif
@@ -169,7 +169,7 @@
                                 <br>
                                 <div class="divider"></div>
                                 <div class="section">
-                                    <h5>Tags suggested by other users</h4>
+                                    <h5>Tags suggested by other users</h5>
                                     @foreach ($post['tags'] as $tag)
                                             <div class="chip light-green lighten-3" tag="{{$tag}}">
                                                 {{$tag}}

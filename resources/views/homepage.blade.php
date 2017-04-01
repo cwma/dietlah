@@ -143,7 +143,7 @@
     </div>
     @{{#if (containsImage image)}}
         <div class="card-image" data-postid="@{{{id}}}">
-            <img data-src="@{{{image}}}">
+            <img data-src="storage/images/postimages/@{{{image}}}">
         </div>
     @{{/if}}
     <div class="card-content" data-postid="@{{{id}}}">
@@ -236,7 +236,7 @@
                     @{{#if (containsImage image)}}
                         <div class="center-align">
                             <div class="img-container">
-                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{image}}">
+                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="storage/images/postimages/@{{image}}">
                             </div>
                         </div>
                     @{{/if}}
@@ -335,7 +335,7 @@
                 @if(Auth::check())
                 <div id="post-tags" class="col s12">
                     <div class="container">
-                        <h5> Add your own tags to this post </h4>
+                        <h5> Add your own tags to this post </h5>
                         <div class="section">
                             <form id="suggest-tags" method="post" action="/rest/addtag" novalidate="novalidate">
                                 <div class="row">
@@ -357,7 +357,7 @@
                         <br>
                         <div class="divider"></div>
                         <div class="section">
-                            <h5>Tags suggested by other users</h4>
+                            <h5>Tags suggested by other users</h5>
                             @{{#each tags}}
                             <div class="chip light-green lighten-3" tag="@{{this}}">
                                 @{{this}}
