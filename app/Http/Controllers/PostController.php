@@ -146,7 +146,8 @@ class PostController extends Controller {
     	$post->save();
     	$post_id = $post->id;
 
-        $tags = $request->tags;
+    	// add tags if there are tags
+        $tags = $request->has('tags') ? $request->tags : array();
         foreach ($tags as $tagname) {
             $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
             $post_tag = new PostTag;
