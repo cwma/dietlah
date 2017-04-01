@@ -8,7 +8,13 @@
     <div class="row">
 
         <form id="create-post" name="create-post" method="post" action="/rest/createpost" novalidate="novalidate">
-        
+
+            <div class="row">
+                <div class="col s12">
+                    <img class="responsive-img" id="image-preview"/>
+                </div>
+            </div>
+
             <div class="row">
                 <div class="input-field col s12">
                   <input name="title" id="title" type="text">

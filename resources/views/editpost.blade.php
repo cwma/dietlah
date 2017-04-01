@@ -7,9 +7,15 @@
         <h4> Edit post </h4>
         <div class="row">
 
-            <form id="create-post" name="create-post" method="post" action="/rest/updatepost" novalidate="novalidate">
+            <form id="update-post" name="update-post" method="post" action="/rest/updatepost" novalidate="novalidate">
 
                 <input type="hidden" name="post_id" id="post_id" value="{{$post['id']}}">
+
+                <div class="row">
+                    <div class="col s12">
+                        <img class="responsive-img" id="image-preview"/>
+                    </div>
+                </div>
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -33,7 +39,7 @@
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" id="image-name">
-                            <label for="image-namee" style="margin-left:125px">You can add an image to your post (optional)</label>
+                            <label for="image-name" style="margin-left:125px">You can add an image to your post (optional)</label>
                         </div>
                     </div>
                 </div>

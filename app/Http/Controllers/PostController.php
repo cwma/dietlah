@@ -89,9 +89,8 @@ class PostController extends Controller {
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
-        // TODO yy do sth about the image
         $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
-                   "location"=>$post->location];
+            "image"=>$post->image, "location"=>$post->location];
 
         // get only tags for this post added by user
         $user_tags = PostTag::with('tag')
@@ -171,14 +170,19 @@ class PostController extends Controller {
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
-        // TODO yy add image and location when UI ready
-        // TODO yy delete the old image?
-//    	$post->image = $request->file('portrait')->store('public/images/postimages');
         $post->title = $request->title;
         $post->text = $request->text;
 //    	$post->location = $request->location;
-        $post->save();
+        $post->summary = 'To be updated';
 
+        // TODO yy delete the old image?
+        // store image
+        if($request->hasFile('image')) {
+            $path = $request->file('image')->store('public/images/postimages');
+            $post->image = basename($path);
+        }
+
+        $post->save();
         $this->updateTags(Auth::id(), $post_id, $request->tags);
 
         $response = ["status" => "successful", "post_id" => $post_id];

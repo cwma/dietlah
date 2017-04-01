@@ -43,6 +43,16 @@ function setupValidationErrorFormatting() {
     });
 }
 
+function initializeImagePreview() {
+    $('#image').on('change', function () {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            $('#image-preview').attr('src', e.target.result);
+        };
+        reader.readAsDataURL(this.files[0]);
+    });
+}
+
 function initializeTagChips(userTags) {
     console.log("setup");
     var tags = new Bloodhound({
@@ -72,6 +82,7 @@ $(document).ready(function(){
     $('#create-post').find(':submit').attr('enabled','enabled');
     setupValidationErrorFormatting();
     handleFormSubmit();
+    initializeImagePreview();
     initializeTagChips();
     hideNavLoadingBar();
 });
