@@ -74,10 +74,37 @@ function initializeTagChips(userTags) {
     });
 }
 
+function initializeDeleteBtn() {
+    $('#deleteBtn').click(function(event){
+        event.preventDefault();
+        if(confirm("Are you sure you want to delete this student?")){
+            showNavLoadingBar();
+            $.ajax({
+                'url' : '/deletepost',
+                'type': 'POST',
+                'dataType': 'json',
+                'data': {post_id: $('#post_id').val()},
+                'success': function(data,  textStatus, jqXHR) {
+                    hideNavLoadingBar();
+                    console.log(data);
+                    Materialize.toast("your post has been deleted!", 4000);
+                    //redirect after
+                },
+                'error': function (jqXHR, textStatus, errorThrown) {
+                    hideNavLoadingBar();
+                    Materialize.toast("There was an error deleting this post: " + textStatus, 4000);
+                }
+            });
+        }
+    });
+}
+
+
 $(document).ready(function(){
     $('#create-post').find(':submit').attr('enabled','enabled');
     setupValidationErrorFormatting();
     handleFormSubmit();
     initializeTagChips();
+    initializeDeleteBtn();
     hideNavLoadingBar();
 });

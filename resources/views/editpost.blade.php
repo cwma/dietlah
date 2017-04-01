@@ -9,7 +9,7 @@
 
             <form id="create-post" name="create-post" method="post" action="/rest/updatepost" novalidate="novalidate">
 
-                <input type="hidden" name="post_id" value="{{$post['id']}}">
+                <input type="hidden" name="post_id" id="post_id" value="{{$post['id']}}">
 
                 <div class="row">
                     <div class="input-field col s12">
@@ -54,6 +54,9 @@
 
                 <div class="row">
                     <div class="col s12">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteBtn">
+                            <i class="material-icons right">delete</i>Delete Post
+                        </button>
                         <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
                             <i class="material-icons right">send</i>Edit Post
                         </button>
