@@ -26,9 +26,8 @@ function handleFormSubmit() {
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
-                    console.log(data);
                     Materialize.toast("your post has been edited!", 4000);
-                    //redirect after
+                    window.location.href = "/post/" + data['post_id'];
                 }
             });
         }
@@ -51,6 +50,14 @@ function initializeImagePreview() {
             $('#image-preview').attr('src', e.target.result);
         };
         reader.readAsDataURL(this.files[0]);
+    });
+}
+
+function initializeDeleteImageBtn() {
+    $('#deleteImageBtn').click(function(event) {
+        $('#image-preview').attr('src', '');
+        $('#image').val('');
+        $('#should_delete_image').val(true);
     });
 }
 
@@ -84,8 +91,8 @@ function initializeTagChips(userTags) {
     });
 }
 
-function initializeDeleteBtn() {
-    $('#deleteBtn').click(function(event){
+function initializeDeletePostBtn() {
+    $('#deletePostBtn').click(function(event){
         event.preventDefault();
         if(confirm("Are you sure you want to delete this student?")){
             showNavLoadingBar();
@@ -96,9 +103,8 @@ function initializeDeleteBtn() {
                 'data': {post_id: $('#post_id').val()},
                 'success': function(data,  textStatus, jqXHR) {
                     hideNavLoadingBar();
-                    console.log(data);
                     Materialize.toast("your post has been deleted!", 4000);
-                    //redirect after
+                    window.location.href = "/";
                 },
                 'error': function (jqXHR, textStatus, errorThrown) {
                     hideNavLoadingBar();
@@ -115,7 +121,8 @@ $(document).ready(function(){
     setupValidationErrorFormatting();
     handleFormSubmit();
     initializeImagePreview();
+    initializeDeleteImageBtn();
     initializeTagChips();
-    initializeDeleteBtn();
+    initializeDeletePostBtn();
     hideNavLoadingBar();
 });

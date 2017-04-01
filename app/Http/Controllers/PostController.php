@@ -175,11 +175,12 @@ class PostController extends Controller {
 //    	$post->location = $request->location;
         $post->summary = 'To be updated';
 
-        // TODO yy delete the old image?
         // store image
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images/postimages');
             $post->image = basename($path);
+        } elseif ($request->should_delete_image) {
+            $post->image = null;
         }
 
         $post->save();

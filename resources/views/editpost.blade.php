@@ -36,7 +36,13 @@
                 </div>
 
                 <div class="row">
-                    <div class="file-field input-field col s12">
+                    <div class="file-field input-field col s2">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteImageBtn">
+                            Delete
+                        </button>
+                        <input type="hidden" name="should_delete_image" id="should_delete_image">
+                    </div>
+                    <div class="file-field input-field col s10">
                         <div class="btn light-green lighten-1">
                             <span>Image</span>
                             <input type="file" name="image" id="image">
@@ -64,7 +70,7 @@
 
                 <div class="row">
                     <div class="col s12">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteBtn">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deletePostBtn">
                             <i class="material-icons right">delete</i>Delete Post
                         </button>
                         <button class="btn waves-effect waves-ligh light-green lighten-1 right" type="submit" name="action" id="submitBtn">
