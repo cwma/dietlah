@@ -7,7 +7,7 @@ function hideNavLoadingBar() {
 }
 
 function handleFormSubmit() {
-    $('#create-post').validate({
+    $('#update-post').validate({
         rules: {
             title: "required",
             text: "required",

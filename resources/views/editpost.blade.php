@@ -10,7 +10,6 @@
             <form id="update-post" name="update-post" method="post" action="/rest/updatepost" novalidate="novalidate">
 
                 <input type="hidden" name="post_id" id="post_id" value="{{$post['id']}}">
-                <input type="hidden" name="_token" value="{{csrf_token()}}">
 
                 <div class="row">
                     <div class="col s12">
