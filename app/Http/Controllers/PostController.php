@@ -44,7 +44,6 @@ class PostController extends Controller {
             JavaScript::put([
                 "tags" => $tags,
                 "userTags" => $userTags,
-                "postId" => $postId
             ]);
         }
 
@@ -67,7 +66,8 @@ class PostController extends Controller {
 
         // for comments infinite scroll
         JavaScript::put([
-            "postId" => $postId
+            "postId" => $postId,
+            "loc" => $post->location
         ]);
 
         return view('post', ['post'=> $result]);
@@ -113,7 +113,8 @@ class PostController extends Controller {
         // for autocomplete of tags & to prepopulate tags
         JavaScript::put([
             "user_tags" => $user_tags,
-            "tags" => Tag::all()->pluck('tag_name')
+            "tags" => Tag::all()->pluck('tag_name'),
+            "loc" => $post->location
         ]);
 
         return view('editpost', ['post' => $result]);
@@ -143,7 +144,7 @@ class PostController extends Controller {
     	$post = new Post;
     	$post->title = $request->title;
     	$post->text = $request->text;
-//    	$post->location = $request->location;
+    	$post->location = $request->location;
         $post->summary = 'To be updated';
         $post->likes_count = 0;
         $post->comments_count = 0;
@@ -185,7 +186,7 @@ class PostController extends Controller {
 
         $post->title = $request->title;
         $post->text = $request->text;
-//    	$post->location = $request->location;
+    	$post->location = $request->location;
         $post->summary = 'To be updated';
 
         // store image

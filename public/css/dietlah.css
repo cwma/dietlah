@@ -508,7 +508,7 @@ height: 48px !important; /* fix for search in navbar on chrome */
 }
 
 /* standalone post page */
-
+@media screen and (max-width: 600px){
   .standalone-post-container {
     width: 90%;
   }
@@ -536,3 +536,15 @@ height: 48px !important; /* fix for search in navbar on chrome */
   .standalone-post-container {
     width: 50%;
   }
+}
+
+.create-post-container .row{
+  margin-left: auto !important;
+  margin-right: auto !important;
+}
+/* maps */
+
+#map {
+  height: 300px;
+  width: 100%;
+}

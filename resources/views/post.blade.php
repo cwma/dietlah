@@ -68,6 +68,10 @@
                                 <p id="post-content">{!!$post['text']!!}</p>
                             </div>
                             <div class="divider"></div>
+                            @if ($post['location'])
+                            <div id="map"></div>
+                            @endif
+                            <div class="divider"></div>
                             <div class="section">
                                 <ul class="collapsible" data-collapsible="accordion">
                                     <li>
@@ -321,6 +325,7 @@
 <script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/post.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 <script id="comments_template" type="text/x-handlebars-template">
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">

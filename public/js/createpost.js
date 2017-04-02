@@ -17,7 +17,8 @@ function handleFormSubmit() {
             $(form).find(':submit').prop('disabled', true);
             $(form).ajaxSubmit({
                 data : {
-                    tags: $('#tags').materialtags('items')
+                    tags: $('#tags').materialtags('items'),
+                    location: dietlah.loc
                 },
                 error: function(e){
                     hideNavLoadingBar();
@@ -78,7 +79,41 @@ function initializeTagChips(userTags) {
     });
 }
 
+function initMaps() {
+    dietlah.loc = ""
+
+    $('#deleteLocation').on('click', function(e){
+        marker.setMap(null);
+        marker = null;
+        dietlah.loc = "";
+    })
+
+    var map;
+    var marker;
+    var infowindow;
+    var messagewindow;
+
+    var singapore = {lat: 1.3521, lng: 103.8198};
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: singapore,
+        zoom: 12
+    });
+
+    google.maps.event.addListener(map, 'click', function(event) {
+        if (marker) {
+            marker.setPosition(event.latLng);
+        } else {
+            marker = new google.maps.Marker({
+                position: event.latLng,
+                map: map
+            });
+        }
+        dietlah.loc = marker.getPosition().lat() + "," + marker.getPosition().lng();
+    });
+}
+
 $(document).ready(function(){
+    initMaps();
     $('#create-post').find(':submit').attr('enabled','enabled');
     setupValidationErrorFormatting();
     handleFormSubmit();

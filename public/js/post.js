@@ -460,12 +460,34 @@ function initializeTagChips(userTags) {
     }
 }
 
+function initMaps() {
+
+    var map;
+    var marker;
+    var infowindow;
+    var messagewindow;
+
+    if (dietlah.loc != null && dietlah.loc != "") {
+        console.log("making map");
+        pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: pos,
+            zoom: 16
+        });
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: map
+        });
+    } 
+}
+
 function registerHandleBarsHelpers() {
     registerLinkifyHelper();
     registerCanEditHelper();
 }
 
 $(document).ready(function(){
+    initMaps();
     console.log(dietlah.postId)
     loadPostJavascriptElements();
     registerHandleBarsHelpers();

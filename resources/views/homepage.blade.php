@@ -125,6 +125,7 @@
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/home.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 <script id="card_template" type="text/x-handlebars-template">
 @{{~#each posts~}}
 <div class="card grid-item hoverable" hidden>
@@ -257,6 +258,10 @@
                         <p>@{{{linkify text}}}</p>
                     </div>
                     <div class="divider"></div>
+                    <div class="divider"></div>
+                    @{{#if (containsLoc loc)}}
+                    <div id="map"></div>
+                    @{{/if}}
                     <div class="section">
                         <ul class="collapsible" data-collapsible="accordion">
                             <li>

@@ -32,6 +32,17 @@ function registerContainsImage() {
     });
 }
 
+function registerMapHelper() {
+    Handlebars.registerHelper("containsLoc", function(loc) {
+        if (loc != null && loc != "") {
+            return true;
+        } else {
+            return false;
+        }
+    });
+}
+
+
 /* page rendering functions */
 
 function compileCardTemplate() {
@@ -447,6 +458,9 @@ function loadHomeJavascriptElements() {
 
 function loadPostJavascriptElements(modal, response) {
     /* called whenever a post modal is opened */
+    dietlah.loc = response['loc'];
+    console.log(response['loc']);
+    initMaps();
     dietlah.postModalOpen = true;
     dietlah.currentPostModalId = response['id'];
     history.pushState({modal:"open"}, "modal", "#modal");
@@ -710,6 +724,28 @@ function registerHandleBarsHelpers() {
     registerTopTagsView();
     registerContainsImage();
     registerCanEditHelper();
+    registerMapHelper();
+}
+
+function initMaps() {
+
+    var map;
+    var marker;
+    var infowindow;
+    var messagewindow;
+
+    if (dietlah.loc != null && dietlah.loc != "") {
+        console.log("making map");
+        pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
+        map = new google.maps.Map(document.getElementById('map'), {
+            center: pos,
+            zoom: 16
+        });
+        var marker = new google.maps.Marker({
+          position: pos,
+          map: map
+        });
+    } 
 }
 
 $(document).ready(function(){

@@ -36,29 +36,31 @@
                 </div>
 
                 <div class="row">
-                    <div class="file-field input-field col s2">
+                    <div class="file-field input-field col s3 l2">
                         <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteImageBtn">
                             Delete
                         </button>
                         <input type="hidden" name="should_delete_image" id="should_delete_image">
                     </div>
-                    <div class="file-field input-field col s10">
+                    <div class="file-field input-field col s9 l10">
                         <div class="btn light-green lighten-1">
                             <span>Image</span>
                             <input type="file" name="image" id="image">
                         </div>
                         <div class="file-path-wrapper">
                             <input class="file-path validate" type="text" id="image-name">
-                            <label for="image-name" style="margin-left:125px">You can add an image to your post (optional)</label>
+                            <label for="image-name" style="padding-left:125px">You can add an image to your post (optional)</label>
                         </div>
                     </div>
                 </div>
 
                 <div class="row">
-                    <div class="input-field  col s12">
-                        <input id="location" type="text" class="validate" disabled value="Work in progress">
-                        <label id="input-validate-label" for="title">Location</label>
-                    </div>
+                    <div id="map"></div>
+                    <label id="input-validate-label" for="map">Place a marker to save a location (optional)</label>
+                    <br>
+                    <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteLocation">
+                        Delete Location
+                    </button>
                 </div>
 
                 <div class="row">
@@ -91,4 +93,5 @@
     <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
     <script type="text/javascript" src="js/materialize-tags.min.js"></script>
     <script type="text/javascript" src="js/editpost.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 @stop
