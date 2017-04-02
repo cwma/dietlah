@@ -352,6 +352,9 @@ function loadPostJavascriptElements() {
         onShow: function(tab) {
             $(tab).find('img').lazyLoadXT();
             $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
+            if($(tab).attr('id') == "post-content") {
+                initMaps();
+            }
         }
     });
     $('.materialboxed').materialbox();
@@ -468,7 +471,6 @@ function initMaps() {
     var messagewindow;
 
     if (dietlah.loc != null && dietlah.loc != "") {
-        console.log("making map");
         pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
         map = new google.maps.Map(document.getElementById('map'), {
             center: pos,
