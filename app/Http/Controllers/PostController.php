@@ -18,7 +18,7 @@ class PostController extends Controller {
 
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
-        $result = ["id" => $post->id, "image"=>Storage::url($post->image), "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
+        $result = ["id" => $post->id,"title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
             "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
             "created_at"=>$post->created_at->diffForHumans(), "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
 
@@ -26,6 +26,15 @@ class PostController extends Controller {
         // TODO: sort by tag count some how
         $result["tags"] = $post->tags->pluck('tag_name');
         $result["tags_count"] = $post->tags->count();
+
+
+        // handle image
+        if($post->image != "") {
+            $result['image'] = Storage::url($post->image);
+        } else {
+            $result['image'] = "";
+        }
+
 
         // for user tags and auto complete
         if(Auth::check()) {
@@ -66,10 +75,8 @@ class PostController extends Controller {
 
 	public function newpost() {
         if (!Auth::check()) {
-            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
-            // change to login screen...
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-        }
+            return redirect()->route('login');
+        } 
 
         // for autocomplete of tags
         // make sure you run composer install
@@ -84,14 +91,19 @@ class PostController extends Controller {
 	public function editpost($postId) {
         $post = Post::with('User')->findOrFail($postId);
 
-        if (!Auth::check() || Auth::id() != $post->user_id) {
-            $response = ["status" => "unsuccessful", "error" => "user not logged in"];
-            // redirect to login?
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        if (!Auth::check()) {
+            return redirect()->route('login');
+        } else if (Auth::id() != $post->user_id) {
+            abort(403, 'you are not authorized to edit this post.');
         }
 
-        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
-            "image"=>Storage::url($post->image), "location"=>$post->location];
+        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)), "location"=>$post->location];
+
+        if($post->image != "") {
+            $result['image'] = Storage::url($post->image);
+        } else {
+            $result['image'] = "";
+        }
 
         // get only tags for this post added by user
         $user_tags = PostTag::with('tag')
@@ -111,7 +123,7 @@ class PostController extends Controller {
 	public function createPost(Request $request) {
         if (!Auth::check()) {
             // only logged in user can create post
-            $response = ["status" => "failed", "reason" => "unauthorized"];
+            $response = ["status" => "failed", "reason" => "you need to be logged in."];
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
