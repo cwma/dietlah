@@ -211,6 +211,8 @@ class HomePageController extends Controller {
                 $result['favourited'] = false;
             }
 
+            $result['current_user_id'] = Auth::user()->id;
+
             $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
             $result['user_tags'] = $userTags;
 

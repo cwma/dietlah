@@ -289,10 +289,14 @@
                     </div>
                     <div class="divider"></div>
                     <div class="section">
+                    @if(Auth::check())
+                        @{{#if (canEdit user_id current_user_id)}}
                             <div class="left">
                                 <a href="/update/@{{id}}"  class="light-green-text">Edit Post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                             </div>
+                        @{{/if}}
+                    @endif
                             <div class="right">
                                 <a href="#report-post-modal"  class="light-green-text" data-postid="@{{id}}">Report this post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>

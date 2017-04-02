@@ -101,10 +101,12 @@
                             </div>
                             <div class="divider"></div>
                             <div class="section">
+                                @if(Auth::check() && Auth::user()->username == $post['username'])
                                     <div class="left">
                                         <a href="/update/{{$post['id']}}"  class="light-green-text">Edit Post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                                     </div>
+                                @endif
                                     <div class="right">
                                         <a href="#report-post-modal"  class="light-green-text" data-postid="{{$post['id']}}">Report this post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
