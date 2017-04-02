@@ -85,7 +85,7 @@ class HomePageController extends Controller {
         } else if ($order == "favourites") {
             $posts = $posts->whereHas('favourites', function($query) use ($userid) {
                 $query->where("user_id", $userid);
-            })->orderBy('created_at', 'desc')->paginate(12);
+            })->orderBy('created_at', 'desc');
         } else {
             $posts = Post::with('tags')->orderBy('created_at', 'desc');
         }
