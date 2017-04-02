@@ -30,18 +30,27 @@ class CommentController extends Controller {
 	}
 
 	public function deleteComment (Request $request){
-		// TODO: validate userid actually owns this comment before deleting!!
+
 		if (Auth::check()){
-			$post_id = Comment::findOrFail($request->comment_id)->post->id;
-			Comment::destroy($request->comment_id);
+			$comment = Comment::findOrFail($request->comment_id);
 
-			$comments_count = Comment::where("post_id", $post_id)->count();
-            $post = Post::findOrFail($post_id);
-            $post->comments_count = $comments_count;
-            $post->save();
+			if(Auth::id() == $comment->user_id) {
 
-	        $response = ["status" => "success", "response" => "comment deleted"];
-	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+				$post_id = $comment->post->id;
+
+				Comment::destroy($request->comment_id);
+
+				$comments_count = Comment::where("post_id", $post_id)->count();
+	            $post = Post::findOrFail($post_id);
+	            $post->comments_count = $comments_count;
+	            $post->save();
+
+		        $response = ["status" => "success", "response" => "comment deleted"];
+		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		    } else {
+		        $response = ["status" => "failed", "reason" => "unauthorized"];
+		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		    }
 		}
         $response = ["status" => "failed", "reason" => "unauthorized"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
@@ -68,14 +77,20 @@ class CommentController extends Controller {
 
 	public function updateComment (Request $request){
 
-		// TODO: validate userid actually owns this comment before updating!!
 		if (Auth::check()){
 			$comment = Comment::findOrFail($request->comment_id);
-			$comment->comment = $request->comment;
-			$comment->save();
 
-	        $response = ["status" => "success", "response" => "comment updated!"];
-	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+			if(Auth::id() == $comment->user_id) {
+
+				$comment->comment = $request->comment;
+				$comment->save();
+
+		        $response = ["status" => "success", "response" => "comment updated!"];
+		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		    } else {
+		        $response = ["status" => "failed", "reason" => "unauthorized"];
+		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		    }
 		}
         $response = ["status" => "failed", "reason" => "unauthorized"];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
