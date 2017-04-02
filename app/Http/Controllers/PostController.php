@@ -16,6 +16,24 @@ use Storage;
 
 class PostController extends Controller {
 
+    // Original PHP code by Chirp Internet: www.chirp.com.au
+    // Please acknowledge use of this code by including this header.
+
+    public function myTruncate($string, $limit, $break=".", $pad="...")
+    {
+      // return with no change if string is shorter than $limit
+      if(strlen($string) <= $limit) return $string;
+
+      // is $break present between $limit and the end of the string?
+      if(false !== ($breakpoint = strpos($string, $break, $limit))) {
+        if($breakpoint < strlen($string) - 1) {
+          $string = substr($string, 0, $breakpoint) . $pad;
+        }
+      }
+
+      return $string;
+    }
+
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
         $result = ["id" => $post->id,"title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
@@ -145,7 +163,7 @@ class PostController extends Controller {
     	$post->title = $request->title;
     	$post->text = $request->text;
     	$post->location = $request->location;
-        $post->summary = 'To be updated';
+        $post->summary = self::myTruncate($request->text, 150);
         $post->likes_count = 0;
         $post->comments_count = 0;
         $post->user_id = $user_id;
@@ -198,7 +216,7 @@ class PostController extends Controller {
         $post->title = $request->title;
         $post->text = $request->text;
     	$post->location = $request->location;
-        $post->summary = 'To be updated';
+        $post->summary = self::myTruncate($request->text, 150);
 
         // store image
         if($request->hasFile('image')) {
