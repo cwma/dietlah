@@ -97,7 +97,7 @@ class PostController extends Controller {
             abort(403, 'you are not authorized to edit this post.');
         }
 
-        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)), "location"=>$post->location];
+        $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>$post->text, "location"=>$post->location];
 
         if($post->image != "") {
             $result['image'] = Storage::url($post->image);
