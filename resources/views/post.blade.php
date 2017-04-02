@@ -101,7 +101,7 @@
                             </div>
                             <div class="divider"></div>
                             <div class="section">
-                                @if(Auth::check() && Auth::user()->username == $post['username'])
+                                @if(Auth::check() && Auth::id() == $post['user_id'])
                                     <div class="left">
                                         <a href="/update/{{$post['id']}}"  class="light-green-text">Edit Post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
