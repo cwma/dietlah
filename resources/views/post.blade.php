@@ -1,6 +1,6 @@
 @extends('template')
 
-@section('title', 'DietLah!')
+@section('title', $post['title'].' - DietLah!')
 
 @section('page-content')
 <div class="container standalone-post-container">
@@ -55,7 +55,7 @@
                                 <div class="article-user left">
                                     <div class="chip white">
                                         <img data-src="{{$post['profile_pic']}}" alt="Contact Person">
-                                        {{$post['username']}}
+                                        <a href="/profile/{{$post['user_id']}}" target="_blank">{{$post['username']}}</a>
                                     </div>
                                 </div>
                                 <div class="article-tag right">

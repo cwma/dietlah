@@ -1,9 +1,21 @@
 @extends('template')
 
-@section('title', 'DietLah!')
+@section('title', 'Viewing '. $user['username'] .' profile - DietLah!')
 
 @section('page-content')
 <div class="container">
+    <div class="row">
+        <div class="center-align">
+            <div class="img-container">
+                <img class="responsive-img materialboxed center-align" style="display:inline" data-src="{{$user['profile_pic']}}">
+            </div>
+        </div>
+        <div class="center-align">
+            <h4>{{$user['username']}}</h4>
+            <p>{{$user['bio']}}</p>
+        </div>
+    </div>
+    <div class="divider"></div>
     <div class="row">
         <div class="cards-container" id="grid" data-columns>
         </div>
@@ -124,7 +136,7 @@
 <script type="text/javascript" src="js/linkify.min.js"></script>
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-<script type="text/javascript" src="js/home.js"></script>
+<script type="text/javascript" src="js/profile.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 <script id="card_template" type="text/x-handlebars-template">
 @{{~#each posts~}}

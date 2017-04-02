@@ -25,7 +25,7 @@ class HomePageController extends Controller {
         JavaScript::put([
             "tags" => $tags
         ]);
-	$request->session()->put('username', 'temp');
+        
         return view('homepage');
     }
 

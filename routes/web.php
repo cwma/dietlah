@@ -37,9 +37,7 @@ Route::group(['prefix'=>'ajax', 'as'=>'ajax::'], function() {
 });
 
 #	User profile page
-Route::get('/profile/{username}', 'ProfileController@viewProfile') -> name('viewprofile');
-
-Route::get('/myprofile/', 'ProfileController@myProfile') -> name('myprofile');
+Route::get('/profile/{userid}', 'ProfileController@viewProfile') -> name('viewprofile');
 
 ####################################################################################
 
@@ -67,6 +65,9 @@ Route::get('/rest/postfeed/{order}/{range}', 'HomePageController@restPostFeed');
 
 #	View according to search ajax endpoint
 Route::get('/rest/search', 'HomePageController@restSearch');
+
+#	View according to search ajax endpoint
+Route::get('/rest/profile/{userid}', 'ProfileController@restProfile');
 
 #	Post content ajax endpoint
 Route::get('/rest/post/{postId}/', 'HomePageController@restPost');
