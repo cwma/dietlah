@@ -37,7 +37,7 @@
                     </div>
                     <div class="file-path-wrapper">
                         <input class="file-path validate" type="text" id="image-name">
-                        <label for="image-name" style="padding-left:125px">You can add an image to your post (optional)</label>
+                        <label id="image-label" for="image-name" style="padding-left:125px">You can add an image to your post (optional)</label>
                     </div>
                 </div>
             </div>
@@ -75,6 +75,7 @@
 @section('scripts')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/createpost.js"></script>

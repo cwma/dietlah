@@ -11,6 +11,12 @@ function handleFormSubmit() {
         rules: {
             title: "required",
             text: "required",
+            image: {
+              extension: "jpeg|jpg|png"
+            }
+        },
+        messages: {
+            image: "Please provide a valid image file: jpeg, jpg, png."
         },
         submitHandler: function(form) {
             showNavLoadingBar();
@@ -23,12 +29,21 @@ function handleFormSubmit() {
                 error: function(e){
                     hideNavLoadingBar();
                     Materialize.toast("There was an error creating this post: " + e.statusText, 4000);
-                    $(form).find(':submit').prop('disabled', false);
+                    $(form).find(':submit').attr('disabled', false);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
-                    Materialize.toast("your post has been created!", 4000);
-                    window.location.href = "/post/" + data['post_id'];
+                    if(data['status'] == 'successful') {
+                        Materialize.toast("your post has been created!", 4000);
+                        window.location.href = "/post/" + data['post_id'];  
+                    } else {
+                        Materialize.toast("We were not able to create the post", 10000);
+                        reasons = data['reason'];
+                        for(i=0; i<reasons.length; i++) {
+                            Materialize.toast(reasons[i], 10000);
+                        }
+                        $(form).find(':submit').attr('disabled', false);
+                    }
                 }
             });
         }
@@ -40,6 +55,10 @@ function setupValidationErrorFormatting() {
         errorClass: 'invalid',
         errorPlacement: function (error, element) {
             $(element).next("label").attr("data-error", error.contents().text());
+            if($(element).attr("name") == "image") {
+                $('#image-label').attr("data-error", error.contents().text());
+                $('#image-name').removeClass("valid").addClass("invalid");
+            }
         }
     });
 }

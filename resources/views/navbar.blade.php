@@ -30,7 +30,6 @@
                         <option value="myposts">My Posts</option>
                         @endif
                         <option value="comments">Comments</option>
-                        <option value="relevance">Relevance</option>
                     </select>
                 </li>
                 <li>&nbsp;</li>

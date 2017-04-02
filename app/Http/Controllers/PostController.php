@@ -131,7 +131,7 @@ class PostController extends Controller {
         $validator = Validator::make($request->all(), [
       		'title' => 'required',
       		'text' => 'required|max:10000',
-            'summary' => 'max:5000',
+            'image' => 'max:2048'
     	]);
 
         if ($validator->fails()) {
@@ -181,6 +181,17 @@ class PostController extends Controller {
         if (!Auth::check() || Auth::id() != $post->user_id) {
             // user can only delete his own post
             $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'text' => 'required|max:10000',
+            'image' => 'max:2048'
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 

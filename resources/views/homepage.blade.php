@@ -137,9 +137,11 @@
             </div>
         </div>
         <div class="article-tag right">
+        @{{#if tag}}
             <div class="chip light-green lighten-3">
                 @{{{tag}}}
             </div>
+        @{{/if}}
         </div>
     </div>
     @{{#if (containsImage image)}}
@@ -297,7 +299,7 @@
                     @if(Auth::check())
                         @{{#if (canEdit user_id current_user_id)}}
                             <div class="left">
-                                <a href="/update/@{{id}}"  class="light-green-text">Edit Post
+                                <a href="/update/@{{id}}"  class="light-green-text" target="_blank">Edit Post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                             </div>
                         @{{/if}}
