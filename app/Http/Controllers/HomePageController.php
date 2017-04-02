@@ -25,7 +25,7 @@ class HomePageController extends Controller {
         JavaScript::put([
             "tags" => $tags
         ]);
-        
+
         return view('homepage');
     }
 
@@ -106,7 +106,7 @@ class HomePageController extends Controller {
 
         $results = [];
         foreach ($posts as $post) {
-            $item = ["title"=>$post->title, "summary"=>$post->summary, "time"=>$post->created_at->diffForHumans(), "id"=>$post->id,
+            $item = ["title"=>$post->title, "summary"=>nl2br(e($post->summary)), "time"=>$post->created_at->diffForHumans(), "id"=>$post->id,
                          "user_id"=>$post->user_id, "profile_pic"=>$post->user->profile_pic,
                          "username"=>$post->user->username, "likes"=>$post->likes_count, 
                          "comments"=>$post->comments_count];
