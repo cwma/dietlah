@@ -79,7 +79,7 @@
             </ul>
         </div>
     </nav>
-    <div class="progress nav-progress light-green lighten-4">
+    <div class="progress nav-progress light-green lighten-4" style="display:none">
         <div class="indeterminate light-green"></div>
     </div>
 </div>
