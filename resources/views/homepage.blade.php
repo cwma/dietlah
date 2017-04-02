@@ -143,7 +143,7 @@
     </div>
     @{{#if (containsImage image)}}
         <div class="card-image" data-postid="@{{{id}}}">
-            <img data-src="storage/images/postimages/@{{{image}}}">
+            <img data-src="@{{{image}}}">
         </div>
     @{{/if}}
     <div class="card-content" data-postid="@{{{id}}}">
@@ -236,7 +236,7 @@
                     @{{#if (containsImage image)}}
                         <div class="center-align">
                             <div class="img-container">
-                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="storage/images/postimages/@{{image}}">
+                                <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="@{{image}}">
                             </div>
                         </div>
                     @{{/if}}

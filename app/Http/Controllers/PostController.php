@@ -12,12 +12,13 @@ use App\Comment;
 use App\Tag;
 use App\PostTag;
 use JavaScript;
+use Storage;
 
 class PostController extends Controller {
 
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
-        $result = ["id" => $post->id, "image"=>$post->image, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
+        $result = ["id" => $post->id, "image"=>Storage::url($post->image), "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
             "location"=>$post->location, "likes_count"=>$post->likes_count, "comments_count"=>$post->comments_count, "user_id"=>$post->user_id,
             "created_at"=>$post->created_at->diffForHumans(), "username"=>$post->user->username, "profile_pic"=>$post->user->profile_pic];
 
@@ -90,7 +91,7 @@ class PostController extends Controller {
         }
 
         $result = ["id"=>$postId, "title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
-            "image"=>$post->image, "location"=>$post->location];
+            "image"=>Storage::url($post->image), "location"=>$post->location];
 
         // get only tags for this post added by user
         $user_tags = PostTag::with('tag')
@@ -139,7 +140,7 @@ class PostController extends Controller {
         // store image
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images/postimages');
-            $post->image = basename($path);
+            $post->image = $path;
         }
 
     	$post->save();
@@ -178,7 +179,7 @@ class PostController extends Controller {
         // store image
         if($request->hasFile('image')) {
             $path = $request->file('image')->store('public/images/postimages');
-            $post->image = basename($path);
+            $post->image = $path;
         } elseif ($request->should_delete_image) {
             $post->image = null;
         }

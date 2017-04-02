@@ -16,7 +16,7 @@
                         @if($post['image'] == '')
                             <img class="responsive-img" id="image-preview" src=""/>
                         @else
-                            <img class="responsive-img" id="image-preview" src="storage/images/postimages/{{$post['image']}}"/>
+                            <img class="responsive-img" id="image-preview" src="{{$post['image']}}"/>
                         @endif
                     </div>
                 </div>

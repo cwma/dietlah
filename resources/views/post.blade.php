@@ -47,7 +47,7 @@
                             @if ($post['image'] != "")
                                 <div class="center-align">
                                     <div class="img-container">
-                                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="storage/images/postimages/{{$post['image']}}">
+                                        <img class="post-modal-image responsive-img materialboxed center-align" style="display:inline" data-src="{{$post['image']}}">
                                     </div>
                                 </div>
                             @endif
