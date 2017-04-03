@@ -7,9 +7,7 @@
     	    <h5>It seems we have encountered an error.</h5>
     	    <h5>Our engineers are trying to fix it.</h5>
     	    <h5>Please try again in awhile.</h5>
-	    <br>
-	    <h6>Error Message:</h6>
-	    <p>{{ get_class($exception) }}: {{ $exception->getMessage() }}</p>
+	    <h6>{{ $exception->getMessage() }}</h6>
 	</div>
     </div>
 </div>
