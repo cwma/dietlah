@@ -13,11 +13,15 @@
 
                 <div class="row">
                     <div class="col s12">
-                        @if($post['image'] == '')
-                            <img class="responsive-img" id="image-preview" src=""/>
-                        @else
-                            <img class="responsive-img" id="image-preview" src="{{$post['image']}}"/>
-                        @endif
+                        <div id="image-preview-container">
+                            @if($post['image'] == '')
+                                <img class="responsive-img" id="image-preview" src=""/>
+                            @else
+                                <img class="responsive-img" id="image-preview" src="{{$post['image']}}"/>
+                            @endif
+                            <span id="image-preview-close">&times;</span>
+                            <input type="hidden" name="should_delete_image" id="should_delete_image">
+                        </div>
                     </div>
                 </div>
 
@@ -36,13 +40,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="file-field input-field col s3 l2">
-                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteImageBtn">
-                            Delete
-                        </button>
-                        <input type="hidden" name="should_delete_image" id="should_delete_image">
-                    </div>
-                    <div class="file-field input-field col s9 l10">
+                    <div class="file-field input-field col s12">
                         <div class="btn light-green lighten-1">
                             <span>Image</span>
                             <input type="file" name="image" id="image">

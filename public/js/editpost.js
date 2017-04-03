@@ -64,19 +64,26 @@ function setupValidationErrorFormatting() {
 }
 
 function initializeImagePreview() {
+    if($('#image-preview').attr('src') != '') {
+        $('#image-preview-container').show();
+    }
+
     $('#image').on('change', function () {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#image-preview').attr('src', e.target.result);
+            $('#image-preview-container').show();
         };
         reader.readAsDataURL(this.files[0]);
     });
 }
 
 function initializeDeleteImageBtn() {
-    $('#deleteImageBtn').click(function(event) {
+    $('#image-preview-close').click(function(event) {
         $('#image-preview').attr('src', '');
+        $('#image-preview-container').hide();
         $('#image').val('');
+        $('#image-name').val('');
         $('#should_delete_image').val(true);
     });
 }
@@ -182,7 +189,7 @@ function initMaps() {
 
 $(document).ready(function(){
     initMaps();
-    $('#create-post').find(':submit').attr('enabled','enabled');
+    $('#update-post').find(':submit').attr('enabled','enabled');
     setupValidationErrorFormatting();
     handleFormSubmit();
     initializeImagePreview();

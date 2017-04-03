@@ -11,7 +11,11 @@
 
             <div class="row">
                 <div class="col s12">
-                    <img class="responsive-img" id="image-preview"/>
+                    <div id="image-preview-container">
+                        <img class="responsive-img" id="image-preview" src=""/>
+                        <span id="image-preview-close">&times;</span>
+                        <input type="hidden" name="should_delete_image" id="should_delete_image">
+                    </div>
                 </div>
             </div>
 
