@@ -64,12 +64,28 @@ function setupValidationErrorFormatting() {
 }
 
 function initializeImagePreview() {
+    if($('#image-preview').attr('src') != '') {
+        $('#image-preview-container').show();
+    }
+
     $('#image').on('change', function () {
         var reader = new FileReader();
         reader.onload = function (e) {
             $('#image-preview').attr('src', e.target.result);
+            $('#image-preview-container').show();
+
         };
         reader.readAsDataURL(this.files[0]);
+    });
+}
+
+function initializeDeleteImageBtn() {
+    $('#image-preview-close').click(function(event) {
+        $('#image-preview').attr('src', '');
+        $('#image-preview-container').hide();
+        $('#image').val('');
+        $('#image-name').val('');
+        $('#should_delete_image').val(true);
     });
 }
 
@@ -137,6 +153,7 @@ $(document).ready(function(){
     setupValidationErrorFormatting();
     handleFormSubmit();
     initializeImagePreview();
+    initializeDeleteImageBtn();
     initializeTagChips();
     hideNavLoadingBar();
 });
