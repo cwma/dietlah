@@ -3,13 +3,13 @@
 @section('title', 'DietLah!')
 
 @section('page-content')
-    <div class="container clearfix body">
+    <div class="container clearfix body chat-container">
         @include('partials.peoplelist')
 
-        <div class="chat">
+        <div class="chat" id="chat-window">
             <div class="chat-header clearfix">
                 @if(isset($user))
-                    <img src="{{@$user->profile_pic}}" alt="avatar" />
+                    <img src="{{@$user->profile_pic}}" alt="avatar" class="active_chat_pic"/>
                 @endif
                 <div class="chat-about">
                     @if(isset($user))
@@ -19,6 +19,7 @@
                     @endif
                 </div>
                 <i class="fa fa-star"></i>
+                <div class="mobile-toggle"><button onclick="togglePeople()">Toggle</button></div>
             </div> <!-- end chat-header -->
 
             @yield('content')
@@ -27,7 +28,7 @@
                 <form action="" method="post" id="talkSendMessage">
                 <textarea name="message-data" id="message-data" placeholder ="Type your message" rows="3"></textarea>
                 <input type="hidden" name="_id" value="{{@request()->route('id')}}">
-                <button type="submit">Send</button>
+                <button type="submit btn btn-success pull-right">Send</button>
             </form>
 
             </div> <!-- end chat-message -->
@@ -36,6 +37,14 @@
 
     </div> <!-- end container -->
 
+    <script>
+        function togglePeople(){
+            var chat = document.getElementById("chat-window");
+            chat.style.display = "none";
+            var people = document.getElementById("people-list");
+            people.style.display = "block";
+        }
+    </script>
 
     <script>
         var __baseUrl = "{{url('/')}}"
@@ -67,5 +76,5 @@
 
     </script>
     {!! talk_live(['user'=>["id"=>auth()->user()->id, 'callback'=>['msgshow']]]) !!}
-    
+
 @stop
