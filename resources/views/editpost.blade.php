@@ -53,12 +53,14 @@
                 </div>
 
                 <div class="row">
-                    <div id="map"></div>
-                    <label id="input-validate-label" for="map">Place a marker to save a location (optional)</label>
-                    <br>
-                    <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteLocation">
-                        Delete Location
-                    </button>
+                    <div class="col s12">
+                        <div id="map"></div>
+                        <label id="input-validate-label" for="map">Place a marker to save a location (optional)</label>
+                        <br>
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 left" type="button" name="action" id="deleteLocation">
+                            Delete Location
+                        </button>
+                    </div>
                 </div>
 
                 <div class="row">
