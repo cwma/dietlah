@@ -9,7 +9,7 @@
     	    <h5>Please try again in awhile.</h5>
 	    <br>
 	    <h6>Error Message:</h6>
-	    <p>{{ $exception->getMessage() }}</p>
+	    <p>{{ get_class($exception) }}: {{ $exception->getMessage() }}</p>
 	</div>
     </div>
 </div>
