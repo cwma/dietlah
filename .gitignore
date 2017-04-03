@@ -11,3 +11,4 @@ Homestead.yaml
 yarn.lock
 sftp-config.json
 composer.json
+storage/posts.index
