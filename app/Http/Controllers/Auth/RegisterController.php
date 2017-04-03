@@ -66,6 +66,7 @@ class RegisterController extends Controller
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
+	    'profile_pic' => 'https://api.adorable.io/avatars/285/'.$data['email'].'.png',
         ]);
     }
 }
