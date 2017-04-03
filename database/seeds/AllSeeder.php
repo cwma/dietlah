@@ -37,7 +37,7 @@ class AllSeeder extends Seeder
 	$faker = Faker\Factory::create();
 	for ($i = 0; $i < $limit; $i++) {
 	    $user = new User;
-	    $user->username = $faker->userName;
+	    $user->username = $faker->unique->userName;
 	    //$user->email = $faker->unique->freeEmail;
 	    $user->email = "test".$i."@dietlah.sg";
 	    $user->password = Hash::make('test');
