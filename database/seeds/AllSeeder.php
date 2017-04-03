@@ -40,7 +40,7 @@ class AllSeeder extends Seeder
 	    $user->username = $faker->unique->userName;
 	    $user->email = "test".$i."@dietlah.sg";
 	    $user->password = Hash::make('test');
-	    $user->profile_pic = "https://api.adorable.io/avatars/285/".$user->email.".png";
+	    $user->profile_pic = "https://api.adorable.io/avatars/285/".$user->username.".png";
 	    $user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	    $user->save();
 	}
@@ -49,7 +49,7 @@ class AllSeeder extends Seeder
 	$user->username = "admin";
 	$user->email = "admin@dietlah.sg";
 	$user->password = Hash::make("admin123");
-	$user->profile_pic = "https://api.adorable.io/avatars/285/".$user->email.".png";
+	$user->profile_pic = "https://api.adorable.io/avatars/285/".$user->username.".png";
 	$user->bio = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	$user->is_admin = true;
 	$user->save();
