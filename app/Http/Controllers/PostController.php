@@ -53,7 +53,6 @@ class PostController extends Controller {
             $result['image'] = "";
         }
 
-
         // for user tags and auto complete
         if(Auth::check()) {
             $userid = Auth::user()->id;

@@ -166,7 +166,6 @@ class HomePageController extends Controller {
                 $item['image'] = "";
             }
 
-
             if ($auth) {
                 $likers = $post->likes->pluck('id', 'user_id')->all();
                 if(array_key_exists($userid, $likers)) {

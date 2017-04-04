@@ -37,7 +37,13 @@ Route::group(['prefix'=>'ajax', 'as'=>'ajax::'], function() {
 });
 
 #	User profile page
-Route::get('/profile/{userid}', 'ProfileController@viewProfile') -> name('viewprofile');
+Route::get('/profile/{userid}', 'ProfileController@viewProfile') -> name('profile.view');
+
+Route::get('/myprofile', 'ProfileController@myProfile') -> name('profile.my');
+
+Route::get('/editprofile', 'ProfileController@editProfile') -> name('profile.edit');
+
+Route::post('/rest/updateprofile', 'ProfileController@updateProfile'); 
 
 ####################################################################################
 

@@ -5,15 +5,30 @@
 @section('page-content')
 <div class="container">
     <div class="row">
-        <div class="center-align">
-            <div class="img-container">
-                <img class="responsive-img materialboxed center-align" style="display:inline" data-src="{{$user['profile_pic']}}">
+        <div class="container profile-container">
+            <div class="center-align">
+                <div class="img-container">
+                    <img class="responsive-img materialboxed center-align" style="display:inline" data-src="{{$user['profile_pic']}}">
+                </div>
             </div>
-        </div>
-        <div class="center-align">
-            <h4>{{$user['username']}}</h4>
-            <p>{{$user['bio']}}</p>
-            <a href="{{route('message.read', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
+            <div class="center-align">
+                <h4>{{$user['username']}}</h4>
+                <p>{!! nl2br(e($user['bio'])) !!}</p>
+                @if(Auth::check())
+                    <div class="right">
+                        <a href="{{route('message.read', ['id'=>$user->id])}}" class="light-green-text">Send Message
+                        <i class="material-icons light-green-text left" style="vertical-align:middle">mail</i></a>
+                    </div>
+                @endif
+                @if(Auth::check() && Auth::id() == $user['id'])
+                    <div class="left">
+                        <a href="/editprofile"  class="light-green-text">Edit Profile
+                        <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
+                        </a>
+                    </div>
+                @endif
+
+            </div>
         </div>
     </div>
     <div class="divider"></div>
