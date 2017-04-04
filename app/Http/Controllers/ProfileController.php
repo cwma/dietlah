@@ -79,43 +79,45 @@ class ProfileController extends Controller {
 
 	public function updateProfile(Request $request){
     	if(Auth::check()) {
-	    	$user = Auth::user();
+    		DB::transaction(function () use (&$request) {
+		    	$user = Auth::user();
 
-	        $validator = Validator::make($request->all(), [
-	            'bio' => 'required|max:5000',
-	            'image' => 'max:8192'
-	        ]);
+		        $validator = Validator::make($request->all(), [
+		            'bio' => 'required|max:5000',
+		            'image' => 'max:8192'
+		        ]);
 
 
-	        if ($validator->fails()) {
-	            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-	            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-	        }
+		        if ($validator->fails()) {
+		            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+		            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+		        }
 
-	        if($request->hasFile('image')) {
-	            $path = $request->file('image')->store('public/images/profile');
-	            $image = Image::make(storage_path().'/app/'.$path);
+		        if($request->hasFile('image')) {
+		            $path = $request->file('image')->store('public/images/profile');
+		            $image = Image::make(storage_path().'/app/'.$path);
 
-	            if ($image->height() > 640) {
-		            $image->resize(null, 640, function ($constraint) {
-					    $constraint->aspectRatio();
-					});
-				}
-				if ($image->width() > 640) {
-					$image->resize(640, null, function ($constraint) {
-					    $constraint->aspectRatio();
-					});
-				}
-	            $image->save(storage_path().'/app/'.$path);
+		            if ($image->height() > 640) {
+			            $image->resize(null, 640, function ($constraint) {
+						    $constraint->aspectRatio();
+						});
+					}
+					if ($image->width() > 640) {
+						$image->resize(640, null, function ($constraint) {
+						    $constraint->aspectRatio();
+						});
+					}
+		            $image->save(storage_path().'/app/'.$path);
 
-	            $user->profile_pic = Storage::url($path);
-	        } elseif ($request->should_delete_image) {
-	        	$identicon = new Identicon();
-	            $user->profile_pic = $identicon->getImageDataUri($user->username);
-	        }
+		            $user->profile_pic = Storage::url($path);
+		        } elseif ($request->should_delete_image) {
+		        	$identicon = new Identicon();
+		            $user->profile_pic = $identicon->getImageDataUri($user->username);
+		        }
 
-	    	$user->bio = $request->bio;
-	    	$user->save();
+		    	$user->bio = $request->bio;
+		    	$user->save();
+		    });
 
 	    	$response = ["status" => "successful"];
 	    	return response(json_encode($response)) ->header('Content-Type', 'application/json');
