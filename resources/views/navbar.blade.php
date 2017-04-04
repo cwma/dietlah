@@ -5,6 +5,7 @@
             <li><a href="{{ route('register') }}">Register</a></li>
         @else
             <li><a href="{{ route('profile.my') }}">My Profile</a></li>
+            <li><a href="{{ route('message.read') }}">Messages</a></li>
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -61,12 +62,12 @@
                     <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
                 </li>
                 @endif
-                <li>
-                    <a class="tooltipped" href="#" data-position="bottom" data-delay="50" data-tooltip="About DietLah!">
+                <li class="{{Route::currentRouteNamed('about') ? 'active' : '' }}">
+                    <a class="tooltipped" href="/about" data-position="bottom" data-delay="50" data-tooltip="About DietLah!">
                         <i class="material-icons">info</i>
                     </a>
                 </li>
-                <li>
+                <li class="{{Route::currentRouteNamed('post.create') ? 'active' : '' }}">
                     <a class="tooltipped" href="/createpost" data-position="bottom" data-delay="50" data-tooltip="Create new post">
                         <i class="material-icons">create</i>
                     </a>
@@ -134,8 +135,8 @@
             <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
         </li>
         @endif
-        <li><a href="/"><b>About DietLah!</b><i class="material-icons left">info</i></a></li>
-        <li><a href="/createpost"><b>Create Post</b><i class="material-icons left">create</i></a></li>
+        <li class="{{Route::currentRouteNamed('about') ? 'active' : '' }}"><a href="/about"><b>About DietLah!</b><i class="material-icons left">info</i></a></li>
+        <li class="{{Route::currentRouteNamed('post.create') ? 'active' : '' }}"><a href="/createpost"><b>Create Post</b><i class="material-icons left">create</i></a></li>
         <li class="no-padding">
             <ul class="collapsible collapsible-accordion">
                 <li>
@@ -148,7 +149,8 @@
                             <li style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
                             <li style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
                         @else
-                            <li style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
+                            <li class="{{Route::currentRouteNamed('profile.my') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
+                            <li class="{{Route::currentRouteNamed('message.read') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('message.read') }}">Messages</a></li>
                             <li style="padding-left:43px">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

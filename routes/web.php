@@ -25,11 +25,8 @@ Route::get('/update/{postid}', 'PostController@editpost') -> name('post.edit');
 
 ############################
 
-#   start a new conversation
-Route::get('/newmessage', 'MessageController@displayContacts') -> name('newmessage');
-
 #	view and send messages
-Route::get('message/{id}', 'MessageController@chatHistory')->name('message.read');
+Route::get('message/{id?}', 'MessageController@chatHistory')->name('message.read');
 
 Route::group(['prefix'=>'ajax', 'as'=>'ajax::'], function() {
    Route::post('message/send', 'MessageController@ajaxSendMessage')->name('message.new');
@@ -44,6 +41,10 @@ Route::get('/myprofile', 'ProfileController@myProfile') -> name('profile.my');
 Route::get('/editprofile', 'ProfileController@editProfile') -> name('profile.edit');
 
 Route::post('/rest/updateprofile', 'ProfileController@updateProfile'); 
+
+Route::get('/about', function () {
+	return view('about');
+}) ->name('about');
 
 ####################################################################################
 

@@ -57,26 +57,37 @@ class MessageController extends Controller {
         }
     }
 
-    public function chatHistory($id)
+    public function chatHistory($id = null)
     {
-        $conversations = Talk::getMessagesByUserId($id);
-        $user = '';
-        $messages = [];
-        if(!$conversations) {
-            $user = User::find($id);
+        if($id != null) {
+            $conversations = Talk::getMessagesByUserId($id);
+            $user = '';
+            $messages = [];
+            if(!$conversations) {
+                $user = User::find($id);
+            } else {
+                $user = $conversations->withUser;
+                $messages = $conversations->messages;
+            }
+
+            Talk::setAuthUserId(Auth::user()->id);
+
+            View::composer('partials.peoplelist', function($view) {
+                $threads = Talk::threads();
+                $view->with(compact('threads'));
+            });
+
+            return view('messages.conversations', compact('messages', 'user', 'threads'));
         } else {
-            $user = $conversations->withUser;
-            $messages = $conversations->messages;
+            Talk::setAuthUserId(Auth::user()->id);
+
+            View::composer('partials.peoplelist', function($view) {
+                $threads = Talk::threads();
+                $view->with(compact('threads'));
+            }); 
+            $messages =[];
+            return view('messages.conversations', compact('messages', 'threads'));
         }
-
-        Talk::setAuthUserId(Auth::user()->id);
-
-        View::composer('partials.peoplelist', function($view) {
-            $threads = Talk::threads();
-            $view->with(compact('threads'));
-        });
-
-        return view('messages.conversations', compact('messages', 'user', 'threads'));
     }
 
     public function ajaxSendMessage(Request $request)

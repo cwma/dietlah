@@ -58,7 +58,7 @@
 
             </div> <!-- end chat-history -->
 
-
+            @if(isset($user))
             <div class="chat-message">
                 <form action="" method="post" id="talkSendMessage">
                     <div class="input-field col s12">
@@ -70,6 +70,7 @@
                     </div>
                 </form>
             </div> <!-- end chat-message -->
+            @endif
 
         </div> <!-- end chat -->
 
