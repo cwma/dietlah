@@ -327,12 +327,12 @@
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                             </div>
                         @{{/if}}
-                    @endif
                             <div class="right">
                                 <a href="#report-post-modal"  class="light-green-text" data-postid="@{{id}}">Report this post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                             </div>
                         </a>
+                    @endif
                     </div>
                 </div>
 
@@ -483,11 +483,11 @@
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
-                @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment"
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                 </a>
+                @endif
             </p>
         </li>
     @{{~/each}}
