@@ -14,7 +14,7 @@ class CreateSchema extends Migration
     public function up()
     {
 	Schema::table('users', function(Blueprint $table) {
-	    $table->string('profile_pic')->nullable();
+	    $table->longText('profile_pic')->nullable();
 	    $table->string('bio')->nullable();
 	    $table->boolean('is_admin')->default(false);
 	});

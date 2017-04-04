@@ -62,11 +62,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+	$identicon = new \Identicon\Identicon();
+	$imageDataUri = $identicon->getImageDataUri($data['username']);
         return User::create([
             'username' => $data['username'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-	    'profile_pic' => 'https://api.adorable.io/avatars/285/'.$data['username'].'.png',
+	    'profile_pic' => $imageDataUri,
         ]);
     }
 }
