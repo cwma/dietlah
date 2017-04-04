@@ -170,6 +170,8 @@
             <div class="chip light-green lighten-3">
                 @{{{tag}}}
             </div>
+        @{{else}}
+            <span style="margin-right: 10px; line-height:2">No Tags</span>
         @{{/if}}
         </div>
     </div>
