@@ -1,10 +1,10 @@
-<li class="clearfix" id="message-{{$message->id}}">
+<li class="clearfix right-align" id="message-{{$message->id}}">
     <div class="message-data align-right">
+        <span class="message-data-name" >{{$message->sender->username}}</span> -
         <span class="message-data-time" >{{$message->humans_time}} ago</span> &nbsp; &nbsp;
-        <span class="message-data-name" >{{$message->sender->name}}</span>
-        <a href="#" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Message"><i class="fa fa-close"></i></a>
+        <a href="" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Message"><i class="material-icons right">close</i></a>
     </div>
-    <div class="message other-message float-right">
+    <div class="message other-message light-green lighten-3">
         {{$message->message}}
     </div>
 </li>

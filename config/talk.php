@@ -6,7 +6,7 @@ return [
     ],
     'broadcast' => [
         'enable' => false,
-        'app_name' => 'dietlah',
+        'app_name' => '',
         'pusher' => [
             'app_id' => '',
             'app_key' => '',

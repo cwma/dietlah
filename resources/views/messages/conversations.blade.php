@@ -7,12 +7,12 @@
             @foreach($messages as $message)
                 @if($message->sender->id == auth()->user()->id)
                     <li class="clearfix" id="message-{{$message->id}}">
-                        <div class="message-data align-right">
+                        <div class="message-data right">
                             <span class="message-data-name" >{{$message->sender->username}}</span> -
                             <span class="message-data-time" >{{$message->humans_time}} ago</span> &nbsp; &nbsp;
                             <a href="#" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Message"><i class="fa fa-close"></i></a>
                         </div>
-                        <div class="message other-message float-right">
+                        <div class="message other-message right">
                             {{$message->message}}
                         </div>
                     </li>
