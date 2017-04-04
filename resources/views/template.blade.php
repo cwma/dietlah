@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.0.0/jquery.lazyloadxt.fadein.css">
         <link rel="stylesheet" href="css/materialize-tags.min.css">
         <link rel="stylesheet" href="css/dietlah.css">
+        <link rel="icon" href="favicon.ico" type="image/x-icon">
         @yield('stylesheets')
         <title>@yield('title')</title>
     </head>

@@ -115,6 +115,18 @@
   margin-bottom: -7px;
 }
 
+.logo {
+  margin-top: 7px;
+  height: 32px !important;
+  width: 32px !important;
+  margin-bottom: -7px;
+  margin-right: 5px;
+}
+
+.logo-text {
+  font-size: 20px;
+}
+
 @media screen and (min-width: 601px){
     .navbar-fixed {
       height: 48px;

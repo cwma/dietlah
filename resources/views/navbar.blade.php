@@ -20,7 +20,7 @@
     <nav class="light-green lighten-1">
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="/"><b>DietLah!</b><i class="material-icons left">cloud</i></a></li>
+                <li><a href="/"><img class="logo" src="logo.png"><span class="logo-text">DietLah!</span></a></li>
                 @if (Route::currentRouteNamed('home.default'))
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-order-select" class="post-filter">
@@ -92,7 +92,7 @@
         @if(Auth::check())
         <li>
             <div class="userView">
-                <div class="background" style="background-color: #c5e1a5">
+                <div class="background" style="background-color: #9ccc65">
                 </div>
                 <a href="{{ route('profile.my') }}"><img src="{{$user['profile_pic']}}" class="circle"></a>
                 <a href="{{ route('profile.my') }}"><span class="white-text name">{{$user['username']}}</span></a>
