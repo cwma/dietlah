@@ -128,7 +128,7 @@ function initializeHomeModals() {
         complete: function(modal) { 
             clearPost(modal);
             $('#comments-marker').off();
-            history.pushState({not_modal:""}, "modal", "/");
+            history.pushState({not_modal:""}, "modal", dietlah.currenturl);
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -630,7 +630,7 @@ function reinitializeCommentsScroll() {
     $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
 }
 
-function reinitializeInfiniteScroll() {
+function reinitializeInfiniteScroll(push) {
     dietlah.page = 1;
     if(dietlah.pageScrollDisabled){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
@@ -638,6 +638,21 @@ function reinitializeInfiniteScroll() {
     var order = $("#post-order-select").val();
     var range = $("#post-range-select").val();
     var tags = $("#post-tag-select").val();
+    var newurl = "/view/"+order+"/"+range;
+    if(tags!=null) {
+        newurl += "?";
+        for(i=0; i<tags.length; i++) {
+            if(i != 0){
+                newurl+="&";
+            }
+            newurl+="tags[]="+tags[i]
+        }
+    }
+    dietlah.currenturl = newurl;
+    if(push) {
+        history.pushState({main:{order:order, range:range, tags:tags}}, "DietLah!", newurl);
+    }
+
     $('#marker').off();
     $('.end-of-page').hide();
     $('.cards-container').children().html("")
@@ -645,10 +660,15 @@ function reinitializeInfiniteScroll() {
     $.event.trigger("resize"); // shitty hack, to trigger the detection of marker when reloading page
 }
 
-function reinitializeInfiniteScrollSearch() {
+function reinitializeInfiniteScrollSearch(push) {
     dietlah.page = 1;
     if(dietlah.pageScrollDisabled){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+    }
+    var newurl = "/search?params="+$('#nav-search').val();
+    dietlah.currenturl = newurl;
+    if(push) {
+        history.pushState({search:{params: $('#nav-search').val()}}, "DietLah!", newurl);
     }
     $('#marker').off();
     $('.end-of-page').hide();
@@ -662,29 +682,39 @@ function setupPostsFiltering() {
     $('#post-order-select, #post-order-select-mobile').on('change', function(e) {
         $('#post-order-select, #post-order-select-mobile').val(this.value);
         $('#post-order-select, #post-order-select-mobile').material_select();
-        reinitializeInfiniteScroll();
+        reinitializeInfiniteScroll(true);
     });
     $('#post-range-select, #post-range-select-mobile').on('change', function(e) {
         $('#post-range-select, #post-range-select-mobile').val(this.value);
         $('#post-range-select, #post-range-select-mobile').material_select();
-        reinitializeInfiniteScroll();
+        reinitializeInfiniteScroll(true);
     });
     $('#post-tag-select, #post-tag-select-mobile').on('change', function(e) {
+        console.log($(this).val());
         $('#post-tag-select, #post-tag-select-mobile').val($(this).val());
         if($(this).attr("id") == "post-tag-select") {
             $('#post-tag-select-mobile').material_select();
         } else {
             $('#post-tag-select').material_select();
         }
-        reinitializeInfiniteScroll();
+        reinitializeInfiniteScroll(true);
     });
+}
+
+function setupMenu() {
+    $('#post-order-select, #post-order-select-mobile').val(dietlah.filter.order);
+    $('#post-order-select, #post-order-select-mobile').material_select();
+    $('#post-range-select, #post-range-select-mobile').val(dietlah.filter.range);
+    $('#post-range-select, #post-range-select-mobile').material_select();
+    $('#post-tag-select, #post-tag-select-mobile').val(dietlah.filter.tags);
+    $('#post-tag-select, #post-tag-select-mobile').material_select();
 }
 
 function setupSearch() {
     $('#nav-search, #nav-search-mobile').on('keypress', function (e) {
         if(e.which === 13){
             $('#nav-search, #nav-search-mobile').val($(this).val())
-            reinitializeInfiniteScrollSearch();
+            reinitializeInfiniteScrollSearch(true);
         }
     });
 }
@@ -699,7 +729,18 @@ function overrideBackButtonForModal(){
             } else {
                 $("#postmodal").modal('close');
             }
-        } 
+        } else {
+            if(history.state.hasOwnProperty('main')) {
+                dietlah.filter.order = history.state.main.order;
+                dietlah.filter.range = history.state.main.range;
+                dietlah.filter.tags = history.state.main.tags;
+                setupMenu();
+                reinitializeInfiniteScroll(false);
+            } else if (history.state.hasOwnProperty('search')){
+                $('#nav-search').val(history.state.search.params);
+                reinitializeInfiniteScrollSearch(false);
+            }
+        }
     });
 }
 
@@ -770,6 +811,13 @@ function initMaps() {
 }
 
 $(document).ready(function(){
+    if(!dietlah.filter.search){
+        history.replaceState({main:{order:dietlah.filter.order, range:dietlah.filter.range, tags:dietlah.filter.tags}}, "page");
+        dietlah.currenturl = window.location.pathname;
+    } else {
+       history.replaceState({search:{params:dietlah.filter.params}}, "page"); 
+       dietlah.currenturl = window.location.pathname + window.location.search;
+    }
     registerHandleBarsHelpers();
     setupValidationErrorFormatting();
     overrideBackButtonForModal();
@@ -781,7 +829,12 @@ $(document).ready(function(){
     dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';
-    initializeInfiniteScroll("new", "all", []);
+    if(!dietlah.filter.search) {
+        initializeInfiniteScroll(dietlah.filter.order, dietlah.filter.range, dietlah.filter.tags);
+    } else {
+        initializeInfiniteScrollSearch(dietlah.filter.params);
+    }
     setupPostsFiltering();
+    setupMenu();
     setupSearch();
 });

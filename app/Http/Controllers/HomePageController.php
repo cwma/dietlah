@@ -23,7 +23,30 @@ class HomePageController extends Controller {
         $tags = Tag::all()->pluck("tag_name");
 
         JavaScript::put([
-            "tags" => $tags
+            "tags" => $tags,
+            "filter"=>["order"=>"new", "range"=>"all", "tags"=>[]]
+        ]);
+
+        return view('homepage');
+    }
+
+    public function indexFiltered($sort, $range, Request $request, $page = 1) {
+        $tags = Tag::all()->pluck("tag_name");
+
+        JavaScript::put([
+            "tags" => $tags,
+            "filter"=>["search"=>false, "order"=>$sort, "range"=>$range, "tags"=>$request->tags]
+        ]);
+
+        return view('homepage');
+    }
+
+    public function indexSearch(Request $request) {
+        $tags = Tag::all()->pluck("tag_name");
+
+        JavaScript::put([
+            "tags" => $tags,
+            "filter"=>["search"=>"true", "params"=>$request->params]
         ]);
 
         return view('homepage');
@@ -64,11 +87,11 @@ class HomePageController extends Controller {
 
         // handle range
         if($range == "today"){
-            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subDay());
+            $posts = $posts->where('created_at', '>=', Carbon::now()->subDay());
         } else if ($range == "week") {
-            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subWeek());
+            $posts = $posts->where('created_at', '>=', Carbon::now()->subWeek());
         } else if ($range == "month") {
-            $posts = $posts->whereDate('created_at', '>=', Carbon::now()->subMonth());
+            $posts = $posts->where('created_at', '>=', Carbon::now()->subMonth());
         } 
 
         // handle $order

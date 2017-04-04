@@ -22,7 +22,7 @@
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left hide-on-med-and-down">
                 <li><a href="/"><img class="logo" src="logo.png"><span class="logo-text">DietLah!</span></a></li>
-                @if (Route::currentRouteNamed('home.default'))
+                @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-order-select" class="post-filter">
                         <option value="new" selected>New</option>
@@ -56,7 +56,7 @@
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                @if (Route::currentRouteNamed('home.default'))
+                @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
                 <li class="input-field">
                     <input id="nav-search" type="search" placeholder="search posts" name="nav-search">
                     <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
