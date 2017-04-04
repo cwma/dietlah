@@ -4,6 +4,7 @@
             <li><a href="{{ route('login') }}">Login</a></li>
             <li><a href="{{ route('register') }}">Register</a></li>
         @else
+            <li><a href="{{ route('profile.my') }}">My Profile</a></li>
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -72,7 +73,11 @@
                 </li>
                 <li>
                     <a class="dropdown-button" href="#!" data-activates="accountdropdown">
-                        <i class="material-icons">account_box</i>
+                        @if(Auth::check())
+                            <img src="{{$user['profile_pic']}}" class="circle nav-image">
+                        @else
+                            <i class="material-icons">account_box</i>
+                        @endif
                     </a>
                 </li>
             </ul>
@@ -84,6 +89,16 @@
 </div>
 <div class="navbar-mobile">
     <ul id="slide-out" class="side-nav">
+        @if(Auth::check())
+        <li>
+            <div class="userView">
+                <div class="background" style="background-color: #c5e1a5">
+                </div>
+                <a href="{{ route('profile.my') }}"><img src="{{$user['profile_pic']}}" class="circle"></a>
+                <a href="{{ route('profile.my') }}"><span class="white-text name">{{$user['username']}}</span></a>
+            </div>
+        </li>
+        @endif
         <li class="{{Route::currentRouteNamed('home.default') ? 'active' : '' }}"><a href="/"><b>Home</b><i class="material-icons left">home</i></a></li>
         @if (Route::currentRouteNamed('home.default'))
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
@@ -124,13 +139,16 @@
         <li class="no-padding">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header">Account<i class="material-icons">account_box</i></a>
+                    <a class="collapsible-header">Account
+                        <i class="material-icons">account_box</i>
+                    </a>
                     <div class="collapsible-body" style="padding:0px!important">
                         <ul>
                          @if (Auth::guest())
                             <li style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
                             <li style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            <li style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
                             <li style="padding-left:43px">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

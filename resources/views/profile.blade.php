@@ -5,6 +5,7 @@
 @section('page-content')
 <div class="container">
     <div class="row">
+        <br>
         <div class="container profile-container">
             <div class="center-align">
                 <div class="img-container">
