@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\DB;
 use App\Post;
 use App\Like;
 use App\Favourite;
@@ -13,6 +14,9 @@ use App\Tag;
 use App\PostTag;
 use JavaScript;
 use Storage;
+use Image;
+
+
 
 class PostController extends Controller {
 
@@ -139,96 +143,140 @@ class PostController extends Controller {
     }
 
 	public function createPost(Request $request) {
-        if (!Auth::check()) {
-            // only logged in user can create post
-            $response = ["status" => "failed", "reason" => "you need to be logged in."];
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-        }
+        $returnid;
+        DB::transaction(function () use (&$request, &$returnid) {
+            if (!Auth::check()) {
+                // only logged in user can create post
+                $response = ["status" => "failed", "reason" => "you need to be logged in."];
+                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
 
-        $validator = Validator::make($request->all(), [
-      		'title' => 'required',
-      		'text' => 'required|max:10000',
-            'image' => 'max:2048'
-    	]);
+            $validator = Validator::make($request->all(), [
+          		'title' => 'required',
+          		'text' => 'required|max:10000',
+                'image' => 'max:8192'
+        	]);
 
-        if ($validator->fails()) {
-            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-        }
+            if ($validator->fails()) {
+                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
 
-        $user_id = Auth::id();
+            $user_id = Auth::id();
 
-    	$post = new Post;
-    	$post->title = $request->title;
-    	$post->text = $request->text;
-    	$post->location = $request->location;
-        $post->summary = self::myTruncate($request->text, 150);
-        $post->likes_count = 0;
-        $post->comments_count = 0;
-        $post->user_id = $user_id;
+        	$post = new Post;
+        	$post->title = $request->title;
+        	$post->text = $request->text;
+        	$post->location = $request->location;
+            $post->summary = self::myTruncate($request->text, 150);
+            $post->likes_count = 0;
+            $post->comments_count = 0;
+            $post->user_id = $user_id;
 
-        // store image
-        if($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/images/postimages');
-            $post->image = $path;
-        }
+            // store image
+            try {
+                if($request->hasFile('image')) {
+                    $path = $request->file('image')->store('public/images/postimages');
+                    $image = Image::make(storage_path().'/app/'.$path);
 
-    	$post->save();
-    	$post_id = $post->id;
+                    if ($image->height() > 1080) {
+                        $image->resize(null, 1080, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    }
+                    if ($image->width() > 1920) {
+                        $image->resize(1920, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    }
+                    $image->save(storage_path().'/app/'.$path);
 
-    	// add tags if there are tags
-        $tags = $request->has('tags') ? $request->tags : array();
-        foreach ($tags as $tagname) {
-            $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
-            $post_tag = new PostTag;
-            $post_tag->user_id = $user_id;
-            $post_tag->post_id = $post_id;
-            $post_tag->tag_id = $tag->id;
-            $post_tag->save();
-        }
+                    $post->image = $path;
+                }
+            } catch (\Intervention\Image\Exception\NotReadableException $e) {
+                 $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+                 return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
 
-        $response = ["status" => "successful", "post_id" => $post->id];
+        	$post->save();
+        	$post_id = $post->id;
+
+        	// add tags if there are tags
+            $tags = $request->has('tags') ? $request->tags : array();
+            foreach ($tags as $tagname) {
+                $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
+                $post_tag = new PostTag;
+                $post_tag->user_id = $user_id;
+                $post_tag->post_id = $post_id;
+                $post_tag->tag_id = $tag->id;
+                $post_tag->save();
+            }
+
+            $returnid = $post->id;
+        });
+
+        $response = ["status" => "successful", "post_id" => $returnid];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 
 	public function updatePost(Request $request) {
-        $post_id = $request->post_id;
-        $post = Post::findOrFail($post_id);
+        $returnid;
+        DB::transaction(function () use (&$request, &$returnid) {
+            $post_id = $request->post_id;
+            $post = Post::findOrFail($post_id);
 
-        if (!Auth::check() || Auth::id() != $post->user_id) {
-            // user can only delete his own post
-            $response = ["status" => "failed", "reason" => "unauthorized"];
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-        }
+            if (!Auth::check() || Auth::id() != $post->user_id) {
+                // user can only delete his own post
+                $response = ["status" => "failed", "reason" => "unauthorized"];
+                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
 
-        $validator = Validator::make($request->all(), [
-            'title' => 'required',
-            'text' => 'required|max:10000',
-            'image' => 'max:2048'
-        ]);
+            $validator = Validator::make($request->all(), [
+                'title' => 'required',
+                'text' => 'required|max:10000',
+                'image' => 'max:8192'
+            ]);
 
-        if ($validator->fails()) {
-            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-        }
+            if ($validator->fails()) {
+                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
 
-        $post->title = $request->title;
-        $post->text = $request->text;
-    	$post->location = $request->location;
-        $post->summary = self::myTruncate($request->text, 150);
+            $post->title = $request->title;
+            $post->text = $request->text;
+        	$post->location = $request->location;
+            $post->summary = self::myTruncate($request->text, 150);
 
-        // store image
-        if($request->hasFile('image')) {
-            $path = $request->file('image')->store('public/images/postimages');
-            $post->image = $path;
-        } elseif ($request->should_delete_image) {
-            $post->image = null;
-        }
+            // store image
+            if($request->hasFile('image')) {
+                $path = $request->file('image')->store('public/images/postimages');
+                $image = Image::make(storage_path().'/app/'.$path);
 
-        $post->save();
-        $this->updateTags(Auth::id(), $post_id, $request->tags);
+                if ($image->height() > 1080) {
+                    $image->resize(null, 1080, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                }
+                if ($image->width() > 1920) {
+                    $image->resize(1920, null, function ($constraint) {
+                        $constraint->aspectRatio();
+                    });
+                }
+                $image->save(storage_path().'/app/'.$path);
 
-        $response = ["status" => "successful", "post_id" => $post_id];
+                $post->image = $path;
+            } elseif ($request->should_delete_image) {
+                $post->image = null;
+            }
+
+            $post->save();
+            $this->updateTags(Auth::id(), $post_id, $request->tags);
+
+            $returnid = $post_id;
+        });
+
+
+        $response = ["status" => "successful", "post_id" => $returnid];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
     }
 
