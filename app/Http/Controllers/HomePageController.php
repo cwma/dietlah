@@ -151,8 +151,11 @@ class HomePageController extends Controller {
             $userid = Auth::user()->id;
         }
 
-        $posts = Post::search($request->search)->paginate(12);
-
+        if($request->search != "") {
+            $posts = Post::search($request->search)->paginate(12);
+        } else {
+            $posts = Post::with('tags')->orderBy('created_at', 'desc')->paginate(12);
+        }
         $results = [];
         foreach ($posts as $post) {
             $item = ["title"=>$post->title, "summary"=>nl2br(e($post->summary)), "time"=>$post->created_at->diffForHumans(), "id"=>$post->id,
