@@ -13,6 +13,7 @@
         <div class="center-align">
             <h4>{{$user['username']}}</h4>
             <p>{{$user['bio']}}</p>
+            <a href="{{route('message.read', ['id'=>$user->id])}}" class="btn btn-success pull-right">Send Message</a>
         </div>
     </div>
     <div class="divider"></div>
@@ -213,27 +214,27 @@
                 <ul class="tabs tabs-fixed-width">
                     <li class="tab">
                         <a href="#post-content">
-                            <span class="light-green-text">Details</span> 
+                            <span class="light-green-text">Details</span>
                         </a>
                     </li>
                     <li class="tab">
                         <a href="#post-comments" class="tooltipped light-green-text post" data-position="bottom" data-delay="50" data-tooltip="Comments">
                             <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
-                            <span class="light-green-text">(@{{comments_count}})</span> 
+                            <span class="light-green-text">(@{{comments_count}})</span>
                         </a>
                     </li>
                     @if (Auth::check())
                     <li class="tab">
                         <a href="#post-tags" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
                             <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
-                            <span class="light-green-text">(@{{tags_count}})</span> 
+                            <span class="light-green-text">(@{{tags_count}})</span>
                         </a>
                     </li>
                     @else
                     <li class="tab">
                         <a href="/login" target="_self" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
                             <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
-                            <span class="light-green-text">(@{{tags_count}})</span> 
+                            <span class="light-green-text">(@{{tags_count}})</span>
                         </a>
                     </li>
                     @endif
@@ -423,7 +424,7 @@
             @endif
 
             <div class="col s3 center">
-                <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="open post in new window" 
+                <a class="tooltipped light-green-text" data-position="top" data-delay="50" data-tooltip="open post in new window"
                     target="_blank" href="/post/@{{id}}">
                 <i class="material-icons light-green-text" style="vertical-align:middle">open_in_new</i>
                 </a>
@@ -447,13 +448,13 @@
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
-                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment"
                         data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
                 @endif
-                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop" 
+                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop"
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                 </a>
@@ -466,13 +467,13 @@
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
-                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment"
                         data-position="bottom" data-delay="50" data-tooltip="Edit your comment" comment-id="@{{id}}">
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
                 @endif
-                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
+                <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment"
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                 </a>
