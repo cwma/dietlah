@@ -2,7 +2,25 @@
 
 @section('title', $post['title'].' - DietLah!')
 
+@section('meta')
+    <meta property="og:url"           content="{{url('/').'/post/'.$post['id']}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="DietLah! - {{$post['title']}}" />
+    <meta property="og:description"   content="{{$post['summary']}}" />
+@if($post['image'] != "")
+    <meta property="og:image"         content="{{url('/').$post['image']}}" />
+@endif
+@stop
+
 @section('page-content')
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div class="container standalone-post-container">
     <div class="row">
         <div id="postWrapper">
@@ -72,6 +90,7 @@
                             <div id="map"></div>
                             @endif
                             <div class="divider"></div>
+
                             <div class="section">
                                 @foreach ($post['tags'] as $tag)
                                         @if ($loop->index == 5)
@@ -214,6 +233,9 @@
                     </div>
                 </div>
                 @endif
+                <div class="row" style="margin-left: 15px"><br>
+                    <div class="fb-like" data-href="{{url('/').'/post/'.$post['id']}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                </div>
             </div>
         </div>
     </div>

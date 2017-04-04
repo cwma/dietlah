@@ -217,7 +217,7 @@ class HomePageController extends Controller {
         $result["tags_count"] = sizeOf($result["tags"]);
 
 
-
+        $result['root'] = url('/');
 
         // handle user liked and favourite
         if(Auth::check()) {

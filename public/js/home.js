@@ -499,6 +499,7 @@ function loadPostJavascriptElements(modal, response) {
     initializeTagChips(response['user_tags']);
     handleSuggestTagsSubmit();
     history.pushState({modal:""}, "modal", "post/"+dietlah.currentPostModalId);
+    FB.XFBML.parse();
 }
 
 function loadCommentsJavascriptElements(){

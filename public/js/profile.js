@@ -501,6 +501,7 @@ function loadPostJavascriptElements(modal, response) {
     initializeSubmitComment();
     initializeTagChips(response['user_tags']);
     handleSuggestTagsSubmit();
+    FB.XFBML.parse();
 }
 
 function loadCommentsJavascriptElements(){
