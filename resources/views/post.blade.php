@@ -73,22 +73,15 @@
                             @endif
                             <div class="divider"></div>
                             <div class="section">
-                                <ul class="collapsible" data-collapsible="accordion">
-                                    <li>
-                                        <div class="collapsible-header active">
-                                            <i class="material-icons">keyboard_arrow_down</i>Top Tags</span>
+                                @foreach ($post['tags'] as $tag)
+                                        @if ($loop->index == 5)
+                                            @break
+                                        @endif
+                                        <div class="chip light-green lighten-3">
+                                            {{$tag}}
                                         </div>
-                                        <div class="collapsible-body"><span>
-                                            @foreach ($post['tags'] as $tag)
-                                                    @if ($loop->index == 5)
-                                                        @break
-                                                    @endif
-                                                    <div class="chip light-green lighten-3">
-                                                        {{$tag}}
-                                                    </div>
-                                            @endforeach
-                                        </span></div>
-                                    </li>
+                                @endforeach
+                                <ul class="collapsible" data-collapsible="accordion">
                                     <li>
                                         <div class="collapsible-header">
                                             <i class="material-icons">keyboard_arrow_down</i>All Tags</span>

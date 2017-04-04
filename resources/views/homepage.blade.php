@@ -265,21 +265,14 @@
                     <div id="map"></div>
                     @{{/if}}
                     <div class="section">
-                        <ul class="collapsible" data-collapsible="accordion">
-                            <li>
-                                <div class="collapsible-header active">
-                                    <i class="material-icons">keyboard_arrow_down</i>Top Tags</span>
+                        @{{#each tags}}
+                            @{{#if (top5 @index)}}
+                                <div class="chip light-green lighten-3">
+                                    @{{this}}
                                 </div>
-                                <div class="collapsible-body"><span>
-                                    @{{#each tags}}
-                                        @{{#if (top5 @index)}}
-                                            <div class="chip light-green lighten-3">
-                                                @{{this}}
-                                            </div>
-                                        @{{/if}}
-                                    @{{~/each}}
-                                </span></div>
-                            </li>
+                            @{{/if}}
+                        @{{~/each}}
+                        <ul class="collapsible" data-collapsible="accordion">
                             <li>
                                 <div class="collapsible-header">
                                     <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
