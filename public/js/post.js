@@ -45,9 +45,13 @@ function initializePostModals() {
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_post").val($(trigger).attr('data-postid'));
             $("#report-post-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#reported_id_post").val("");
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         } // Callback for Modal close
     });
     $('.report-comment-modal').modal({
@@ -60,9 +64,13 @@ function initializePostModals() {
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
             $("#report-comment-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#reported_id_comment").val("");
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         } // Callback for Modal close
     });
     $('.edit-comment-modal').modal({
@@ -80,6 +88,8 @@ function initializePostModals() {
             $('#delete-comment-confirm').attr('checked', false);
             $("#edit-comment-submit").prop("disabled", false);
             $("#delete-comment-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#edit-comment-id").val("");
@@ -87,6 +97,8 @@ function initializePostModals() {
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val("");
             reinitializeCommentsScroll();
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         }
     });
     $('.report-tag-modal').modal({
@@ -434,6 +446,20 @@ function setupValidationErrorFormatting() {
     });
 }
 
+function overrideBackButtonForModal(){
+    $(window).on('popstate', function() {
+        if(dietlah.postModalOpen) {
+            if(dietlah.reportModalOpen) {
+                $("#report-post-modal").modal('close');
+                $("#report-comment-modal").modal('close');
+                $("#edit-comment-modal").modal('close');
+            } else {
+                $("#postmodal").modal('close');
+            }
+        } 
+    });
+}
+
 function initializeTagChips(userTags) {
     var tags = new Bloodhound({
         datumTokenizer: Bloodhound.tokenizers.whitespace,
@@ -490,7 +516,7 @@ function registerHandleBarsHelpers() {
 
 $(document).ready(function(){
     initMaps();
-    console.log(dietlah.postId)
+    overrideBackButtonForModal();
     loadPostJavascriptElements();
     registerHandleBarsHelpers();
     initializePostModals();

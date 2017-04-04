@@ -128,6 +128,8 @@ function initializeHomeModals() {
         complete: function(modal) { 
             clearPost(modal);
             $('#comments-marker').off();
+            history.pushState({modal:"open"}, "modal", "/profile/" + dietlah.profileid);
+
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -140,9 +142,13 @@ function initializeHomeModals() {
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_post").val($(trigger).attr('data-postid'));
             $("#report-post-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#reported_id_post").val("");
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         } // Callback for Modal close
     });
     $('.report-comment-modal').modal({
@@ -155,9 +161,13 @@ function initializeHomeModals() {
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#reported_id_comment").val($(trigger).attr('comment-id'));
             $("#report-comment-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#reported_id_comment").val("");
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         } // Callback for Modal close
     });
     $('.edit-comment-modal').modal({
@@ -175,6 +185,8 @@ function initializeHomeModals() {
             $('#delete-comment-confirm').attr('checked', false);
             $("#edit-comment-submit").prop("disabled", false);
             $("#delete-comment-submit").prop("disabled", false);
+            history.pushState({inner:"#report-post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = true;
         },
         complete: function(modal) { 
             $("#edit-comment-id").val("");
@@ -182,6 +194,8 @@ function initializeHomeModals() {
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val("");
             reinitializeCommentsScroll();
+            history.pushState({modal:"#post-modal"}, "modal", "post/"+dietlah.currentPostModalId);
+            dietlah.reportModalOpen = false;
         }
     });
     $('.report-tag-modal').modal({
@@ -463,7 +477,7 @@ function loadPostJavascriptElements(modal, response) {
     initMaps();
     dietlah.postModalOpen = true;
     dietlah.currentPostModalId = response['id'];
-    history.pushState({modal:"open"}, "modal", "#modal");
+    history.pushState({modal:"open"}, "modal", "/post/" + dietlah.currentPostModalId);
     handleLikeClickEvent('.full-post-like');
     handleFavouriteClickEvent('.full-post-fav');
     $(modal).find('#post-content img').lazyLoadXT();
@@ -608,8 +622,14 @@ function reinitializeCommentsScroll() {
 function overrideBackButtonForModal(){
     $(window).on('popstate', function() {
         if(dietlah.postModalOpen) {
-            $('#postmodal').modal('close');
-        }
+            if(dietlah.reportModalOpen) {
+                $("#report-post-modal").modal('close');
+                $("#report-comment-modal").modal('close');
+                $("#edit-comment-modal").modal('close');
+            } else {
+                $("#postmodal").modal('close');
+            }
+        } 
     });
 }
 
