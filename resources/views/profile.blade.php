@@ -15,7 +15,7 @@
             <div class="center-align">
                 <h4>{{$user['username']}}</h4>
                 <p>{!! nl2br(e($user['bio'])) !!}</p>
-                @if(Auth::check())
+                @if(Auth::check() && Auth::id() != $user['id'])
                     <div class="right">
                         <a href="{{route('message.read', ['id'=>$user->id])}}" class="light-green-text">Send Message
                         <i class="material-icons light-green-text left" style="vertical-align:middle">mail</i></a>
