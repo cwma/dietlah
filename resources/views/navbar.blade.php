@@ -76,7 +76,7 @@
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-button" href="#!" data-activates="accountdropdown">
+                    <a class="dropdown-button" {{Auth::check() ? 'href=/profile/'.$user['id'] : ''}} data-activates="accountdropdown">
                         @if(Auth::check())
                             <img src="{{$user['profile_pic']}}" class="circle nav-image">
                         @else
