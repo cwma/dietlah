@@ -132,6 +132,7 @@ function initializeDeletePostBtn() {
                 'success': function(data,  textStatus, jqXHR) {
                     hideNavLoadingBar();
                     Materialize.toast("your post has been deleted!", 4000);
+                    window.onbeforeunload = null;
                     window.location.href = "/";
                 },
                 'error': function (jqXHR, textStatus, errorThrown) {
