@@ -16,7 +16,7 @@ function handleFormSubmit() {
             bio: "required",
             image: {
               extension: "jpeg|jpg|png",
-              filesize: 5
+              filesize: 8
             }
         },
         messages: {
