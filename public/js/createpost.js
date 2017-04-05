@@ -35,6 +35,7 @@ function handleFormSubmit() {
                     hideNavLoadingBar();
                     if(data['status'] == 'successful') {
                         Materialize.toast("your post has been created!", 4000);
+                        window.onbeforeunload = null;
                         window.location.href = "/post/" + data['post_id'];  
                     } else {
                         Materialize.toast("We were not able to create the post", 10000);
