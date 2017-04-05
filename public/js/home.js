@@ -95,7 +95,7 @@ function renderComments(commentsJson){
 }
 
 function clearPost(modal) {
-    $(modal).html("");
+    $(modal).html('<div class="progress post-progress light-green lighten-4"><div class="indeterminate light-green"></div></div>');
     dietlah.postModalOpen = false;
 }
 

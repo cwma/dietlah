@@ -47,6 +47,7 @@
     </div>
 </div>
 <div id="postmodal" class="modal modal-fixed-header modal-fixed-footer post-modal">
+    <div class="progress post-progress light-green lighten-4"><div class="indeterminate light-green"></div></div>
 </div>
 
 <div id="report-post-modal" class="modal report-modal report-post-modal">
@@ -234,6 +235,7 @@
 </script>
 <script id="post_template" type="text/x-handlebars-template">
 <div id="postWrapper" hidden>
+    <div class="progress post-progress light-green lighten-4"><div class="indeterminate light-green"></div></div>
     <div class="modal-header">
         <div class="row">
             <div class="col s12">
@@ -265,9 +267,6 @@
                     </li>
                     @endif
                 </ul>
-                <div class="progress post-progress light-green lighten-4">
-                    <div class="indeterminate light-green"></div>
-                </div>
             </div>
         </div>
     </div>
