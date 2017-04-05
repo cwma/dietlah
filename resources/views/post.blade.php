@@ -173,7 +173,7 @@
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <textarea name id="suggested-tags" class="materialize-textarea" data-role="materialtags"></textarea>
-                                                <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
+                                                <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag), press enter to set a tag.</label>
                                             </div>
                                         </div>
                                         <input name="post_id" id="suggest-tags-post-id" type="text" value="{{$post['id']}}" hidden>

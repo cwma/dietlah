@@ -60,7 +60,7 @@
             <div class="row">
                 <div class="input-field col s12">
                     <textarea id="tags" class="materialize-textarea" data-role="materialtags"></textarea>
-                    <label id="input-validate-label" for="tags">Your tags for this post (min 3 chars, max 20 per tag)</label>
+                    <label id="input-validate-label" for="tags">Your tags for this post (min 3 chars, max 20 per tag), press enter to set a tag.</label>
                 </div>
             </div>
 
