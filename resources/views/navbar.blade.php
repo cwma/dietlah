@@ -6,6 +6,9 @@
         @else
             <li><a href="{{ route('profile.my') }}">My Profile</a></li>
             <li><a href="{{ route('message.read') }}">Messages</a></li>
+            @if (Auth::user()->is_admin)
+            <li><a href="{{ route('admin') }}">Admin</a></li>
+            @endif
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -146,9 +149,12 @@
                     <div class="collapsible-body" style="padding:0px!important">
                         <ul>
                          @if (Auth::guest())
-                            <li style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
-                            <li style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
+                            <li class="{{Route::currentRouteNamed('login') ? 'active' : '' }}"style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
+                            <li class="{{Route::currentRouteNamed('register') ? 'active' : '' }}"style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            @if (Auth::user()->is_admin)
+                            <li style="padding-left:43px"><a href="{{ route('admin') }}">Admin</a></li>
+                            @endif
                             <li class="{{Route::currentRouteNamed('profile.my') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
                             <li class="{{Route::currentRouteNamed('message.read') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('message.read') }}">Messages</a></li>
                             <li style="padding-left:43px">
