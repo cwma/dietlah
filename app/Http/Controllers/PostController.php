@@ -152,7 +152,8 @@ class PostController extends Controller {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'text' => 'required|max:10000',
-            'image' => 'max:8192'
+            'image' => 'max:8192',
+            'location' => 'max:50'
         ]);
 
         if ($validator->fails()) {
@@ -241,7 +242,8 @@ class PostController extends Controller {
         $validator = Validator::make($request->all(), [
             'title' => 'required',
             'text' => 'required|max:10000',
-            'image' => 'max:8192'
+            'image' => 'max:8192',
+            'location' => 'max:50'
         ]);
 
         if ($validator->fails()) {
