@@ -123,6 +123,11 @@
                                         <a href="/update/{{$post['id']}}"  class="light-green-text">Edit Post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                                     </div>
+                                @elseif(Auth::check() && Auth::user()->is_admin)
+                                    <div class="left">
+                                        <a href="/update/{{$post['id']}}"  class="light-green-text">Admin Edit
+                                        <i class="material-icons light-green-text left" style="vertical-align:middle">report_problem</i>
+                                    </div>
                                 @endif
                                 @if(Auth::check())
                                     <div class="right">
@@ -361,6 +366,12 @@
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
+                @endif
+                @if(Auth::check() && Auth::user()->is_admin)
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                        data-position="bottom" data-delay="50" data-tooltip="ADMIN" comment-id="@{{id}}">
+                        <i class="material-icons light-red-text left" style="vertical-align:middle">report_problem</i>
+                    </a>
                 @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">

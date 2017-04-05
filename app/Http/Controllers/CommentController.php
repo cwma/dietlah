@@ -44,7 +44,7 @@ class CommentController extends Controller {
 		if (Auth::check()){
 			$comment = Comment::findOrFail($request->comment_id);
 
-			if(Auth::id() == $comment->user_id) {
+			if(Auth::id() == $comment->user_id || Auth::user()->is_admin) {
 
 				$post_id = $comment->post->id;
 
@@ -90,7 +90,7 @@ class CommentController extends Controller {
 		if (Auth::check()){
 			$comment = Comment::findOrFail($request->comment_id);
 
-			if(Auth::id() == $comment->user_id) {
+			if(Auth::id() == $comment->user_id || Auth::user()->is_admin) {
 
 				$validator = Validator::make($request->all(), [
 	                'comment' => 'required|max:1000',
