@@ -131,7 +131,7 @@ Route::group(['middleware' => 'auth'], function () {
 ####################################################################################
 
 #	Admin page
-Route::get('/admin', 'TestController@test') -> name('admin');
+Route::get('/admin', 'AdminController@index') -> name('admin');
 
 # 	add admin form post routes here etc
 
