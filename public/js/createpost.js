@@ -156,4 +156,7 @@ $(document).ready(function(){
     initializeDeleteImageBtn();
     initializeTagChips();
     hideNavLoadingBar();
+    window.onbeforeunload = function() {
+        return true;
+    };
 });

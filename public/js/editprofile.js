@@ -99,4 +99,7 @@ $(document).ready(function(){
     initializeImagePreview();
     initializeDeleteImageBtn();
     hideNavLoadingBar();
+    window.onbeforeunload = function() {
+        return true;
+    };
 });

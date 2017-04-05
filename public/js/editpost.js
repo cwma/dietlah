@@ -197,4 +197,7 @@ $(document).ready(function(){
     initializeTagChips();
     initializeDeletePostBtn();
     hideNavLoadingBar();
+    window.onbeforeunload = function() {
+        return true;
+    };
 });
