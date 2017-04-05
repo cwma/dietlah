@@ -34,10 +34,10 @@ function handleFormSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
                     if(data['status'] == 'successful') {
-                        Materialize.toast("your post has been created!", 4000);
+                        Materialize.toast("your post has been updated!", 4000);
                         window.location.href = "/post/" + data['post_id'];  
                     } else {
-                        Materialize.toast("We were not able to create the post", 10000);
+                        Materialize.toast("We were not able to update the post", 10000);
                         reasons = data['reason'];
                         for(i=0; i<reasons.length; i++) {
                             Materialize.toast(reasons[i], 10000);

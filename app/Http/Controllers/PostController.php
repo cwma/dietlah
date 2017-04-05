@@ -143,24 +143,35 @@ class PostController extends Controller {
     }
 
 	public function createPost(Request $request) {
+        if (!Auth::check()) {
+            // only logged in user can create post
+            $response = ["status" => "failed", "reason" => "you need to be logged in."];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'text' => 'required|max:10000',
+            'image' => 'max:8192'
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        if(sizeOf($request->tags) > 0) {
+            foreach ($request->tags as $tag) {
+
+                if(strlen($tag) > 20 || strlen($tag) < 3) {
+                    $response = ["status" => "failed", "reason" => ["tags cannot be less than 3 characters or more than 20 characters each"]];
+                    return response(json_encode($response)) ->header('Content-Type', 'application/json');
+                }
+            }
+        }
+
         $returnid;
         DB::transaction(function () use (&$request, &$returnid) {
-            if (!Auth::check()) {
-                // only logged in user can create post
-                $response = ["status" => "failed", "reason" => "you need to be logged in."];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
-
-            $validator = Validator::make($request->all(), [
-          		'title' => 'required',
-          		'text' => 'required|max:10000',
-                'image' => 'max:8192'
-        	]);
-
-            if ($validator->fails()) {
-                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
 
             $user_id = Auth::id();
 
@@ -168,7 +179,7 @@ class PostController extends Controller {
         	$post->title = $request->title;
         	$post->text = $request->text;
         	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 150);
+            $post->summary = self::myTruncate($request->text, 80);
             $post->likes_count = 0;
             $post->comments_count = 0;
             $post->user_id = $user_id;
@@ -220,32 +231,43 @@ class PostController extends Controller {
 	}
 
 	public function updatePost(Request $request) {
+        $post = Post::findOrFail($request->post_id);
+        if (!Auth::check() || Auth::id() != $post->user_id) {
+            // user can only delete his own post
+            $response = ["status" => "failed", "reason" => ["unauthorized"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required',
+            'text' => 'required|max:10000',
+            'image' => 'max:8192'
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        if(sizeOf($request->tags) > 0) {
+            foreach ($request->tags as $tag) {
+
+                if(strlen($tag) > 20 || strlen($tag) < 3) {
+                    $response = ["status" => "failed", "reason" => ["tags cannot be less than 3 characters or more than 20 characters each"]];
+                    return response(json_encode($response)) ->header('Content-Type', 'application/json');
+                }
+            }
+        }
+
         $returnid;
         DB::transaction(function () use (&$request, &$returnid) {
             $post_id = $request->post_id;
             $post = Post::findOrFail($post_id);
 
-            if (!Auth::check() || Auth::id() != $post->user_id) {
-                // user can only delete his own post
-                $response = ["status" => "failed", "reason" => "unauthorized"];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
-
-            $validator = Validator::make($request->all(), [
-                'title' => 'required',
-                'text' => 'required|max:10000',
-                'image' => 'max:8192'
-            ]);
-
-            if ($validator->fails()) {
-                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
-
             $post->title = $request->title;
             $post->text = $request->text;
         	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 150);
+            $post->summary = self::myTruncate($request->text, 80);
 
             // store image
             if($request->hasFile('image')) {
@@ -355,6 +377,16 @@ class PostController extends Controller {
             $post_id = $request->post_id;
             $tags = $request->tags;
 
+            if(sizeOf($tags) > 0) {
+                foreach ($tags as $tag) {
+
+                    if(strlen($tag) > 20 || strlen($tag) < 3) {
+                        $response = ["status" => "failed", "reason" => ["tags cannot be less than 3 characters or more than 20 characters each"]];
+                        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+                    }
+                }
+            }
+
             $this->updateTags($user_id, $post_id, $tags);
 
             $response = ["status" => "success", "response" => "tags saved!"];
@@ -377,6 +409,7 @@ class PostController extends Controller {
 
     // update the user's tags for a post
     private function updateTags($user_id, $post_id, $tags) {
+
         // clear existing tags from user
         PostTag::where("user_id", $user_id)->where("post_id", $post_id)->delete();
 
@@ -387,6 +420,7 @@ class PostController extends Controller {
 
         // else repopulate tags from user
         foreach ($tags as $tag) {
+
             $tag = Tag::firstOrCreate(["tag_name" => $tag]);
             $post_tag = new PostTag;
             $post_tag->user_id = $user_id;

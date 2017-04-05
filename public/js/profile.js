@@ -298,10 +298,18 @@ function handleReportPostSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
                     $("#report-post-submit").prop("disabled", false);
-                    Materialize.toast("Your report has been submitted.", 4000);
-                    $(form).resetForm();
-                    $(form).find('#report_comment').trigger('autoresize');
-                    $('#report-post-modal').modal('close');
+                    if(data['status'] == 'success') {
+                        Materialize.toast("Your report has been submitted.", 4000);
+                        $(form).resetForm();
+                        $(form).find('#report_comment').trigger('autoresize');
+                        $('#report-post-modal').modal('close');
+                    } else {
+                        Materialize.toast("We were not able to send the report", 10000);
+                        reasons = data['reason'];
+                        for(i=0; i<reasons.length; i++) {
+                            Materialize.toast(reasons[i], 10000);
+                        }
+                    }
                 }
             });
         }
@@ -327,10 +335,18 @@ function handleReportCommentSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
                     $("#report-comment-submit").prop("disabled", false);
-                    Materialize.toast("Your report has been submitted.", 4000);
-                    $(form).resetForm();
-                    $(form).find('#report_comment').trigger('autoresize');
-                    $('#report-comment-modal').modal('close');
+                    if(data['status'] == 'success') {
+                        Materialize.toast("Your report has been submitted.", 4000);
+                        $(form).resetForm();
+                        $(form).find('#report_comment').trigger('autoresize');
+                        $('#report-comment-modal').modal('close');
+                    } else {
+                        Materialize.toast("We were not able to update the comment", 10000);
+                        reasons = data['reason'];
+                        for(i=0; i<reasons.length; i++) {
+                            Materialize.toast(reasons[i], 10000);
+                        }
+                    }
                 }
             });
         }
@@ -355,10 +371,18 @@ function initializeSubmitComment() {
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
                     $("#create-comment-submit").prop("disabled", false);
-                    Materialize.toast(data["test"], 4000);
-                    $(form).resetForm();
-                    $(form).find('#comment').trigger('autoresize');
-                    reinitializeCommentsScroll();
+                    if(data['status'] == 'success') {
+                        Materialize.toast("your comment has been created!", 4000);
+                        $(form).resetForm();
+                        $(form).find('#comment').trigger('autoresize');
+                        reinitializeCommentsScroll();
+                    } else {
+                        Materialize.toast("We were not able to create the comment", 10000);
+                        reasons = data['reason'];
+                        for(i=0; i<reasons.length; i++) {
+                            Materialize.toast(reasons[i], 10000);
+                        }
+                    }
                 }
             });
         }
@@ -383,13 +407,19 @@ function handleEditCommentSubmit() {
                 success: function (data, textStatus, jqXHR, form){
                     hidePostLoadingBar();
                     $("#edit-comment-submit").prop("disabled", false);
-                    if(data['status'] == "success") {
-                        Materialize.toast(data["response"], 4000);
+                    if(data['status'] == 'success') {
+                        Materialize.toast("your comment has been updated!", 4000);
+                        $(form).resetForm();
+                        $(form).find('#edit_comment').trigger('autoresize');
                         $('#edit-comment-modal').modal('close');
+                        reinitializeCommentsScroll();
                     } else {
-                        Materialize.toast(data["reason"], 4000);
+                        Materialize.toast("We were not able to update the comment", 10000);
+                        reasons = data['reason'];
+                        for(i=0; i<reasons.length; i++) {
+                            Materialize.toast(reasons[i], 10000);
+                        }
                     }
-                    $(form).find('#edit_comment').trigger('autoresize');
                 }
             });
         }
@@ -453,6 +483,7 @@ function handleSuggestTagsSubmit() {
         return false;
     });
 }
+
 
 /* load scripts on home page */
 

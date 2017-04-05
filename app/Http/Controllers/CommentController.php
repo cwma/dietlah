@@ -11,6 +11,16 @@ class CommentController extends Controller {
 
 	public function createComment (Request $request){
 		if (Auth::check()){
+
+			$validator = Validator::make($request->all(), [
+                'comment' => 'required|max:1000',
+            ]);
+
+            if ($validator->fails()) {
+                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            }
+
 			$comment = new Comment;
 			$comment->comment = $request->comment;
 			$comment->user_id = Auth::user()->id;
@@ -25,7 +35,7 @@ class CommentController extends Controller {
 	        $response = ["status" => "success", "response" => "comment created!"];
 	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		}
-        $response = ["status" => "failed", "reason" => "unauthorized"];
+        $response = ["status" => "failed", "reason" => ["unauthorized"]];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 
@@ -82,17 +92,26 @@ class CommentController extends Controller {
 
 			if(Auth::id() == $comment->user_id) {
 
+				$validator = Validator::make($request->all(), [
+	                'comment' => 'required|max:1000',
+	            ]);
+
+	            if ($validator->fails()) {
+	                $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+	                return response(json_encode($response)) ->header('Content-Type', 'application/json');
+	            }
+
 				$comment->comment = $request->comment;
 				$comment->save();
 
 		        $response = ["status" => "success", "response" => "comment updated!"];
 		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		    } else {
-		        $response = ["status" => "failed", "reason" => "unauthorized"];
+		        $response = ["status" => "failed", "reason" => ["unauthorized"]];
 		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		    }
 		}
-        $response = ["status" => "failed", "reason" => "unauthorized"];
+        $response = ["status" => "failed", "reason" => ["unauthorized"]];
         return response(json_encode($response)) ->header('Content-Type', 'application/json');
 	}
 }
