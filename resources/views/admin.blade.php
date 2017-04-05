@@ -14,15 +14,40 @@
             <table class="table">
                 <tr>
                     <td>
-                        <!-- report type here (offending element)--><p>Report type</p>
+                       <p>Report type</p>
                     </td>
                     <td>
-                        <!-- report source here--><p>Report source</p>
+                        <p>Report source</p>
                     </td>
                     <td>
-                        <!--report text here--><p>report text</p>
+                        <p>Report User</p>
+                    </td>
+                    <td>
+                        <p>report text</p>
                     </td>
                 </tr>
+                @foreach($reports as $report)
+                <tr>
+                    <td>
+                        <p>{{$report['report_type']}}</p>
+                    </td>
+                    <td>
+                        @if($report['report_type'] == 'post')
+                            <p><a href="/post/{{$report['reported_id']}}">link to post</a></p>
+                        @else
+                            {{$comment = App\Comment::find($report['reported_id'])}}
+                            <p><a href="/post/{{$comment->post->id}}">link to post</a></p>
+                        @endif
+
+                    </td>
+                    <td>
+                        <p><a href="/profile/{{$report['user_id']}}">link to profile</a></p>
+                    </td>
+                    <td>
+                        <p>{{$report['report_comment']}}</p>
+                    </td>
+                </tr>
+                @endforeach
             </table>
         <!--end for each-->
     </div>

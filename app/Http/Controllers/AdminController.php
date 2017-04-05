@@ -11,19 +11,14 @@ use JavaScript;
 use Faker;
 use Storage;
 
-use App\Post;
-use App\Like;
-use App\Favourite;
-use App\Comment;
-use App\Tag;
-use App\User;
-use App\PostTag;
+use App\Report;
 
 class AdminController extends Controller {
 
     public function index() {
         if(Auth::check() && Auth::user()->is_admin){
-        	return view('admin');
+        	$reports = Report::orderBy("created_at", "desc")->get();
+        	return view('admin', ["reports"=>$reports]);
         } else {
         	abort(401);
         }
