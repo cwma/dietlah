@@ -121,7 +121,7 @@ function initializeTagChips(userTags) {
 function initializeDeletePostBtn() {
     $('#deletePostBtn').click(function(event){
         event.preventDefault();
-        if(confirm("Are you sure you want to delete this student?")){
+        if(confirm("Are you sure you want to delete this post?")){
             showNavLoadingBar();
             $.ajax({
                 'url' : '/deletepost',
