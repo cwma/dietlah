@@ -2,7 +2,23 @@
 
 @section('title', 'About DietLah!')
 
+@section('meta')
+    <meta property="og:url"           content="{{url('/')}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="DietLah! - About" />
+    <meta property="og:description"   content="A community portal for sharing diet tips in Singapore" />
+    <meta property="og:image"         content="{{url('/')}}/logo.png" />
+@stop
+
 @section('page-content')
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
 <div class="container">
     <br><br>
     <h1 class="header center light-green-text"><img src="logo.png"></h1>
@@ -41,11 +57,18 @@
             <h2 class="center light-green-text"><i class="material-icons">mail_outline</i></h2>
             <h5 class="center"><a href="https://docs.google.com/forms/d/e/1FAIpQLScPkJL7MgFZJVzwli_D0fqGhar65LhotL2mLfAbLdbt7oL5dQ/viewform?usp=sf_link" target="_blank">Contact Us</a></h5>
 
-            <p class="light">We'd love to hear from you on how we can improve the user experience here at DietLah! Feel free to drop us a message on your comments, suggestions and feedback. </p>
+            <p class="light">We'd love to hear from you on how we can improve the user experience here at DietLah! Feel free to drop us a message on your comments, suggestions and feedback. 
+            </p>
           </div>
         </div>
       </div>
 
+    </div>
+    <div class="row"><br>
+    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="{{url('/')}}/about" data-show-count="false">Tweet</a>
+        <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
+    <a href="https://twitter.com/DietLahSG" class="twitter-follow-button" data-show-count="false">Follow @DietLahSG</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+    <div class="fb-like" data-href="{{url('/')}}/about" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     </div>
 </div>
 @stop

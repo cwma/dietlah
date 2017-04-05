@@ -21,6 +21,7 @@
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <div class="container standalone-post-container">
     <div class="row">
         <div id="postWrapper">
@@ -233,9 +234,11 @@
                     </div>
                 </div>
                 @endif
-                <div class="row" style="margin-left: 15px"><br>
+                    <div class="row" style="margin-left: 15px"><br>
+                    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="{{url('/').'/post/'.$post['id']}}"
+                    data-text="{{$post['title']}}" data-show-count="false">Tweet</a></div>
                     <div class="fb-like" data-href="{{url('/').'/post/'.$post['id']}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
-                </div>
+                    </div>
             </div>
         </div>
     </div>

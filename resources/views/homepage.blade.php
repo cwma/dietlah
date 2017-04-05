@@ -2,6 +2,14 @@
 
 @section('title', 'DietLah!')
 
+@section('meta')
+    <meta property="og:url"           content="{{url('/')}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="DietLah!" />
+    <meta property="og:description"   content="A community portal for sharing diet tips in Singapore" />
+    <meta property="og:image"         content="{{url('/')}}/logo.png" />
+@stop
+
 @section('page-content')
 <div id="fb-root"></div>
 <script>(function(d, s, id) {
@@ -11,6 +19,7 @@
   js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
   fjs.parentNode.insertBefore(js, fjs);
 }(document, 'script', 'facebook-jssdk'));</script>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <div class="container">
     <div class="row">
         <div class="cards-container" id="grid" data-columns>
@@ -314,7 +323,9 @@
                     @endif
                     </div>
                     <div class="row" style="margin-left: 5px"><br>
-                        <div class="fb-like" data-href="@{{root}}/post/@{{id}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="@{{root}}/post/@{{id}}"
+                    data-text="@{{title}}" data-show-count="false">Tweet</a></div>
+                    <div class="fb-like" data-href="@{{root}}/post/@{{id}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
                     </div>
                 </div>
 
