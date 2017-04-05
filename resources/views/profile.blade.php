@@ -466,7 +466,7 @@
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
             <img data-src="@{{{profile_pic}}}" alt="" class="circle">
-            <span class="title">@{{username}}</span>
+            <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
             <p id="comment-text">@{{{linkify text}}}</p>
             <p id="actual" hidden>@{{{raw_text}}}</p>
             <p class="light-green-text">@{{time}}
@@ -485,7 +485,7 @@
             </p>
         </li>
         <li class="collection-item hide-on-med-and-up">
-            <span class="title">@{{username}}</span>
+            <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
             <p id="comment-text">@{{{linkify text}}}</p>
             <p id="actual" hidden>@{{{raw_text}}}</p>
             <p class="light-green-text">@{{time}}
