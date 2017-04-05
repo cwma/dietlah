@@ -41,7 +41,7 @@ class ProfileController extends Controller {
     public function myProfile() {
     	if(Auth::check()) {
 	    	$user = Auth::user();
-	    	$tags = Tag::all()->pluck("tag_name");
+	    	$tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
 	        JavaScript::put([
 	            "tags" => $tags,
@@ -57,7 +57,7 @@ class ProfileController extends Controller {
 	public function viewProfile($profileid, Request $request){
 		$user = User::findOrFail($profileid);
 
-        $tags = Tag::all()->pluck("tag_name");
+        $tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
         JavaScript::put([
             "tags" => $tags,

@@ -20,7 +20,7 @@ use App\PostTag;
 class HomePageController extends Controller {
 
     public function index(Request $request, $page = 1) {
-        $tags = Tag::all()->pluck("tag_name");
+        $tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
         JavaScript::put([
             "tags" => $tags,
@@ -31,7 +31,7 @@ class HomePageController extends Controller {
     }
 
     public function indexFiltered($sort, $range, Request $request, $page = 1) {
-        $tags = Tag::all()->pluck("tag_name");
+        $tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
         JavaScript::put([
             "tags" => $tags,
@@ -42,7 +42,7 @@ class HomePageController extends Controller {
     }
 
     public function indexSearch(Request $request) {
-        $tags = Tag::all()->pluck("tag_name");
+        $tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
         JavaScript::put([
             "tags" => $tags,

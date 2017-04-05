@@ -61,7 +61,7 @@ class PostController extends Controller {
         if(Auth::check()) {
             $userid = Auth::user()->id;
             $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
-            $tags = Tag::all()->pluck("tag_name");
+            $tags = Tag::has('post_tags')->get()->pluck("tag_name");
             JavaScript::put([
                 "tags" => $tags,
                 "userTags" => $userTags,
@@ -104,7 +104,7 @@ class PostController extends Controller {
         // this facade just helps put the variables into the javascript namespace "dietlah"
         // can access tags by calling dietlah.tags in browser
         JavaScript::put([
-            "tags" => Tag::all()->pluck('tag_name')
+            "tags" => Tag::has('post_tags')->get()->pluck("tag_name")
         ]);
 		return view('newpost');
 	}
@@ -134,7 +134,7 @@ class PostController extends Controller {
         // for autocomplete of tags & to prepopulate tags
         JavaScript::put([
             "user_tags" => $user_tags,
-            "tags" => Tag::all()->pluck('tag_name'),
+            "tags" => Tag::has('post_tags')->get()->pluck("tag_name"),
             "loc" => $post->location
         ]);
 
