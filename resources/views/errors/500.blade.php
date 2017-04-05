@@ -1,14 +1,14 @@
 @extends('template')
+
+@section('title', 'Unauthorized')
+
 @section('page-content')
-<div class="container-fluid">
-    <div class="row">
-	<div class="col s8 offset-s2">
-    	    <h3>We are so sorry :(</h3>
-    	    <h5>It seems we have encountered an error.</h5>
-    	    <h5>Our engineers are trying to fix it.</h5>
-    	    <h5>Please try again in awhile.</h5>
-	    <h6>{{ $exception->getMessage() }}</h6>
-	</div>
+<div class="container">
+    <br><br>
+    <h1 class="header center light-green-text"><img src="logo.png"></h1>
+    <h1 class="header center light-green-text">Oh No!</h1>
+    <div class="row center">
+        <h5 class="header col s12 light">Something has gone terribly wrong if you're seeing this. If this keeps happening drop us a message.<a href="https://docs.google.com/forms/d/e/1FAIpQLScPkJL7MgFZJVzwli_D0fqGhar65LhotL2mLfAbLdbt7oL5dQ/viewform?usp=sf_link" target="_blank">drop us a message.</a></h5>
     </div>
 </div>
 @stop
