@@ -107,7 +107,7 @@ function initializeTagChips(userTags) {
         CapitalizeFirstLetterOnly: true
     });
     $('#tags').on('beforeItemAdd', function(event) {
-        if(event.item.length < 3) {
+        if(event.item.length < 3 || event.item.length > 20) {
             event.cancel = true;
         }
     });

@@ -512,7 +512,7 @@ function initializeTagChips(userTags) {
         $('#suggested-tags').materialtags('add', $(this).parent().attr("tag"));
     })
     $('#suggested-tags').on('beforeItemAdd', function(event) {
-        if(event.item.length < 3) {
+        if(event.item.length < 3 || event.item.length > 20) {
             event.cancel = true;
         }
     });
