@@ -39,7 +39,7 @@
         <div class="col s12 m4">
           <div class="icon-block">
             <h2 class="center light-green-text"><i class="material-icons">mail_outline</i></h2>
-            <h5 class="center"><a href="https://docs.google.com/forms/d/e/1FAIpQLScPkJL7MgFZJVzwli_D0fqGhar65LhotL2mLfAbLdbt7oL5dQ/viewform?usp=sf_link">Contact Us</a></h5>
+            <h5 class="center"><a href="https://docs.google.com/forms/d/e/1FAIpQLScPkJL7MgFZJVzwli_D0fqGhar65LhotL2mLfAbLdbt7oL5dQ/viewform?usp=sf_link" target="_blank">Contact Us</a></h5>
 
             <p class="light">We'd love to hear from you on how we can improve the user experience here at DietLah! Feel free to drop us a message on your comments, suggestions and feedback. </p>
           </div>
