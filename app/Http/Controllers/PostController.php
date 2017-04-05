@@ -23,17 +23,21 @@ class PostController extends Controller {
     // Original PHP code by Chirp Internet: www.chirp.com.au
     // Please acknowledge use of this code by including this header.
 
-    public function myTruncate($string, $limit, $break=".", $pad="...")
+    public function myTruncate($string, $limit, $break=" ", $pad="...")
     {
-      // return with no change if string is shorter than $limit
-      if(strlen($string) <= $limit) return $string;
+        // return with no change if string is shorter than $limit
+        if(strlen($string) <= $limit) return $string;
 
-      // is $break present between $limit and the end of the string?
-      if(false !== ($breakpoint = strpos($string, $break, $limit))) {
-        if($breakpoint < strlen($string) - 1) {
-          $string = substr($string, 0, $breakpoint) . $pad;
+        // is $break present between $limit and the end of the string?
+        if(false !== ($breakpoint = strpos($string, $break, $limit))) {
+            if($breakpoint < $limit + 30) {
+                $string = substr($string, 0, $breakpoint) . $pad;
+            } else {
+                $string = substr($string, 0, $limit+30) . $pad;
+            }
+        } else {
+            $string = substr($string, 0, $limit+30) . $pad;
         }
-      }
 
       return $string;
     }
@@ -180,7 +184,7 @@ class PostController extends Controller {
         	$post->title = $request->title;
         	$post->text = $request->text;
         	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 80);
+            $post->summary = self::myTruncate($request->text, 150);
             $post->likes_count = 0;
             $post->comments_count = 0;
             $post->user_id = $user_id;
@@ -271,7 +275,7 @@ class PostController extends Controller {
             $post->title = $request->title;
             $post->text = $request->text;
         	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 80);
+            $post->summary = self::myTruncate($request->text, 150);
 
             $old_image = $post->image;
             // store image
