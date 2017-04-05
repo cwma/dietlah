@@ -1,16 +1,13 @@
 <?php
 namespace App;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Laravel\Scout\Searchable;
 
 class Post extends Model
 {
-    use SoftDeletes;
-    use Searchable;
-    
 
-    protected $dates = ['deleted_at'];
+    use Searchable;
+
 
     public function user() {
 	    return $this->belongsTo('App\User');

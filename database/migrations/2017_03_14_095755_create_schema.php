@@ -31,7 +31,6 @@ class CreateSchema extends Migration
 	    $table->index('comments_count');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
         });
 	Schema::create('comments', function (Blueprint $table) {
@@ -41,13 +40,11 @@ class CreateSchema extends Migration
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
 	});
 	Schema::create('tags', function (Blueprint $table) {
 	    $table->increments('id');
 	    $table->string('tag_name')->unique();
-	    $table->softDeletes();
             $table->timestamps();
 	});
 	Schema::create('post_tags', function (Blueprint $table) {
@@ -66,7 +63,6 @@ class CreateSchema extends Migration
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
 	});
 	Schema::create('likes', function (Blueprint $table) {
@@ -75,7 +71,6 @@ class CreateSchema extends Migration
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->integer('post_id')->unsigned();
 	    $table->foreign('post_id')->references('id')->on('posts')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
 	});
 	Schema::create('reports', function (Blueprint $table) {
@@ -86,7 +81,6 @@ class CreateSchema extends Migration
 	    $table->boolean('status');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
 	});
 	Schema::create('tag_reports', function (Blueprint $table) {
@@ -99,7 +93,6 @@ class CreateSchema extends Migration
 	    $table->boolean('status');
             $table->integer('user_id')->unsigned();
 	    $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-	    $table->softDeletes();
             $table->timestamps();
 	});
     }
