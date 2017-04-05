@@ -544,6 +544,7 @@ function loadPostJavascriptElements(modal, response) {
     history.pushState({modal:""}, "modal", "post/"+dietlah.currentPostModalId);
     replaceStateWithCurrent();
     FB.XFBML.parse();
+    twttr.widgets.load();
 }
 
 function loadCommentsJavascriptElements(){

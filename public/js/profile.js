@@ -533,6 +533,7 @@ function loadPostJavascriptElements(modal, response) {
     initializeTagChips(response['user_tags']);
     handleSuggestTagsSubmit();
     FB.XFBML.parse();
+    twttr.widgets.load();
 }
 
 function loadCommentsJavascriptElements(){
