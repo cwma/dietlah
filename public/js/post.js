@@ -497,15 +497,19 @@ function initMaps() {
     var messagewindow;
 
     if (dietlah.loc != null && dietlah.loc != "") {
-        pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: pos,
-            zoom: 16
-        });
-        var marker = new google.maps.Marker({
-          position: pos,
-          map: map
-        });
+        try {
+            pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: pos,
+                zoom: 16
+            });
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map
+            });
+        } catch (err) {
+            console.log(err);
+        }
     } 
 }
 

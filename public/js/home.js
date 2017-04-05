@@ -99,6 +99,18 @@ function clearPost(modal) {
     dietlah.postModalOpen = false;
 }
 
+function replaceStateWithCurrent(){
+    if(!dietlah.filter.search){
+        dietlah.filter.order = $("#post-order-select").val();
+        dietlah.filter.range = $("#post-range-select").val();
+        dietlah.filter.tags = $("#post-tag-select").val();
+        history.replaceState({main:{order:dietlah.filter.order, range:dietlah.filter.range, tags:dietlah.filter.tags}}, "page");
+    } else {
+        dietlah.filter.params = $('#nav-search').val();
+        history.replaceState({search:{params:dietlah.filter.params}}, "page"); 
+    }
+}
+
 /* initialize modals on home page */
 
 function initializeHomeModals() {
@@ -128,7 +140,8 @@ function initializeHomeModals() {
         complete: function(modal) { 
             clearPost(modal);
             $('#comments-marker').off();
-            history.pushState({not_modal:""}, "modal", dietlah.currenturl);
+            history.replaceState({search:{modal:""}}, "modal", dietlah.currenturl);
+            replaceStateWithCurrent();
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -499,6 +512,7 @@ function loadPostJavascriptElements(modal, response) {
     initializeTagChips(response['user_tags']);
     handleSuggestTagsSubmit();
     history.pushState({modal:""}, "modal", "post/"+dietlah.currentPostModalId);
+    replaceStateWithCurrent();
     FB.XFBML.parse();
 }
 
@@ -798,15 +812,19 @@ function initMaps() {
     var messagewindow;
 
     if (dietlah.loc != null && dietlah.loc != "") {
-        pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: pos,
-            zoom: 16
-        });
-        var marker = new google.maps.Marker({
-          position: pos,
-          map: map
-        });
+        try {
+            pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: pos,
+                zoom: 16
+            });
+            var marker = new google.maps.Marker({
+              position: pos,
+              map: map
+            });
+        } catch (err) {
+            console.log(err);
+        }
     } 
 }
 
