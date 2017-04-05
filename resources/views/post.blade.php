@@ -74,7 +74,7 @@
                                 <div class="article-user left">
                                     <div class="chip white">
                                         <img data-src="{{$post['profile_pic']}}" alt="Contact Person">
-                                        <a href="/profile/{{$post['user_id']}}" target="_blank">{{$post['username']}}</a>
+                                        <a href="/profile/{{$post['user_id']}}">{{$post['username']}}</a>
                                     </div>
                                 </div>
                                 <div class="article-tag right">

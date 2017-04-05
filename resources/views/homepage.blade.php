@@ -151,7 +151,7 @@
         <div class="article-user left">
             <div class="chip white">
                 <img data-src="@{{{profile_pic}}}" alt="Contact Person">
-                <a href="/profile/@{{user_id}}" target="_blank">@{{{username}}}</a>
+                <a href="/profile/@{{user_id}}">@{{{username}}}</a>
             </div>
         </div>
         <div class="article-tag right">
@@ -265,7 +265,7 @@
                         <div class="article-user left">
                             <div class="chip white">
                                 <img data-src="@{{profile_pic}}" alt="Contact Person">
-                                <a href="/profile/@{{user_id}}" target="_blank">@{{{username}}}</a>
+                                <a href="/profile/@{{user_id}}">@{{{username}}}</a>
                             </div>
                         </div>
                         <div class="article-tag right">
@@ -310,7 +310,7 @@
                     @if(Auth::check())
                         @{{#if (canEdit user_id current_user_id)}}
                             <div class="left">
-                                <a href="/update/@{{id}}"  class="light-green-text" target="_blank">Edit Post
+                                <a href="/update/@{{id}}"  class="light-green-text">Edit Post
                                 <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                             </div>
                         @{{/if}}
