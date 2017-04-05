@@ -269,8 +269,10 @@ class PostController extends Controller {
         	$post->location = $request->location;
             $post->summary = self::myTruncate($request->text, 80);
 
+            $old_image = $post->image;
             // store image
             if($request->hasFile('image')) {
+
                 $path = $request->file('image')->store('public/images/postimages');
                 $image = Image::make(storage_path().'/app/'.$path);
 
@@ -293,6 +295,10 @@ class PostController extends Controller {
 
             $post->save();
             $this->updateTags(Auth::id(), $post_id, $request->tags);
+
+            if($old_image != null && $old_image != $post->image){
+                Storage::delete($old_image);
+            }
 
             $returnid = $post_id;
         });
