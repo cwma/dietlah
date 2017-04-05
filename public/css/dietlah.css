@@ -259,6 +259,12 @@ height: 48px !important; /* fix for search in navbar on chrome */
   cursor: pointer;
 }
 
+.card-image {
+  max-height: 350px;
+  width: auto;
+  overflow: hidden;
+}
+
 .card-action {
   height: 50px;
 }
