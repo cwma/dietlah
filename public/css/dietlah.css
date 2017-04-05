@@ -777,3 +777,7 @@ div.other-message{
     opacity: 1;
 }
 
+p {
+    word-break: break-all;
+    white-space: normal;
+}
