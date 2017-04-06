@@ -827,6 +827,14 @@ function initializeTagChips(userTags) {
     }
 }
 
+function showtag(tag) {
+    $("#postmodal").modal('close');
+    $('#post-tag-select, #post-tag-select-mobile').val([tag]);
+    $('#post-tag-select, #post-tag-select-mobile').material_select();
+    reinitializeInfiniteScroll(true);
+    return false;
+}
+
 function registerHandleBarsHelpers() {
     registerLinkifyHelper();
     registerTopTagsView();

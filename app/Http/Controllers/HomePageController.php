@@ -55,14 +55,16 @@ class HomePageController extends Controller {
     private function findTopTag($tags) {
         $top = 0;
         $top_tag = "";
+        $top_id = "";
         foreach ($tags as $name => $vals) {
             $count = sizeOf($vals);
             if($count > $top) {
                 $top = $count;
                 $top_tag = $name;
+                $top_id = $vals[0]->pivot->tag_id;
             }
         }
-        return $top_tag;
+        return ["id"=>$top_id, "name"=>$top_tag];
     }
 
     private function pageQueryHandler($order, $range, $request) {
@@ -158,7 +160,9 @@ class HomePageController extends Controller {
             // the slow way for now... TODO: Optimize!
             $tags = $post->tags->groupby('tag_name')->all();
             if(sizeof($tags) > 0) {
-                $item['tag'] = self::findTopTag($tags);
+                $result = self::findTopTag($tags);
+                $item['tagid'] = $result['id'];
+                $item['tag'] = $result['name'];
             }
 
             array_push($results, $item);
@@ -234,9 +238,9 @@ class HomePageController extends Controller {
 
         // handle tags
         // TODO: sort by tag count some how
-        $result['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate from post_tags, tags
+        $result['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate, tag_id from post_tags, tags
                             where post_tags.tag_id = tags.id and post_id = ? group by post_tags.tag_id 
-                            ORDER BY aggregate DESC, tags.id DESC', [$postId]))->pluck("tag_name");
+                            ORDER BY aggregate DESC, tags.id DESC', [$postId]))->pluck("tag_name", "tag_id");
         $result["tags_count"] = sizeOf($result["tags"]);
 
 

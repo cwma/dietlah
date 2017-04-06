@@ -93,12 +93,12 @@
                             <div class="divider"></div>
 
                             <div class="section">
-                                @foreach ($post['tags'] as $tag)
+                                @foreach ($post['tags'] as $id => $tag)
                                         @if ($loop->index == 5)
                                             @break
                                         @endif
                                         <div class="chip light-green lighten-3">
-                                            {{$tag}}
+                                            <a href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
                                         </div>
                                 @endforeach
                                 <ul class="collapsible" data-collapsible="accordion">
@@ -109,7 +109,7 @@
                                         <div class="collapsible-body"><span>
                                             @foreach ($post['tags'] as $tag)
                                                     <div class="chip light-green lighten-3">
-                                                        {{$tag}}
+                                                        <a href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
                                                     </div>
                                             @endforeach
                                         </span></div>

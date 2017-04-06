@@ -50,8 +50,10 @@ class PostController extends Controller {
 
         // handle tags
         // TODO: sort by tag count some how
-        $result["tags"] = $post->tags->pluck('tag_name');
-        $result["tags_count"] = $post->tags->count();
+        $result['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate, tag_id from post_tags, tags
+                            where post_tags.tag_id = tags.id and post_id = ? group by post_tags.tag_id 
+                            ORDER BY aggregate DESC, tags.id DESC', [$postId]))->pluck("tag_name", "tag_id");
+        $result["tags_count"] = sizeOf($result["tags"]);
 
 
         // handle image

@@ -481,6 +481,10 @@ height: 48px !important; /* fix for search in navbar on chrome */
   margin-top: 5px !important;
 }
 
+.chip a:link, .chip a:hover, .chip a:visited, .chip a:active {
+  color: black;
+}
+
 .article-user .chip {
   margin-top: 0px !important;
 }

@@ -28,14 +28,16 @@ class ProfileController extends Controller {
     private function findTopTag($tags) {
         $top = 0;
         $top_tag = "";
+        $top_id = "";
         foreach ($tags as $name => $vals) {
             $count = sizeOf($vals);
             if($count > $top) {
                 $top = $count;
                 $top_tag = $name;
+                $top_id = $vals[0]->pivot->tag_id;
             }
         }
-        return $top_tag;
+        return ["id"=>$top_id, "name"=>$top_tag];
     }
 
     public function myProfile() {
@@ -180,7 +182,9 @@ class ProfileController extends Controller {
             // the slow way for now... TODO: Optimize!
             $tags = $post->tags->groupby('tag_name')->all();
             if(sizeof($tags) > 0) {
-                $item['tag'] = self::findTopTag($tags);
+                $result = self::findTopTag($tags);
+                $item['tagid'] = $result['id'];
+                $item['tag'] = $result['name'];
             }
 
             array_push($results, $item);

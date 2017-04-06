@@ -157,7 +157,7 @@
         <div class="article-tag right">
         @{{#if tag}}
             <div class="chip light-green lighten-3">
-                @{{{tag}}}
+                <a href="view/new/all?tags[]=@{{tagid}}" onclick="return showtag('@{{tagid}}');">@{{{tag}}}</a>
             </div>
         @{{else}}
             <span style="margin-right: 10px; line-height:2">No Tags</span>
@@ -286,7 +286,7 @@
                         @{{#each tags}}
                             @{{#if (top5 @index)}}
                                 <div class="chip light-green lighten-3">
-                                    @{{this}}
+                                    <a href="view/new/all?tags[]=@{{@key}}" onclick="return showtag('@{{@key}}');">@{{this}}</a>
                                 </div>
                             @{{/if}}
                         @{{~/each}}
@@ -298,7 +298,7 @@
                                 <div class="collapsible-body"><span>
                                     @{{#each tags}}
                                         <div class="chip light-green lighten-3">
-                                            @{{this}}
+                                            <a href="view/new/all?tags[]=@{{@key}}" onclick="return showtag('@{{@key}}');">@{{this}}</a>
                                         </div>
                                     @{{~/each}}
                                 </span></div>
