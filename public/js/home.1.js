@@ -543,8 +543,12 @@ function loadPostJavascriptElements(modal, response) {
     handleSuggestTagsSubmit();
     history.pushState({modal:""}, "modal", "post/"+dietlah.currentPostModalId);
     replaceStateWithCurrent();
-    FB.XFBML.parse();
-    twttr.widgets.load();
+    try {
+        FB.XFBML.parse();
+        twttr.widgets.load();
+    } catch (err) {
+        console.log("social media widgets failed to load: " + err);
+    }
 }
 
 function loadCommentsJavascriptElements(){

@@ -532,8 +532,12 @@ function loadPostJavascriptElements(modal, response) {
     initializeSubmitComment();
     initializeTagChips(response['user_tags']);
     handleSuggestTagsSubmit();
-    FB.XFBML.parse();
-    twttr.widgets.load();
+    try {
+        FB.XFBML.parse();
+        twttr.widgets.load();
+    } catch (err) {
+        console.log("social media widgets failed to load: " + err);
+    }
 }
 
 function loadCommentsJavascriptElements(){
