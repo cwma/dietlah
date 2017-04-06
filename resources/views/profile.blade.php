@@ -205,7 +205,8 @@
             <a class="modal-trigger light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}">More</a>
         </div>
         <div class="col s3 center card-icon-container">
-            <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Comments">
+            <a class="tooltipped light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}" comments="yes"
+            data-position="bottom" data-delay="50" data-tooltip="Comments">
                 <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{comments}}}</span>
             </a>
         </div>

@@ -120,6 +120,9 @@ function initializeHomeModals() {
                 renderPost(modal, response, postTemplate);
                 loadPostJavascriptElements(modal, response);
                 hidePostLoadingBar();
+                if($(trigger).attr('comments') == "yes"){
+                    $('ul.tabs').tabs('select_tab', 'post-comments');
+                }
             }).fail(function(jqXHR, textStatus) {
                 paginationFailure(jqXHR, textStatus);
                 hidePostLoadingBar();
