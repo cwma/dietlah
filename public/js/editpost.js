@@ -131,9 +131,13 @@ function initializeDeletePostBtn() {
                 'data': {post_id: $('#post_id').val()},
                 'success': function(data,  textStatus, jqXHR) {
                     hideNavLoadingBar();
-                    Materialize.toast("your post has been deleted!", 4000);
-                    window.onbeforeunload = null;
-                    window.location.href = "/";
+                    if(data['status'] == "successful") {
+                        Materialize.toast("your post has been deleted!", 4000);
+                        window.onbeforeunload = null;
+                        window.location.href = "/";
+                    } else {
+                        Materialize.toast("There was an error deleting this post: " + data['reason'], 4000);
+                    }
                 },
                 'error': function (jqXHR, textStatus, errorThrown) {
                     hideNavLoadingBar();

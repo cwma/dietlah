@@ -259,12 +259,9 @@ class PostController extends Controller {
 
 	public function updatePost(Request $request) {
         $post = Post::findOrFail($request->post_id);
-        if (!Auth::check() || Auth::id() != $post->user_id) {
-            // user can only delete his own post
-            if(!Auth::user()->is_admin) {
-                $response = ["status" => "failed", "reason" => ["unauthorized"]];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
+        if (!Auth::check() || Auth::id() != $post->user_id || !Auth::user()->is_admin) {
+            $response = ["status" => "failed", "reason" => ["unauthorized"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
         $validator = Validator::make($request->all(), [
@@ -359,12 +356,9 @@ class PostController extends Controller {
 
 	public function deletePost(Request $request) {
         $post = Post::findOrFail($request->post_id);
-        if (!Auth::check() || Auth::id() != $post->user_id) {
-            // user can only delete his own post
-            if(!Auth::user()->is_admin) {
-                $response = ["status" => "failed", "reason" => "unauthorized"];
-                return response(json_encode($response)) ->header('Content-Type', 'application/json');
-            }
+        if (!Auth::check() || Auth::id() != $post->user_id || !Auth::user()->is_admin) {
+            $response = ["status" => "failed", "reason" => "unauthorized"];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
         $comments = $post->comments;
