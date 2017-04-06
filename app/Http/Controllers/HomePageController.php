@@ -214,7 +214,9 @@ class HomePageController extends Controller {
             // the slow way for now... TODO: Optimize!
             $tags = $post->tags->groupby('tag_name')->all();
             if(sizeof($tags) > 0) {
-                $item['tag'] = self::findTopTag($tags);
+                $result = self::findTopTag($tags);
+                $item['tagid'] = $result['id'];
+                $item['tag'] = $result['name'];
             }
 
             array_push($results, $item);
