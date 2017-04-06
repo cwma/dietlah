@@ -5,7 +5,7 @@
     <div class="row">
         <div class="container profile-container">
             <div class="card card-panel">
-                <div class="panel-heading">Reset Password</div>
+                <div class="header center">Reset Password</div>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -31,8 +31,8 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="row center">
+                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1">
                                     Send Password Reset Link
                                 </button>
                             </div>
