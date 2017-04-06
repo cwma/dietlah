@@ -4,13 +4,6 @@
 
 @section('page-content')
 <div id="fb-root"></div>
-<script>(function(d, s, id) {
-  var js, fjs = d.getElementsByTagName(s)[0];
-  if (d.getElementById(id)) return;
-  js = d.createElement(s); js.id = id;
-  js.src = "//connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.8";
-  fjs.parentNode.insertBefore(js, fjs);
-}(document, 'script', 'facebook-jssdk'));</script>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <div class="container">
     <div class="row">
@@ -164,7 +157,12 @@
 <script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/profile.js"></script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
+<script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
+<script>
+    $(window).bind("load", function() {
+       $.getScript('js/social.js', function() {});
+    });
+</script>
 <script id="card_template" type="text/x-handlebars-template">
 @{{~#each posts~}}
 <div class="card grid-item hoverable" hidden>
