@@ -5,7 +5,7 @@
     <div class="row">
         <div class="container profile-container">
             <div class="card card-panel">
-                <div class="header center">Reset Password</div>
+                <h2 class="header center">Reset Password</h2>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
