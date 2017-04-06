@@ -1,5 +1,7 @@
 @extends('template')
 
+@section('title', 'Password Reset')
+
 @section('page-content')
 <div class="container">
     <div class="row">
