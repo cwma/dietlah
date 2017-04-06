@@ -149,8 +149,8 @@
                     <div class="collapsible-body" style="padding:0px!important">
                         <ul>
                          @if (Auth::guest())
-                            <li class="{{Route::currentRouteNamed('login') ? 'active' : '' }}"style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
-                            <li class="{{Route::currentRouteNamed('register') ? 'active' : '' }}"style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
+                            <li class="{{Route::currentRouteNamed('login') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
+                            <li class="{{Route::currentRouteNamed('register') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
                         @else
                             @if (Auth::user()->is_admin)
                             <li style="padding-left:43px"><a href="{{ route('admin') }}">Admin</a></li>

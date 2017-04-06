@@ -790,3 +790,7 @@ div.other-message{
 p {
     word-wrap: break-word;
 }
+
+.title a {
+  color: black;
+}

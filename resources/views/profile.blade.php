@@ -16,7 +16,7 @@
             </div>
             <div class="center-align">
                 <h4>{{$user['username']}}</h4>
-                <p>{!! nl2br(e($user['bio'])) !!}</p>
+                <p class="profile-text">{!! nl2br(e($user['bio'])) !!}</p>
                 @if(Auth::check() && Auth::id() != $user['id'])
                     <div class="right">
                         <a href="{{route('message.read', ['id'=>$user->id])}}" class="light-green-text">Send Message
@@ -150,11 +150,11 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
-<script type="text/javascript" src="js/linkify-html.min.js"></script>
+<script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/profile.js"></script>
 <script async src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
@@ -169,14 +169,14 @@
     <div class="article-header">
         <div class="article-user left">
             <div class="chip white">
-                <img data-src="@{{{profile_pic}}}" alt="Contact Person">
-                <a href="/profile/@{{user_id}}">@{{{username}}}</a>
+                <img data-src="@{{profile_pic}}" alt="Contact Person">
+                <a href="/profile/@{{user_id}}">@{{username}}</a>
             </div>
         </div>
         <div class="article-tag right">
         @{{#if tag}}
             <div class="chip light-green lighten-3">
-                <a href="view/new/all?tags[]=@{{tagid}}">@{{{tag}}}</a>
+                <a href="view/new/all?tags[]=@{{tagid}}">@{{tag}}</a>
             </div>
         @{{else}}
             <span style="margin-right: 10px; line-height:2">No Tags</span>
@@ -184,47 +184,47 @@
         </div>
     </div>
     @{{#if (containsImage image)}}
-        <a href="/post/@{{{id}}}" onclick="return false;">
-            <div class="card-image" data-postid="@{{{id}}}">
-                <img data-src="@{{{image}}}">
+        <a href="/post/@{{id}}" onclick="return false;">
+            <div class="card-image" data-postid="@{{id}}">
+                <img data-src="@{{image}}">
             </div>
         </a>
     @{{/if}}
-    <a href="/post/@{{{id}}}" onclick="return false;" style="color: black">
-        <div class="card-content" data-postid="@{{{id}}}">
-            <span class="card-title truncate">@{{{title}}}</span>
-            <p>@{{{linkify summary}}}</p>
+    <a href="/post/@{{id}}" onclick="return false;" style="color: black">
+        <div class="card-content" data-postid="@{{id}}">
+            <span class="card-title truncate">@{{title}}</span>
+            <p class="summary-text">@{{{summary}}}</p>
             <br>
             <p class="light-green-text">@{{time}}</p>
         </div>
     </a>
     <div class="card-action">
         <div class="col s3 center card-icon-container">
-            <a class="modal-trigger light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}">More</a>
+            <a class="modal-trigger light-green-text card-icon center" href="#postmodal" data-postid="@{{id}}">More</a>
         </div>
         <div class="col s3 center card-icon-container">
-            <a class="tooltipped light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}" comments="yes"
+            <a class="tooltipped light-green-text card-icon center" href="#postmodal" data-postid="@{{id}}" comments="yes"
             data-position="bottom" data-delay="50" data-tooltip="Comments">
-                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{{comments}}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{comments}}</span>
             </a>
         </div>
         @if (Auth::check())
         <div class="col s3 center card-icon-container">
             <a class="tooltipped light-green-text post-like card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
-                liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{{likes}}}</span>
+                liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
+                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes}}</span>
             </a>
         </div>
         <div class="col s3 center card-icon-container">
             <a class="tooltipped light-green-text post-fav card-icon center" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
                 <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
             </a>
         </div>
         @else
         <div class="col s3 center card-icon-container">
             <a class="tooltipped light-green-text card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="/login">
-                <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{{likes}}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text">star_border</i><span>@{{likes}}</span>
             </a>
         </div>
         <div class="col s3 center card-icon-container">
@@ -289,7 +289,7 @@
                         <div class="article-user left">
                             <div class="chip white">
                                 <img data-src="@{{profile_pic}}" alt="Contact Person">
-                                <a href="/profile/@{{user_id}}">@{{{username}}}</a>
+                                <a href="/profile/@{{user_id}}">@{{username}}</a>
                             </div>
                         </div>
                         <div class="article-tag right">
@@ -299,7 +299,7 @@
                     <div class="divider"></div>
                     <div class="section">
                         <h5>@{{title}}</h5>
-                        <p>@{{{linkify text}}}</p>
+                        <p class="post-text">@{{{text}}}</p>
                     </div>
                     <div class="divider"></div>
                     <div class="divider"></div>
@@ -427,13 +427,13 @@
             @if (Auth::check())
             <div class="col s3 center">
                 <a class="tooltipped light-green-text full-post-like" data-position="top" data-delay="50" data-tooltip="Like this post!" href="#"
-                    liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                    liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
                     <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes_count}}</span>
                 </a>
             </div>
             <div class="col s3 center">
                 <a class="tooltipped light-green-text full-post-fav" data-position="top" data-delay="50" data-tooltip="Add to Favourites!" href="#"
-                    favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{{id}}}">
+                    favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
                     <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
                 </a>
             </div>
@@ -468,10 +468,10 @@
 <script id="comments_template" type="text/x-handlebars-template">
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
-            <img data-src="@{{{profile_pic}}}" alt="" class="circle">
+            <img data-src="@{{profile_pic}}" alt="" class="circle">
             <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <p class="comment-text">@{{{text}}}</p>
+            <p id="actual" hidden text="@{{raw_text}}">
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
@@ -489,8 +489,8 @@
         </li>
         <li class="collection-item hide-on-med-and-up">
             <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <p class="comment-text">@{{{text}}}</p>
+            <p id="actual" hidden text="@{{raw_text}}">
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}

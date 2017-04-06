@@ -1,11 +1,5 @@
 /* handlebars helper functions */
 
-function registerLinkifyHelper() {
-    Handlebars.registerHelper("linkify", function(post) {
-        return linkifyHtml(post);
-    });
-}
-
 function registerCanEditHelper() {
     Handlebars.registerHelper("canEdit", function(userid, commentuserid) {
         return userid == commentuserid;
@@ -81,16 +75,19 @@ function renderCards(grid, cardJson) {
     div.innerHTML = dietlah.cardTemplate(cardJson);
     var elements = div.childNodes;
     salvattore.appendElements(grid, elements);
+    $('.summary-text').linkify();
     $('.card').fadeIn();
 }
 
 function renderPost(modal, postJson, postTemplate) {
     $(modal).html(postTemplate(postJson));
+    $('.post-text').linkify();
     $("#postWrapper").fadeIn();
 }
 
 function renderComments(commentsJson){
     $('.comments-list').append(dietlah.commentsTemplate(commentsJson));
+    $('.comment-text').linkify();
     $("#commentsWrapper").fadeIn();
 }
 
@@ -194,7 +191,7 @@ function initializeHomeModals() {
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#edit-comment-id").val($(trigger).attr('comment-id'));
-            $('#edit-comment').val($(trigger).parent().prev().html());
+            $('#edit-comment').val($(trigger).parent().prev().attr('text'));
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val($(trigger).attr('comment-id'));
             $('#delete-comment-confirm').attr('checked', false);
@@ -839,7 +836,6 @@ function showtag(tag) {
 }
 
 function registerHandleBarsHelpers() {
-    registerLinkifyHelper();
     registerTopTagsView();
     registerContainsImage();
     registerCanEditHelper();

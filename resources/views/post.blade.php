@@ -77,7 +77,7 @@
                             <div class="divider"></div>
                             <div class="section">
                                 <h5>{{$post['title']}}</h5>
-                                <p id="post-content">{!!$post['text']!!}</p>
+                                <p id="post-content">{!! $post['text'] !!}</p>
                             </div>
                             <div class="divider"></div>
                             @if ($post['location'])
@@ -97,7 +97,7 @@
                                 <ul class="collapsible" data-collapsible="accordion">
                                     <li>
                                         <div class="collapsible-header">
-                                            <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
+                                            <span><i class="material-icons">keyboard_arrow_down</i>All Tags</span>
                                         </div>
                                         <div class="collapsible-body"><span>
                                             @foreach ($post['tags'] as $tag)
@@ -166,7 +166,7 @@
                         @if(Auth::check())
                         <div id="post-tags" class="col s12">
                             <div class="container">
-                                <h5> Add your own tags to this post </h4>
+                                <h5> Add your own tags to this post </h5>
                                 <div class="section">
                                     <form id="suggest-tags" method="post" action="/rest/addtag" novalidate="novalidate">
                                         <div class="row">
@@ -335,11 +335,10 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
-<script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
 <script type="text/javascript" src="js/post.js"></script>
@@ -352,10 +351,10 @@
 <script id="comments_template" type="text/x-handlebars-template">
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
-            <img data-src="@{{{profile_pic}}}" alt="" class="circle">
+            <img data-src="@{{profile_pic}}" alt="" class="circle">
             <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <p id="comment-text" class="comment-text">@{{{text}}}</p>
+            <p id="actual" hidden text="@{{raw_text}}"></p>
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
@@ -379,8 +378,8 @@
         </li>
         <li class="collection-item hide-on-med-and-up">
             <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <p id="comment-text" class="comment-text">@{{text}}</p>
+            <p id="actual" hidden text="@{{raw_text}}">
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}

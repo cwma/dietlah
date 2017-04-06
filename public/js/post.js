@@ -29,6 +29,7 @@ function hideNavLoadingBar() {
 
 function renderComments(commentsJson){
     $('.comments-list').append(dietlah.commentsTemplate(commentsJson));
+    $('.comment-text').linkify();
     $("#commentsWrapper").fadeIn();
 }
 
@@ -82,7 +83,7 @@ function initializePostModals() {
         endingTop: '10%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
             $("#edit-comment-id").val($(trigger).attr('comment-id'));
-            $('#edit-comment').val($(trigger).parent().prev().html());
+            $('#edit-comment').val($(trigger).parent().prev().attr('text'));
             $('#edit-comment').trigger('autoresize');
             $("#delete-comment-id").val($(trigger).attr('comment-id'));
             $('#delete-comment-confirm').attr('checked', false);
