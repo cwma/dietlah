@@ -165,16 +165,20 @@
         </div>
     </div>
     @{{#if (containsImage image)}}
-        <div class="card-image" data-postid="@{{{id}}}">
-            <img data-src="@{{{image}}}">
-        </div>
+        <a href="/post/@{{{id}}}" onclick="return false;">
+            <div class="card-image" data-postid="@{{{id}}}">
+                <img data-src="@{{{image}}}">
+            </div>
+        </a>
     @{{/if}}
-    <div class="card-content" data-postid="@{{{id}}}">
-        <span class="card-title truncate">@{{{title}}}</span>
-        <p>@{{{linkify summary}}}</p>
-        <br>
-        <p class="light-green-text">@{{time}}</p>
-    </div>
+    <a href="/post/@{{{id}}}" onclick="return false;" style="color: black">
+        <div class="card-content" data-postid="@{{{id}}}">
+            <span class="card-title truncate">@{{{title}}}</span>
+            <p>@{{{linkify summary}}}</p>
+            <br>
+            <p class="light-green-text">@{{time}}</p>
+        </div>
+    </a>
     <div class="card-action">
         <div class="col s3 center card-icon-container">
             <a class="modal-trigger light-green-text card-icon center" href="#postmodal" data-postid="@{{{id}}}">More</a>
