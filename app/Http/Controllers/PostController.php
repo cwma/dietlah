@@ -243,6 +243,12 @@ class PostController extends Controller {
             }
             $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        } catch (\ErrorException $e) {
+            if($path != null) {
+                Storage::delete($path);
+            }
+            $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
         if($returnid != null) {
@@ -335,6 +341,12 @@ class PostController extends Controller {
             });
 
         } catch (\Intervention\Image\Exception\NotReadableException $e) {
+            if($path != null) {
+                Storage::delete($path);
+            }
+            $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        } catch (\ErrorException $e) {
             if($path != null) {
                 Storage::delete($path);
             }

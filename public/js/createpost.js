@@ -7,16 +7,24 @@ function hideNavLoadingBar() {
 }
 
 function handleFormSubmit() {
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param * 1024 * 1024)
+    }, 'File size must be less than {0} megabytes');
+
     $('#create-post').validate({
         rules: {
             title: "required",
             text: "required",
             image: {
-              extension: "jpeg|jpg|png"
+              extension: "jpeg|jpg|png",
+              filesize: 8
             }
         },
         messages: {
-            image: "Please provide a valid image file: jpeg, jpg, png."
+            image: {
+                extension: "Please provide a valid image file: jpeg, jpg, png.",
+                filesize: "Image file size must be smaller than 8 megabytes."
+            }
         },
         submitHandler: function(form) {
             showNavLoadingBar();
