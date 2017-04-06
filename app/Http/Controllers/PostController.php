@@ -176,21 +176,24 @@ class PostController extends Controller {
         }
 
         $returnid;
-        DB::transaction(function () use (&$request, &$returnid) {
+        $path;
 
-            $user_id = Auth::id();
+        try {
 
-        	$post = new Post;
-        	$post->title = $request->title;
-        	$post->text = $request->text;
-        	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 150);
-            $post->likes_count = 0;
-            $post->comments_count = 0;
-            $post->user_id = $user_id;
+            DB::transaction(function () use (&$request, &$returnid, &$path) {
 
-            // store image
-            try {
+                $user_id = Auth::id();
+
+            	$post = new Post;
+            	$post->title = $request->title;
+            	$post->text = $request->text;
+            	$post->location = $request->location;
+                $post->summary = self::myTruncate($request->text, 150);
+                $post->likes_count = 0;
+                $post->comments_count = 0;
+                $post->user_id = $user_id;
+
+                // store image
                 if($request->hasFile('image')) {
                     $path = $request->file('image')->store('public/images/postimages');
                     $image = Image::make(storage_path().'/app/'.$path);
@@ -209,30 +212,42 @@ class PostController extends Controller {
 
                     $post->image = $path;
                 }
-            } catch (\Intervention\Image\Exception\NotReadableException $e) {
-                 $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
-                 return response(json_encode($response)) ->header('Content-Type', 'application/json');
+
+            	$post->save();
+            	$post_id = $post->id;
+
+            	// add tags if there are tags
+                $tags = $request->has('tags') ? $request->tags : array();
+                foreach ($tags as $tagname) {
+                    $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
+                    $post_tag = new PostTag;
+                    $post_tag->user_id = $user_id;
+                    $post_tag->post_id = $post_id;
+                    $post_tag->tag_id = $tag->id;
+                    $post_tag->save();
+                }
+
+                $returnid = $post->id;
+            });
+
+        } catch (\Intervention\Image\Exception\NotReadableException $e) {
+            if($path != null) {
+                Storage::delete($path);
             }
+            $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
 
-        	$post->save();
-        	$post_id = $post->id;
+        if($returnid != null) {
 
-        	// add tags if there are tags
-            $tags = $request->has('tags') ? $request->tags : array();
-            foreach ($tags as $tagname) {
-                $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
-                $post_tag = new PostTag;
-                $post_tag->user_id = $user_id;
-                $post_tag->post_id = $post_id;
-                $post_tag->tag_id = $tag->id;
-                $post_tag->save();
-            }
+            $response = ["status" => "successful", "post_id" => $returnid];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
 
-            $returnid = $post->id;
-        });
+        } else {
 
-        $response = ["status" => "successful", "post_id" => $returnid];
-        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            $response = ["status" => "failed", "reason" => ["We were not able to create your post at this time. If the problem persists please contact us."]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
 	}
 
 	public function updatePost(Request $request) {
@@ -268,52 +283,71 @@ class PostController extends Controller {
         }
 
         $returnid;
-        DB::transaction(function () use (&$request, &$returnid) {
-            $post_id = $request->post_id;
-            $post = Post::findOrFail($post_id);
+        $path;
 
-            $post->title = $request->title;
-            $post->text = $request->text;
-        	$post->location = $request->location;
-            $post->summary = self::myTruncate($request->text, 150);
+        try {
 
-            $old_image = $post->image;
-            // store image
-            if($request->hasFile('image')) {
+            DB::transaction(function () use (&$request, &$returnid, &$path) {
+                $post_id = $request->post_id;
+                $post = Post::findOrFail($post_id);
 
-                $path = $request->file('image')->store('public/images/postimages');
-                $image = Image::make(storage_path().'/app/'.$path);
+                $post->title = $request->title;
+                $post->text = $request->text;
+            	$post->location = $request->location;
+                $post->summary = self::myTruncate($request->text, 150);
 
-                if ($image->height() > 1080) {
-                    $image->resize(null, 1080, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+                $old_image = $post->image;
+                // store image
+                if($request->hasFile('image')) {
+
+                    $path = $request->file('image')->store('public/images/postimages');
+                    $image = Image::make(storage_path().'/app/'.$path);
+
+                    if ($image->height() > 1080) {
+                        $image->resize(null, 1080, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    }
+                    if ($image->width() > 1920) {
+                        $image->resize(1920, null, function ($constraint) {
+                            $constraint->aspectRatio();
+                        });
+                    }
+                    $image->save(storage_path().'/app/'.$path);
+
+                    $post->image = $path;
+                } elseif ($request->should_delete_image) {
+                    $post->image = null;
                 }
-                if ($image->width() > 1920) {
-                    $image->resize(1920, null, function ($constraint) {
-                        $constraint->aspectRatio();
-                    });
+
+                $post->save();
+                $this->updateTags(Auth::id(), $post_id, $request->tags);
+
+                if($old_image != null && $old_image != $post->image){
+                    Storage::delete($old_image);
                 }
-                $image->save(storage_path().'/app/'.$path);
 
-                $post->image = $path;
-            } elseif ($request->should_delete_image) {
-                $post->image = null;
+                $returnid = $post_id;
+            });
+
+        } catch (\Intervention\Image\Exception\NotReadableException $e) {
+            if($path != null) {
+                Storage::delete($path);
             }
+            $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
 
-            $post->save();
-            $this->updateTags(Auth::id(), $post_id, $request->tags);
+        if($returnid != null) {
 
-            if($old_image != null && $old_image != $post->image){
-                Storage::delete($old_image);
-            }
+            $response = ["status" => "successful", "post_id" => $returnid];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
 
-            $returnid = $post_id;
-        });
+        } else {
 
-
-        $response = ["status" => "successful", "post_id" => $returnid];
-        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+            $response = ["status" => "failed", "reason" => ["We were not able to update your post at this time. If the problem persists please contact us."]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
     }
 
 	public function deletePost(Request $request) {

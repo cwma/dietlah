@@ -78,20 +78,27 @@ class ProfileController extends Controller {
 	}
 
 	public function updateProfile(Request $request){
-    	if(Auth::check()) {
-    		DB::transaction(function () use (&$request) {
+    	if(!Auth::check()) {
+	    	$response = ["status"=>"failed", "reason"=>["unauthorized"]];
+	    	return response(json_encode($response)) ->header('Content-Type', 'application/json');
+    	}
+
+		$validator = Validator::make($request->all(), [
+            'bio' => 'required|max:5000',
+            'image' => 'max:8192'
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+    	$path;
+
+    	try {
+
+    		DB::transaction(function () use (&$request, &$path) {
 		    	$user = Auth::user();
-
-		        $validator = Validator::make($request->all(), [
-		            'bio' => 'required|max:5000',
-		            'image' => 'max:8192'
-		        ]);
-
-
-		        if ($validator->fails()) {
-		            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
-		            return response(json_encode($response)) ->header('Content-Type', 'application/json');
-		        }
 
 		        if($request->hasFile('image')) {
 		            $path = $request->file('image')->store('public/images/profile');
@@ -119,13 +126,19 @@ class ProfileController extends Controller {
 		    	$user->save();
 		    });
 
-	    	$response = ["status" => "successful"];
-	    	return response(json_encode($response)) ->header('Content-Type', 'application/json');
-	    } else {
-	    	$response = ["status"=>"failed", "reason"=>"unauthorized"];
-	    	return response(json_encode($response)) ->header('Content-Type', 'application/json');
-	    }
-	}
+
+        } catch (\Intervention\Image\Exception\NotReadableException $e) {
+            if($path != null) {
+                Storage::delete($path);
+            }
+            $response = ["status" => "failed", "reason" => ["The image file you provided seems to be corrupted. Please try another file"]];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        $response = ["status" => "successful"];
+        return response(json_encode($response)) ->header('Content-Type', 'application/json');
+
+    }
 
 	public function restProfile($profileid, Request $request) {
 
