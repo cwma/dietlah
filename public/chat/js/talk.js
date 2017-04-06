@@ -23,6 +23,11 @@ $(document).ready(function () {
             if (response.status == 'success') {
                 $('#talkMessages').append(response.html);
                 tag[0].reset();
+            } else {
+                reasons = response['reason'];
+                for(i=0; i<reasons.length; i++) {
+                    Materialize.toast(reasons[i], 10000);
+                }
             }
         });
 
