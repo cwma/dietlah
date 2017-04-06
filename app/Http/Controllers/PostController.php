@@ -219,12 +219,17 @@ class PostController extends Controller {
             	// add tags if there are tags
                 $tags = $request->has('tags') ? $request->tags : array();
                 foreach ($tags as $tagname) {
-                    $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
-                    $post_tag = new PostTag;
-                    $post_tag->user_id = $user_id;
-                    $post_tag->post_id = $post_id;
-                    $post_tag->tag_id = $tag->id;
-                    $post_tag->save();
+
+                    $tagname = trim(str_replace("+", " ", $tagname));
+                    if(strlen($tagname) >= 3) {
+                        
+                        $tag = Tag::firstOrCreate(["tag_name" => $tagname]);
+                        $post_tag = new PostTag;
+                        $post_tag->user_id = $user_id;
+                        $post_tag->post_id = $post_id;
+                        $post_tag->tag_id = $tag->id;
+                        $post_tag->save();
+                    }
                 }
 
                 $returnid = $post->id;
@@ -471,12 +476,16 @@ class PostController extends Controller {
         // else repopulate tags from user
         foreach ($tags as $tag) {
 
-            $tag = Tag::firstOrCreate(["tag_name" => $tag]);
-            $post_tag = new PostTag;
-            $post_tag->user_id = $user_id;
-            $post_tag->post_id = $post_id;
-            $post_tag->tag_id = $tag->id;
-            $post_tag->save();
+            $tag = trim(str_replace("+", " ", $tag));
+            if(strlen($tag) >= 3) {
+
+                $tag = Tag::firstOrCreate(["tag_name" => $tag]);
+                $post_tag = new PostTag;
+                $post_tag->user_id = $user_id;
+                $post_tag->post_id = $post_id;
+                $post_tag->tag_id = $tag->id;
+                $post_tag->save();
+            }
         }
     }
 }
