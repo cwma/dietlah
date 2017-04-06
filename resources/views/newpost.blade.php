@@ -10,7 +10,7 @@
         <form id="create-post" name="create-post" method="post" action="/rest/createpost" novalidate="novalidate">
 
             <div class="row">
-                <div class="col s12">
+                <div class="col s12 center-align">
                     <div id="image-preview-container">
                         <img class="responsive-img" id="image-preview" src=""/>
                         <span id="image-preview-close">&times;</span>

@@ -12,7 +12,7 @@
                 <input type="hidden" name="post_id" id="post_id" value="{{$post['id']}}">
 
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s12 center-align">
                         <div id="image-preview-container">
                             @if($post['image'] == '')
                                 <img class="responsive-img" id="image-preview" src=""/>
