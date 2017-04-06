@@ -84,6 +84,6 @@
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-<script type="text/javascript" src="js/createpost.js"></script>
+<script type="text/javascript" src="js/createpost.1.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 @stop
