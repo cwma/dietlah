@@ -5,7 +5,7 @@
     <div class="row">
         <div class="container profile-container">
             <div class="card card-panel">
-                <h2 class="header">Register</h2>
+                <h2 class="header center">Register</h2>
                 <div class="panel-body">
                     <form class="form-horizontal" role="form" method="POST" action="{{ route('register') }}">
                         {{ csrf_field() }}
@@ -61,12 +61,18 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
+                            <div class="row center">
                                 <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1">
                                     Register
                                 </button>
                             </div>
                         </div>
+
+                        <div class="row center">
+                            <a class="btn waves-effect waves-ligh light-green lighten-1" href="{{ route('login') }}" style="margin-top:5px">
+                                Already have an account?
+                            </a>
+                        </row>
                     </form>
                 </div>
             </div>
