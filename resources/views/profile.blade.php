@@ -345,7 +345,7 @@
                     <div class="row" style="margin-left: 5px"><br>
                     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="@{{root}}/post/@{{id}}"
                     data-text="@{{title}}" data-show-count="false">Tweet</a></div>
-                    <div class="fb-like" data-href="@{{root}}/post/@{{id}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                    <div class="fb-like" data-width="350" data-href="@{{root}}/post/@{{id}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
                     </div>
                 </div>
 
