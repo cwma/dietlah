@@ -16,6 +16,13 @@
             </div>
             <div class="center-align">
                 <h4>{{$user['username']}}</h4>
+
+                 @if($user['is_admin'])
+                 <span class="light-green-text">
+                    <i class="material-icons light-green-text" style="vertical-align:middle">supervisor_account</i>
+                    Administrator
+                 </span>
+                 @endif
                 <p class="profile-text">{!! nl2br(e($user['bio'])) !!}</p>
                 @if(Auth::check() && Auth::id() != $user['id'])
                     <div class="right">
