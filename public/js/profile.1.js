@@ -727,7 +727,8 @@ function initMaps() {
             pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
             map = new google.maps.Map(document.getElementById('map'), {
                 center: pos,
-                zoom: 16
+                zoom: 16,
+                scrollwheel: false
             });
             var marker = new google.maps.Marker({
               position: pos,
