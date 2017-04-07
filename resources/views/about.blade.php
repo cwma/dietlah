@@ -60,7 +60,7 @@
     <div class="row"><br>
     <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="{{url('/')}}/about" data-show-count="false">Tweet</a>
         <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
-    <a href="https://twitter.com/DietLahSG" class="twitter-follow-button" data-show-count="false">Follow @DietLahSG</a><script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script></div>
+        <a href="https://twitter.com/DietLahSG" class="twitter-follow-button" data-show-count="false">Follow @DietLahSG</a></script></div>
     <div class="fb-like" data-width="350" data-href="{{url('/')}}/about" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
     </div>
 </div>
