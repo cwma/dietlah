@@ -21,6 +21,7 @@ class CommentController extends Controller {
                 return response(json_encode($response)) ->header('Content-Type', 'application/json');
             }
 
+            $post = Post::findOrFail($request->post_id);
 			$comment = new Comment;
 			$comment->comment = $request->comment;
 			$comment->user_id = Auth::user()->id;
@@ -28,11 +29,10 @@ class CommentController extends Controller {
 			$comment->save();
 
 			$comments_count = Comment::where("post_id", $request->post_id)->count();
-            $post = Post::findOrFail($request->post_id);
             $post->comments_count = $comments_count;
             $post->save();
 
-	        $response = ["status" => "success", "response" => "comment created!", "count"=>$post->comments_count];
+	        $response = ["status" => "success", "response" => "comment created!", "count"=>$post->comments_count, "post-id" => $post->id];
 	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		}
         $response = ["status" => "failed", "reason" => ["unauthorized"]];
@@ -46,16 +46,17 @@ class CommentController extends Controller {
 
 			if(Auth::id() == $comment->user_id || Auth::user()->is_admin) {
 
+				
 				$post_id = $comment->post->id;
-
+				$post = Post::findOrFail($post_id);
+				
 				Comment::destroy($request->comment_id);
 
 				$comments_count = Comment::where("post_id", $post_id)->count();
-	            $post = Post::findOrFail($post_id);
 	            $post->comments_count = $comments_count;
 	            $post->save();
 
-		        $response = ["status" => "success", "response" => "comment deleted", "count"=>$post->comments_count];
+		        $response = ["status" => "success", "response" => "comment deleted", "count"=>$post->comments_count, "post-id" => $post->id];
 		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		    } else {
 		        $response = ["status" => "failed", "reason" => "unauthorized"];

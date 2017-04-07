@@ -239,6 +239,9 @@ function handleLikeClickEvent(elementId) {
         e.preventDefault(); 
         var liked = $(likeCaller).attr("liked");
         var postId = $(likeCaller).attr("post-id");
+        var targeticon = "." + postId + "-like-icon";
+        var targetcount = "." + postId + "-like-count";
+        var targetcaller = "." + postId + "-like-click";
         $.ajax({
             type: "POST",
             url: "/rest/like",
@@ -249,13 +252,13 @@ function handleLikeClickEvent(elementId) {
             success: function( msg ) {
                 Materialize.toast(msg["response"], 4000);
                 if(liked == "yes") {
-                    $(likeCaller).attr("liked", "no");
-                    $(likeCaller).children("i").html("star_outline");
-                    $(likeCaller).children("span").html(msg["likes"]);
+                    $(targetcaller).attr("liked", "no");
+                    $(targeticon).html("star_outline");
+                    $(targetcount).html(msg["likes"]);
                 } else {
-                    $(likeCaller).attr("liked", "yes");
-                    $(likeCaller).children("i").html("star");
-                    $(likeCaller).children("span").html(msg["likes"]);
+                    $(targetcaller).attr("liked", "yes");
+                    $(targeticon).html("star");
+                    $(targetcount).html(msg["likes"]);
                 }
             }
         });
@@ -268,6 +271,8 @@ function handleFavouriteClickEvent(elementId) {
         e.preventDefault(); 
         var favourited = $(favCaller).attr("favourited");
         var postId = $(favCaller).attr("post-id");
+        var targeticon = "." + postId + "-fav-icon";
+        var targetcaller = "." + postId + "-fav-click";
         $.ajax({
             type: "POST",
             url: "/rest/favourite",
@@ -278,11 +283,11 @@ function handleFavouriteClickEvent(elementId) {
             success: function( msg ) {
                 Materialize.toast(msg["response"], 4000);
                 if(favourited == "yes") {
-                    $(favCaller).attr("favourited", "no");
-                    $(favCaller).children("i").html("bookmark_outline");
+                    $(targetcaller).attr("favourited", "no");
+                    $(targeticon).html("bookmark_outline");
                 } else {
-                    $(favCaller).attr("favourited", "yes");
-                    $(favCaller).children("i").html("bookmark");
+                    $(targetcaller).attr("favourited", "yes");
+                    $(targeticon).html("bookmark");
                 }
             }
         });
@@ -388,6 +393,7 @@ function initializeSubmitComment() {
                         $(form).resetForm();
                         $(form).find('#comment').trigger('autoresize');
                         $('#post-comments-count').html(data['count']);
+                        $('#'+data['post-id']+'-comments-count').html(data['count']);
                         reinitializeCommentsScroll();
                     } else {
                         Materialize.toast("We were not able to create the comment", 10000);
@@ -464,6 +470,7 @@ function handleDeleteCommentSubmit() {
                     if(data['status'] == "success") {
                         Materialize.toast(data["response"], 4000);
                         $('#post-comments-count').html(data['count']);
+                        $('#'+data['post-id']+'-comments-count').html(data['count']);
                         $('#edit-comment-modal').modal('close');
                     } else {
                         Materialize.toast(data["reason"], 4000);

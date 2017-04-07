@@ -212,20 +212,20 @@
         <div class="col s3 center card-icon-container">
             <a class="tooltipped light-green-text card-icon center" href="#postmodal" data-postid="@{{id}}" comments="yes"
             data-position="bottom" data-delay="50" data-tooltip="Comments">
-                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span>@{{comments}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text">comment</i><span id="@{{id}}-comments-count">@{{comments}}</span>
             </a>
         </div>
         @if (Auth::check())
         <div class="col s3 center card-icon-container">
-            <a class="tooltipped light-green-text post-like card-icon center" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
+            <a class="tooltipped light-green-text post-like card-icon center @{{id}}-like-click" data-position="bottom" data-delay="50" data-tooltip="Like this post!" href="#"
                 liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes}}</span>
+                <i style="vertical-align:middle" class="material-icons light-green-text @{{id}}-like-icon">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span class="@{{id}}-like-count">@{{likes}}</span>
             </a>
         </div>
         <div class="col s3 center card-icon-container">
-            <a class="tooltipped light-green-text post-fav card-icon center" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+            <a class="tooltipped light-green-text post-fav card-icon center @{{id}}-fav-click" data-position="bottom" data-delay="50" data-tooltip="Add to Favourites!" href="#"
                 favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
-                <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+                <i style="vertical-align:middle" class="material-icons light-green-text @{{id}}-fav-icon">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
             </a>
         </div>
         @else
@@ -433,15 +433,15 @@
         <div class="row vertical-align">
             @if (Auth::check())
             <div class="col s3 center">
-                <a class="tooltipped light-green-text full-post-like" data-position="top" data-delay="50" data-tooltip="Like this post!" href="#"
+                <a class="tooltipped light-green-text full-post-like @{{id}}-like-click" data-position="top" data-delay="50" data-tooltip="Like this post!" href="#"
                     liked="@{{#if liked}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span>@{{likes_count}}</span>
+                    <i style="vertical-align:middle" class="material-icons light-green-text @{{id}}-like-icon">@{{#if liked}}star@{{else}}star_border@{{/if}}</i><span class="@{{id}}-like-count">@{{likes_count}}</span>
                 </a>
             </div>
             <div class="col s3 center">
-                <a class="tooltipped light-green-text full-post-fav" data-position="top" data-delay="50" data-tooltip="Add to Favourites!" href="#"
+                <a class="tooltipped light-green-text full-post-fav @{{id}}-fav-click" data-position="top" data-delay="50" data-tooltip="Add to Favourites!" href="#"
                     favourited="@{{#if favourited}}yes@{{else}}no@{{/if}}" post-id="@{{id}}">
-                    <i style="vertical-align:middle" class="material-icons light-green-text">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
+                    <i style="vertical-align:middle" class="material-icons light-green-text @{{id}}-fav-icon">@{{#if favourited}}bookmark@{{else}}bookmark_border@{{/if}}</i>
                 </a>
             </div>
             @else
