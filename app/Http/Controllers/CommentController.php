@@ -32,7 +32,7 @@ class CommentController extends Controller {
             $post->comments_count = $comments_count;
             $post->save();
 
-	        $response = ["status" => "success", "response" => "comment created!"];
+	        $response = ["status" => "success", "response" => "comment created!", "count"=>$post->comments_count];
 	        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		}
         $response = ["status" => "failed", "reason" => ["unauthorized"]];
@@ -55,7 +55,7 @@ class CommentController extends Controller {
 	            $post->comments_count = $comments_count;
 	            $post->save();
 
-		        $response = ["status" => "success", "response" => "comment deleted"];
+		        $response = ["status" => "success", "response" => "comment deleted", "count"=>$post->comments_count];
 		        return response(json_encode($response)) ->header('Content-Type', 'application/json');
 		    } else {
 		        $response = ["status" => "failed", "reason" => "unauthorized"];

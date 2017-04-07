@@ -274,6 +274,7 @@ function initializeSubmitComment() {
                         $(form).resetForm();
                         $(form).find('#comment').trigger('autoresize');
                         reinitializeCommentsScroll();
+                        $('#post-comments-count').html(data['count']);
                     } else {
                         Materialize.toast("We were not able to create the comment", 10000);
                         reasons = data['reason'];
@@ -348,6 +349,7 @@ function handleDeleteCommentSubmit() {
                     $("#delete-comment-submit").prop("disabled", false);
                     if(data['status'] == "success") {
                         Materialize.toast(data["response"], 4000);
+                        $('#post-comments-count').html(data['count']);
                         $('#edit-comment-modal').modal('close');
                     } else {
                         Materialize.toast(data["reason"], 4000);

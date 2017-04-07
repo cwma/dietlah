@@ -231,7 +231,7 @@
                     <li class="tab">
                         <a href="#post-comments" class="tooltipped light-green-text post" data-position="bottom" data-delay="50" data-tooltip="Comments">
                             <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
-                            <span class="light-green-text">(@{{comments_count}})</span> 
+                            <span class="light-green-text" id="post-comments-count">(@{{comments_count}})</span> 
                         </a>
                     </li>
                     @if (Auth::check())
