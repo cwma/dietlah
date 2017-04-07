@@ -18,6 +18,9 @@
         <div class="cards-container" id="grid" data-columns>
         </div>
     </div>
+    <div class="row center no-result" hidden>
+        <h5> We were not able to find any posts matching those criteria :( </h5>
+    </div>
 </div>
 <div id="postmodal" class="modal modal-fixed-header modal-fixed-footer post-modal">
     <div class="progress post-progress light-green lighten-4"><div class="indeterminate light-green"></div></div>

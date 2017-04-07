@@ -74,9 +74,13 @@ function renderCards(grid, cardJson) {
     var div = document.createElement('div');
     div.innerHTML = dietlah.cardTemplate(cardJson);
     var elements = div.childNodes;
-    salvattore.appendElements(grid, elements);
-    $('.summary-text').linkify();
-    $('.card').fadeIn();
+    if(elements.length > 0) {
+        salvattore.appendElements(grid, elements);
+        $('.summary-text').linkify();
+        $('.card').fadeIn();
+    } else if (dietlah.page == 1) {
+        $('.no-result').show();
+    }
 }
 
 function renderPost(modal, postJson, postTemplate) {
@@ -585,6 +589,7 @@ function paginationFailure(jqXHR, textStatus) {
 
 function ajaxLoadPageFeed(order, range, tags) {
     if (dietlah.nextPage != null) {
+        $('.no-result').hide();
         showNavLoadingBar();
         $.ajax({
             url: dietlah.nextPage,
@@ -609,6 +614,7 @@ function ajaxLoadPageFeed(order, range, tags) {
 
 function ajaxLoadPageFeedSearch(search) {
     if (dietlah.nextPage != null) {
+        $('.no-result').hide();
         showNavLoadingBar();
         $.ajax({
             url: dietlah.nextPage,
@@ -748,7 +754,6 @@ function setupPostsFiltering() {
         reinitializeInfiniteScroll(true);
     });
     $('#post-tag-select, #post-tag-select-mobile').on('change', function(e) {
-        console.log($(this).val());
         $('#post-tag-select, #post-tag-select-mobile').val($(this).val());
         if($(this).attr("id") == "post-tag-select") {
             $('#post-tag-select-mobile').material_select();
