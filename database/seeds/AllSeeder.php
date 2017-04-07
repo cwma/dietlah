@@ -79,7 +79,7 @@ class AllSeeder extends Seeder
 	$limit = 100;
 	$faker = Faker\Factory::create();
 	for ($i = 1; $i <= $limit; $i++) {
-	    for ($j = 0; $j <= $limit; $j++) {
+	    for ($j = 1; $j <= $limit; $j++) {
 	    	$comment = new Comment;
 	    	$comment->comment = $faker->sentence($nbWords = 6, $variableNbWords = true);
 	        $comment->user_id = $faker->numberBetween($min = 1, $max = $limit);
@@ -93,7 +93,7 @@ class AllSeeder extends Seeder
 	$limit = 100;
 	$faker = Faker\Factory::create();
 	for ($i = 1; $i <= $limit; $i++) {
-	    for ($j = 0; $j <= $limit; $j++) {
+	    for ($j = 1; $j <= $limit; $j++) {
 	    	$like = new Like;
 	        $like->user_id = $faker->numberBetween($min = 1, $max = $limit);
 		$like->post_id = $i;
@@ -106,7 +106,7 @@ class AllSeeder extends Seeder
 	$limit = 100;
 	$faker = Faker\Factory::create();
 	for ($i = 1; $i <= $limit; $i++) {
-	    for ($j = 0; $j <= $limit; $j++) {
+	    for ($j = 1; $j <= $limit; $j++) {
 	    	$favourite = new Favourite;
 	        $favourite->user_id = $faker->numberBetween($min = 1, $max = $limit);
 		$favourite->post_id = $i;
