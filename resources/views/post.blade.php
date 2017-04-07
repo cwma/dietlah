@@ -2,7 +2,19 @@
 
 @section('title', $post['title'].' - DietLah!')
 
+@section('meta')
+    <meta property="og:url"           content="{{url('/').'/post/'.$post['id']}}" />
+    <meta property="og:type"          content="website" />
+    <meta property="og:title"         content="DietLah! - {{$post['title']}}" />
+    <meta property="og:description"   content="{{$post['summary']}}" />
+@if($post['image'] != "")
+    <meta property="og:image"         content="{{url('/').$post['image']}}" />
+@endif
+@stop
+
 @section('page-content')
+<div id="fb-root"></div>
+<script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <div class="container standalone-post-container">
     <div class="row">
         <div id="postWrapper">
@@ -18,7 +30,7 @@
                             <li class="tab">
                                 <a href="#post-comments" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Comments">
                                     <i class="material-icons light-green-text" style="vertical-align:middle">comment</i>
-                                    <span class="light-green-text">({{$post['comments_count']}})</span> 
+                                    <span class="light-green-text" id="post-comments-count">({{$post['comments_count']}})</span> 
                                 </a>
                             </li>
                             @if(Auth::check())
@@ -55,7 +67,7 @@
                                 <div class="article-user left">
                                     <div class="chip white">
                                         <img data-src="{{$post['profile_pic']}}" alt="Contact Person">
-                                        <a href="/profile/{{$post['user_id']}}" target="_blank">{{$post['username']}}</a>
+                                        <a href="/profile/{{$post['user_id']}}">{{$post['username']}}</a>
                                     </div>
                                 </div>
                                 <div class="article-tag right">
@@ -65,38 +77,32 @@
                             <div class="divider"></div>
                             <div class="section">
                                 <h5>{{$post['title']}}</h5>
-                                <p id="post-content">{!!$post['text']!!}</p>
+                                <p id="post-content">{!! $post['text'] !!}</p>
                             </div>
                             <div class="divider"></div>
                             @if ($post['location'])
                             <div id="map"></div>
                             @endif
                             <div class="divider"></div>
+
                             <div class="section">
+                                @foreach ($post['tags'] as $id => $tag)
+                                        @if ($loop->index == 5)
+                                            @break
+                                        @endif
+                                        <div class="chip light-green lighten-3">
+                                            <a href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
+                                        </div>
+                                @endforeach
                                 <ul class="collapsible" data-collapsible="accordion">
                                     <li>
-                                        <div class="collapsible-header active">
-                                            <i class="material-icons">keyboard_arrow_down</i>Top Tags</span>
-                                        </div>
-                                        <div class="collapsible-body"><span>
-                                            @foreach ($post['tags'] as $tag)
-                                                    @if ($loop->index == 5)
-                                                        @break
-                                                    @endif
-                                                    <div class="chip light-green lighten-3">
-                                                        {{$tag}}
-                                                    </div>
-                                            @endforeach
-                                        </span></div>
-                                    </li>
-                                    <li>
                                         <div class="collapsible-header">
-                                            <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
+                                            <span><i class="material-icons">keyboard_arrow_down</i>All Tags</span>
                                         </div>
                                         <div class="collapsible-body"><span>
                                             @foreach ($post['tags'] as $tag)
                                                     <div class="chip light-green lighten-3">
-                                                        {{$tag}}
+                                                        <a href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
                                                     </div>
                                             @endforeach
                                         </span></div>
@@ -110,12 +116,19 @@
                                         <a href="/update/{{$post['id']}}"  class="light-green-text">Edit Post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                                     </div>
+                                @elseif(Auth::check() && Auth::user()->is_admin)
+                                    <div class="left">
+                                        <a href="/update/{{$post['id']}}"  class="light-green-text">Admin Edit
+                                        <i class="material-icons light-green-text left" style="vertical-align:middle">report_problem</i>
+                                    </div>
                                 @endif
+                                @if(Auth::check())
                                     <div class="right">
                                         <a href="#report-post-modal"  class="light-green-text" data-postid="{{$post['id']}}">Report this post
                                         <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                                     </div>
                                 </a>
+                                @endif
                             </div>
                         </div>
 
@@ -153,13 +166,13 @@
                         @if(Auth::check())
                         <div id="post-tags" class="col s12">
                             <div class="container">
-                                <h5> Add your own tags to this post </h4>
+                                <h5> Add your own tags to this post </h5>
                                 <div class="section">
                                     <form id="suggest-tags" method="post" action="/rest/addtag" novalidate="novalidate">
                                         <div class="row">
                                             <div class="input-field col s12">
                                                 <textarea name id="suggested-tags" class="materialize-textarea" data-role="materialtags"></textarea>
-                                                <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag)</label>
+                                                <label id="input-validate-label" for="suggested-tags">Your suggested tags for this post (min 3 chars, max 20 per tag), press enter to set a tag.</label>
                                             </div>
                                         </div>
                                         <input name="post_id" id="suggest-tags-post-id" type="text" value="{{$post['id']}}" hidden>
@@ -219,6 +232,11 @@
                     </div>
                 </div>
                 @endif
+                    <div class="row" style="margin-left: 15px"><br>
+                    <div><a href="https://twitter.com/share" class="twitter-share-button" data-url="{{url('/').'/post/'.$post['id']}}"
+                    data-text="{{$post['title']}}" data-show-count="false">Tweet</a></div>
+                    <div class="fb-like" data-width="350" data-href="{{url('/').'/post/'.$post['id']}}" data-layout="standard" data-action="like" data-show-faces="true" data-share="true"></div>
+                    </div>
             </div>
         </div>
     </div>
@@ -317,22 +335,26 @@
 
 @section('scripts')
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.6/handlebars.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
 <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
 <script type="text/javascript" src="js/linkify.min.js"></script>
-<script type="text/javascript" src="js/linkify-html.min.js"></script>
 <script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-<script type="text/javascript" src="js/post.js"></script>
+<script type="text/javascript" src="js/post.2.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
+<script>
+    $(window).bind("load", function() {
+       $.getScript('js/social.js', function() {});
+    });
+</script>
 <script id="comments_template" type="text/x-handlebars-template">
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
-            <img data-src="@{{{profile_pic}}}" alt="" class="circle">
-            <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <img data-src="@{{profile_pic}}" alt="" class="circle">
+            <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
+            <p id="comment-text" class="comment-text">@{{{text}}}</p>
+            <p id="actual" hidden text="@{{raw_text}}"></p>
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
@@ -341,6 +363,12 @@
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
+                @endif
+                @if(Auth::check() && Auth::user()->is_admin)
+                    <a href="#edit-comment-modal"  class="tooltipped light-green-text right edit-comment" 
+                        data-position="bottom" data-delay="50" data-tooltip="ADMIN" comment-id="@{{id}}">
+                        <i class="material-icons light-red-text left" style="vertical-align:middle">report_problem</i>
+                    </a>
                 @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment-desktop" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
@@ -349,9 +377,9 @@
             </p>
         </li>
         <li class="collection-item hide-on-med-and-up">
-            <span class="title">@{{username}}</span>
-            <p id="comment-text">@{{{linkify text}}}</p>
-            <p id="actual" hidden>@{{{raw_text}}}</p>
+            <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
+            <p id="comment-text" class="comment-text">@{{text}}</p>
+            <p id="actual" hidden text="@{{raw_text}}">
             <p class="light-green-text">@{{time}}
                 @if(Auth::check())
                     @{{#if (canEdit user_id ../current_user_id)}}
@@ -360,11 +388,11 @@
                         <i class="material-icons light-green-text left" style="vertical-align:middle">create</i>
                     </a>
                     @{{/if}}
-                @endif
                 <a href="#report-comment-modal"  class="tooltipped light-green-text right report-comment" 
                     data-position="bottom" data-delay="50" data-tooltip="Report this comment" comment-id="@{{id}}">
                     <i class="material-icons light-green-text left" style="vertical-align:middle">flag</i>
                 </a>
+                @endif
             </p>
         </li>
     @{{~/each}}

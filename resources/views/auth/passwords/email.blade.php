@@ -1,11 +1,13 @@
 @extends('template')
 
+@section('title', 'Password Reset Email')
+
 @section('page-content')
 <div class="container">
     <div class="row">
-        <div class="col-md-8 col-md-offset-2">
-            <div class="panel panel-default">
-                <div class="panel-heading">Reset Password</div>
+        <div class="container profile-container">
+            <div class="card card-panel">
+                <h2 class="header center">Reset Password</h2>
                 <div class="panel-body">
                     @if (session('status'))
                         <div class="alert alert-success">
@@ -31,8 +33,8 @@
                         </div>
 
                         <div class="form-group">
-                            <div class="col-md-6 col-md-offset-4">
-                                <button type="submit" class="btn btn-primary">
+                            <div class="row center">
+                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1">
                                     Send Password Reset Link
                                 </button>
                             </div>

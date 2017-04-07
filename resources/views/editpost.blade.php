@@ -12,7 +12,7 @@
                 <input type="hidden" name="post_id" id="post_id" value="{{$post['id']}}">
 
                 <div class="row">
-                    <div class="col s12">
+                    <div class="col s12 center-align">
                         <div id="image-preview-container">
                             @if($post['image'] == '')
                                 <img class="responsive-img" id="image-preview" src=""/>
@@ -66,7 +66,7 @@
                 <div class="row">
                     <div class="input-field col s12">
                         <textarea id="tags" class="materialize-textarea" data-role="materialtags"></textarea>
-                        <label id="input-validate-label" for="tags">Your tags for this post (min 3 chars, max 20 per tag)</label>
+                        <label id="input-validate-label" for="tags">Your tags for this post (min 3 chars, max 20 per tag), press enter to set a tag.</label>
                     </div>
                 </div>
 
@@ -88,11 +88,11 @@
 @stop
 
 @section('scripts')
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.0/jquery.form.min.js" integrity="sha384-E4RHdVZeKSwHURtFU54q6xQyOpwAhqHxy2xl9NLW9TQIqdNrNh60QVClBRBkjeB8" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.2.1/jquery.form.min.js" integrity="sha384-tIwI8+qJdZBtYYCKwRkjxBGQVZS3gGozr3CtI+5JF/oL1JmPEHzCEnIKbDbLTCer" crossorigin="anonymous"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/jquery.validate.min.js"></script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.16.0/additional-methods.min.js"></script>
     <script type="text/javascript" src="js/typeahead.bundle.min.js"></script>
     <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-    <script type="text/javascript" src="js/editpost.js"></script>
+    <script type="text/javascript" src="js/editpost.1.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 @stop

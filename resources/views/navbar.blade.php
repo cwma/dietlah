@@ -4,6 +4,11 @@
             <li><a href="{{ route('login') }}">Login</a></li>
             <li><a href="{{ route('register') }}">Register</a></li>
         @else
+            <li><a href="{{ route('profile.my') }}">My Profile</a></li>
+            <li><a href="{{ route('message.read') }}">Messages</a></li>
+            @if (Auth::user()->is_admin)
+            <li><a href="{{ route('admin') }}">Admin</a></li>
+            @endif
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -19,8 +24,8 @@
     <nav class="light-green lighten-1">
         <div class="nav-wrapper">
             <ul id="nav-mobile" class="left hide-on-med-and-down">
-                <li><a href="/"><b>DietLah!</b><i class="material-icons left">cloud</i></a></li>
-                @if (Route::currentRouteNamed('home.default'))
+                <li><a href="/"><img class="logo" src="logo.png"><span class="logo-text">DietLah!</span></a></li>
+                @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
                 <li class="input-field" style="padding-left:10px;width:120px">
                     <select id="post-order-select" class="post-filter">
                         <option value="new" selected>New</option>
@@ -54,25 +59,29 @@
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
             <ul class="right hide-on-med-and-down">
-                @if (Route::currentRouteNamed('home.default'))
+                @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
                 <li class="input-field">
                     <input id="nav-search" type="search" placeholder="search posts" name="nav-search">
                     <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
                 </li>
                 @endif
-                <li>
-                    <a class="tooltipped" href="#" data-position="bottom" data-delay="50" data-tooltip="About DietLah!">
+                <li class="{{Route::currentRouteNamed('about') ? 'active' : '' }}">
+                    <a class="tooltipped" href="/about" data-position="bottom" data-delay="50" data-tooltip="About DietLah!">
                         <i class="material-icons">info</i>
                     </a>
                 </li>
-                <li>
+                <li class="{{Route::currentRouteNamed('post.create') ? 'active' : '' }}">
                     <a class="tooltipped" href="/createpost" data-position="bottom" data-delay="50" data-tooltip="Create new post">
                         <i class="material-icons">create</i>
                     </a>
                 </li>
                 <li>
-                    <a class="dropdown-button" href="#!" data-activates="accountdropdown">
-                        <i class="material-icons">account_box</i>
+                    <a class="dropdown-button" {{Auth::check() ? 'href=/profile/'.$user['id'] : ''}} data-activates="accountdropdown">
+                        @if(Auth::check())
+                            <img src="{{$user['profile_pic']}}" class="circle nav-image">
+                        @else
+                            <i class="material-icons">account_box</i>
+                        @endif
                     </a>
                 </li>
             </ul>
@@ -84,6 +93,16 @@
 </div>
 <div class="navbar-mobile">
     <ul id="slide-out" class="side-nav">
+        @if(Auth::check())
+        <li>
+            <div class="userView">
+                <div class="background" style="background-color: #9ccc65">
+                </div>
+                <a href="{{ route('profile.my') }}"><img src="{{$user['profile_pic']}}" class="circle"></a>
+                <a href="{{ route('profile.my') }}"><span class="white-text name">{{$user['username']}}</span></a>
+            </div>
+        </li>
+        @endif
         <li class="{{Route::currentRouteNamed('home.default') ? 'active' : '' }}"><a href="/"><b>Home</b><i class="material-icons left">home</i></a></li>
         @if (Route::currentRouteNamed('home.default'))
         <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
@@ -119,18 +138,25 @@
             <label class="label-icon" for="nav-search"><i class="material-icons">search</i></label>
         </li>
         @endif
-        <li><a href="/"><b>About DietLah!</b><i class="material-icons left">info</i></a></li>
-        <li><a href="/createpost"><b>Create Post</b><i class="material-icons left">create</i></a></li>
+        <li class="{{Route::currentRouteNamed('about') ? 'active' : '' }}"><a href="/about"><b>About DietLah!</b><i class="material-icons left">info</i></a></li>
+        <li class="{{Route::currentRouteNamed('post.create') ? 'active' : '' }}"><a href="/createpost"><b>Create Post</b><i class="material-icons left">create</i></a></li>
         <li class="no-padding">
             <ul class="collapsible collapsible-accordion">
                 <li>
-                    <a class="collapsible-header">Account<i class="material-icons">account_box</i></a>
+                    <a class="collapsible-header">Account
+                        <i class="material-icons">account_box</i>
+                    </a>
                     <div class="collapsible-body" style="padding:0px!important">
                         <ul>
                          @if (Auth::guest())
-                            <li style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
-                            <li style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
+                            <li class="{{Route::currentRouteNamed('login') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('login') }}">Login</a></li>
+                            <li class="{{Route::currentRouteNamed('register') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('register') }}">Register</a></li>
                         @else
+                            @if (Auth::user()->is_admin)
+                            <li style="padding-left:43px"><a href="{{ route('admin') }}">Admin</a></li>
+                            @endif
+                            <li class="{{Route::currentRouteNamed('profile.my') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
+                            <li class="{{Route::currentRouteNamed('message.read') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('message.read') }}">Messages</a></li>
                             <li style="padding-left:43px">
                                 <a href="{{ route('logout') }}"
                                     onclick="event.preventDefault();

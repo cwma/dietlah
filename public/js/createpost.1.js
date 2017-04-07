@@ -7,20 +7,28 @@ function hideNavLoadingBar() {
 }
 
 function handleFormSubmit() {
-    $('#update-post').validate({
+    $.validator.addMethod('filesize', function (value, element, param) {
+        return this.optional(element) || (element.files[0].size <= param * 1024 * 1024)
+    }, 'File size must be less than {0} megabytes');
+
+    $('#create-post').validate({
         rules: {
             title: "required",
             text: "required",
             image: {
-              extension: "jpeg|jpg|png"
+              extension: "jpeg|jpg|png",
+              filesize: 8
             }
         },
         messages: {
-            image: "Please provide a valid image file: jpeg, jpg, png."
+            image: {
+                extension: "Please provide a valid image file: jpeg, jpg, png.",
+                filesize: "Image file size must be smaller than 8 megabytes."
+            }
         },
         submitHandler: function(form) {
             showNavLoadingBar();
-            $(form).find(':submit').attr('disabled',true);
+            $(form).find(':submit').prop('disabled', true);
             $(form).ajaxSubmit({
                 data : {
                     tags: $('#tags').materialtags('items'),
@@ -28,13 +36,14 @@ function handleFormSubmit() {
                 },
                 error: function(e){
                     hideNavLoadingBar();
-                    Materialize.toast("There was an error editing this post: " + e.statusText, 4000);
+                    Materialize.toast("There was an error creating this post: " + e.statusText, 4000);
                     $(form).find(':submit').attr('disabled', false);
                 },
                 success: function (data, textStatus, jqXHR, form){
                     hideNavLoadingBar();
                     if(data['status'] == 'successful') {
                         Materialize.toast("your post has been created!", 4000);
+                        window.onbeforeunload = null;
                         window.location.href = "/post/" + data['post_id'];  
                     } else {
                         Materialize.toast("We were not able to create the post", 10000);
@@ -47,7 +56,7 @@ function handleFormSubmit() {
                 }
             });
         }
-    });
+    }); 
 }
 
 function setupValidationErrorFormatting() {
@@ -73,6 +82,7 @@ function initializeImagePreview() {
         reader.onload = function (e) {
             $('#image-preview').attr('src', e.target.result);
             $('#image-preview-container').show();
+
         };
         reader.readAsDataURL(this.files[0]);
     });
@@ -107,43 +117,15 @@ function initializeTagChips(userTags) {
         CapitalizeFirstLetterOnly: true
     });
     $('#tags').on('beforeItemAdd', function(event) {
-        if(event.item.length < 3) {
+        if(event.item.length < 3 || event.item.length > 20) {
             event.cancel = true;
         }
     });
-
-    // add tags user previously tagged
-    dietlah.user_tags.forEach(function(tag){
-        $('#tags').materialtags('add', tag);
-    });
 }
-
-function initializeDeletePostBtn() {
-    $('#deletePostBtn').click(function(event){
-        event.preventDefault();
-        if(confirm("Are you sure you want to delete this student?")){
-            showNavLoadingBar();
-            $.ajax({
-                'url' : '/deletepost',
-                'type': 'POST',
-                'dataType': 'json',
-                'data': {post_id: $('#post_id').val()},
-                'success': function(data,  textStatus, jqXHR) {
-                    hideNavLoadingBar();
-                    Materialize.toast("your post has been deleted!", 4000);
-                    window.location.href = "/";
-                },
-                'error': function (jqXHR, textStatus, errorThrown) {
-                    hideNavLoadingBar();
-                    Materialize.toast("There was an error deleting this post: " + textStatus, 4000);
-                }
-            });
-        }
-    });
-}
-
 
 function initMaps() {
+    dietlah.loc = ""
+
     $('#deleteLocation').on('click', function(e){
         marker.setMap(null);
         marker = null;
@@ -155,23 +137,11 @@ function initMaps() {
     var infowindow;
     var messagewindow;
 
-    if (dietlah.loc != null && dietlah.loc != "") {
-        pos = {lat: parseFloat(dietlah.loc.split(",")[0]), lng:parseFloat(dietlah.loc.split(",")[1])};
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: pos,
-            zoom: 16
-        });
-        var marker = new google.maps.Marker({
-          position: pos,
-          map: map
-        });
-    } else {
-        var singapore = {lat: 1.3521, lng: 103.8198};
-        map = new google.maps.Map(document.getElementById('map'), {
-            center: singapore,
-            zoom: 12
-        });
-    }
+    var singapore = {lat: 1.3521, lng: 103.8198};
+    map = new google.maps.Map(document.getElementById('map'), {
+        center: singapore,
+        zoom: 12
+    });
 
     google.maps.event.addListener(map, 'click', function(event) {
         if (marker) {
@@ -186,15 +156,16 @@ function initMaps() {
     });
 }
 
-
 $(document).ready(function(){
     initMaps();
-    $('#update-post').find(':submit').attr('enabled','enabled');
+    $('#create-post').find(':submit').attr('enabled','enabled');
     setupValidationErrorFormatting();
     handleFormSubmit();
     initializeImagePreview();
     initializeDeleteImageBtn();
     initializeTagChips();
-    initializeDeletePostBtn();
     hideNavLoadingBar();
+    window.onbeforeunload = function() {
+        return true;
+    };
 });

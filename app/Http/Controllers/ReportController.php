@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Http\Request;
 use App\Report;
 use App\User;
@@ -16,6 +16,17 @@ class ReportController extends Controller
     //report inappropriate content for deletion
     public function report(Request $request) {
 	if (self::validate_report($request)) {
+        $validator = Validator::make($request->all(), [
+            'report_comment' => 'required|max:1000',
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failure", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+
+
     	    $report = new Report;
 	    $report->reported_id = $request->input('reported_id');
 	    $report->report_type = $request->input('report_type');

@@ -3,35 +3,74 @@
 @section('title', 'DietLah!')
 
 @section('page-content')
-    <div class="container clearfix body chat-container">
+    <div class="container chat-container">
         @include('partials.peoplelist')
 
-        <div class="chat" id="chat-window">
-            <div class="chat-header clearfix">
-                @if(isset($user))
-                    <img src="{{@$user->profile_pic}}" alt="avatar" class="active_chat_pic"/>
-                @endif
-                <div class="chat-about">
+        <div class="chat card-panel" id="chat-window">
+            <div class="mobile-toggle center">
+                <button class="btn waves-effect waves-ligh light-green lighten-1" onclick="togglePeople()">
+                    <i class="material-icons left">person</i>Show Users
+                </button>
+            </div>
+            <ul class="list people-list-item collection">
+                <li class="collection-item avatar">
                     @if(isset($user))
-                        <div class="chat-with">{{'Chat with ' . @$user->username}}</div>
+                        <img src="{{@$user->profile_pic}}" alt="avatar" class="circle"/>
+                        <span class="title">{{'Messages from ' . @$user->username}}</span>
                     @else
-                        <div class="chat-with">No Thread Selected</div>
+                        <span class="title">No Thread Selected</span>
                     @endif
-                </div>
-                <i class="fa fa-star"></i>
-                <div class="mobile-toggle"><button onclick="togglePeople()">Toggle</button></div>
-            </div> <!-- end chat-header -->
+                </li>
+            </ul> <!-- end chat-header -->
 
-            @yield('content')
+            <div class="chat-history">
+                <ul id="talkMessages">
 
-            <div class="chat-message clearfix">
+                    @foreach($messages as $message)
+                        @if($message->sender->id == auth()->user()->id)
+                            <li class="clearfix right-align" id="message-{{$message->id}}">
+                                <div class="message-data align-right">
+                                    <span class="message-data-name" >{{$message->sender->username}}</span> -
+                                    <span class="message-data-time" >{{$message->humans_time}} ago</span> &nbsp; &nbsp;
+                                    <a href="" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Message"><i class="material-icons right">close</i></a>
+                                </div>
+                                <div class="message other-message light-green lighten-3">
+                                    {{$message->message}}
+                                </div>
+                            </li>
+                        @else
+
+                            <li class="left-align" id="message-{{$message->id}}">
+                                <div class="message-data">
+                                    <span class="message-data-name"> <a href="#" class="talkDeleteMessage" data-message-id="{{$message->id}}" title="Delete Messag"><i class="fa fa-close" style="margin-right: 3px;"></i></a>{{$message->sender->name}}</span>
+                                    <span class="message-data-name" >{{$message->sender->username}}</span> -
+                                    <span class="message-data-time">{{$message->humans_time}} ago</span>
+                                </div>
+                                <div class="message my-message light-green lighten-5">
+                                    {{$message->message}}
+                                </div>
+                            </li>
+                        @endif
+                    @endforeach
+
+
+                </ul>
+
+            </div> <!-- end chat-history -->
+
+            @if(isset($user))
+            <div class="chat-message">
                 <form action="" method="post" id="talkSendMessage">
-                <textarea name="message-data" id="message-data" placeholder ="Type your message" rows="3"></textarea>
-                <input type="hidden" name="_id" value="{{@request()->route('id')}}">
-                <button type="submit btn btn-success pull-right">Send</button>
-            </form>
-
+                    <div class="input-field col s12">
+                        <textarea name="message-data" id="message-data" class="materialize-textarea" placeholder="type your message" row="3"></textarea>
+                        <input type="hidden" name="_id" value="{{@request()->route('id')}}">
+                        <button class="btn waves-effect waves-ligh light-green lighten-1 submit">
+                            <i class="material-icons left">send</i>send message
+                        </button>
+                    </div>
+                </form>
             </div> <!-- end chat-message -->
+            @endif
 
         </div> <!-- end chat -->
 
@@ -39,10 +78,8 @@
 
     <script>
         function togglePeople(){
-            var chat = document.getElementById("chat-window");
-            chat.style.display = "none";
-            var people = document.getElementById("people-list");
-            people.style.display = "block";
+            $('#people-list').show();
+            $("#chat-window").hide();
         }
     </script>
 
@@ -54,27 +91,4 @@
     <script src='http://cdnjs.cloudflare.com/ajax/libs/list.js/1.1.1/list.min.js'></script>
 
     <script src="{{asset('chat/js/talk.js')}}"></script>
-
-    <script>
-        var show = function(data) {
-            alert(data.sender.name + " - '" + data.message + "'");
-        }
-
-        var msgshow = function(data) {
-            var html = '<li id="message-' + data.id + '">' +
-            '<div class="message-data">' +
-            '<span class="message-data-name"> <a href="#" class="talkDeleteMessage" data-message-id="' + data.id + '" title="Delete Messag"><i class="fa fa-close" style="margin-right: 3px;"></i></a>' + data.sender.name + '</span>' +
-            '<span class="message-data-time">1 Second ago</span>' +
-            '</div>' +
-            '<div class="message my-message">' +
-            data.message +
-            '</div>' +
-            '</li>';
-
-            $('#talkMessages').append(html);
-        }
-
-    </script>
-    {!! talk_live(['user'=>["id"=>auth()->user()->id, 'callback'=>['msgshow']]]) !!}
-
 @stop

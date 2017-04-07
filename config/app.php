@@ -187,6 +187,8 @@ return [
         * Laravel talk provider
         */
         Nahid\Talk\TalkServiceProvider::class,
+
+        Intervention\Image\ImageServiceProvider::class,
     ],
 
     /*
@@ -239,6 +241,7 @@ return [
         'Form' => Collective\Html\FormFacade::class,
         'Html' => Collective\Html\HtmlFacade::class,
         'Talk'      => Nahid\Talk\Facades\Talk::class,
+        'Image' => Intervention\Image\Facades\Image::class,
 
     ],
 

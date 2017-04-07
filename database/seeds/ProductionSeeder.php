@@ -12,12 +12,14 @@ class ProductionSeeder extends Seeder
      */
     public function run()
     {
+    	$identicon = new \Identicon\Identicon();
+		$imageDataUri = $identicon->getImageDataUri("DietLah!");
 		//make an admin
 		$user = new User;
 		$user->username = "DietLah!";
 		$user->email = "team@dietlah.sg";
 		$user->password = Hash::make("!dietlahpassword@");
-		$user->profile_pic = "";
+		$user->profile_pic = $imageDataUri;
 		$user->bio = "DietLah! Administrator";
 		$user->is_admin = true;
 		$user->save();
