@@ -54,6 +54,51 @@ function compileCommentsTemplate() {
     return Handlebars.compile(source);
 }
 
+function compileTagsSection() {
+    var source = $("#tags-template").html();
+    return Handlebars.compile(source);
+}
+
+function compileTagsOthersSection() {
+    var source = $("#tags-others-template").html();
+    return Handlebars.compile(source);
+}
+
+function compileCardTag() {
+    var source = $("#card-tag").html();
+    return Handlebars.compile(source);
+}
+
+function renderTags(tagsJson) {
+    $('.tag-section').html(dietlah.tagsTemplate(tagsJson));
+    $('.tag-section-others').html(dietlah.tagsOthersTemplate(tagsJson));
+    $('.collapsible').collapsible();
+}
+
+function renderCardTag(target, tagsJson) {
+    if(tagsJson.length > 0) {
+        tag = {tag: tagsJson[0]};
+    } else {
+        tag = {}
+    }
+    $('#'+target+'-article-tag').html(dietlah.cardTag(tag));
+}
+
+function refreshNavTags(tags) {
+    var first = '<option value="" disabled selected>All Tags</option>';
+    $('#post-tag-select, #post-tag-select-mobile').material_select('destroy');
+    $("#post-tag-select, #post-tag-select-mobile").html("");
+    for (i=0; i<tags.length; i++) {
+        if($.inArray(tags[i]['id'].toString(), dietlah.filter.tags)==0) {
+            $("#post-tag-select, #post-tag-select-mobile").append('<option value="'+tags[i]['id']+'" selected>'+ Handlebars.escapeExpression(tags[i]['tag_name'])+'</option>')
+        } else {
+            $("#post-tag-select, #post-tag-select-mobile").append('<option value="'+tags[i]['id']+'">'+ Handlebars.escapeExpression(tags[i]['tag_name'])+'</option>')
+        }
+    }
+    $("#post-tag-select, #post-tag-select-mobile").material_select();
+    $('.collapsible').collapsible('open', 0);
+}
+
 function showNavLoadingBar() {
     $('.nav-progress').show();
 }
@@ -500,6 +545,10 @@ function handleSuggestTagsSubmit() {
                 hidePostLoadingBar();
                 if(data['status'] == "success") {
                     Materialize.toast(data["response"], 4000);
+                    renderTags(data['tags']);
+                    renderCardTag(data['postid'], data['tags']);
+                    refreshNavTags(data['all_tags']);
+                    $('.tags-count').html("("+data['tags_count']+")");
                 } else {
                     Materialize.toast(data["reason"], 4000);
                 }
@@ -881,6 +930,8 @@ function registerHandleBarsHelpers() {
     registerContainsImage();
     registerCanEditHelper();
     registerMapHelper();
+    compileTagsSection();
+    compileTagsOthersSection();
 }
 
 function initMaps() {
@@ -912,7 +963,7 @@ $(document).ready(function(){
     $('.collapsible').collapsible('open', 0); // fix for materializecss bug in current release
     if(!dietlah.filter.search){
         history.replaceState({main:{order:dietlah.filter.order, range:dietlah.filter.range, tags:dietlah.filter.tags}}, "page");
-        dietlah.currenturl = window.location.pathname;
+        dietlah.currenturl = window.location.pathname + window.location.search;
     } else {
        history.replaceState({search:{params:dietlah.filter.params}}, "page"); 
        dietlah.currenturl = window.location.pathname + window.location.search;
@@ -929,6 +980,9 @@ $(document).ready(function(){
     handleRefresh();
     dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
+    dietlah.tagsTemplate = compileTagsSection();
+    dietlah.tagsOthersTemplate = compileTagsOthersSection();
+    dietlah.cardTag = compileCardTag();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     if(!dietlah.filter.search) {
         initializeInfiniteScroll(dietlah.filter.order, dietlah.filter.range, dietlah.filter.tags);

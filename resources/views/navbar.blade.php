@@ -48,7 +48,7 @@
                 </li>
                 <li>&nbsp;</li>
                 <li class="input-field tag-field-size" style="padding-left:10px;">
-                    <select multiple id="post-tag-select" class="post-filter">
+                    <select multiple id="post-tag-select" class="post-filter tag-filter">
                         <option value="" disabled selected>All Tags</option>
                         @foreach ($tags as $tag) 
                             <option value="{{$tag->id}}">{{$tag->tag_name}}</option>
@@ -155,7 +155,7 @@
                         </select>
                     </li>
                     <li class="input-field z-depth-3 input-dropdown" style="margin-left:10px;width:280px">
-                        <select multiple id="post-tag-select-mobile" class="post-filter">
+                        <select multiple id="post-tag-select-mobile" class="post-filter tag-filter">
                             <option value="" disabled selected>All Tags</option>
                                 @foreach ($tags as $tag) 
                                     <option value="{{$tag->id}}">{{$tag->tag_name}}</option>

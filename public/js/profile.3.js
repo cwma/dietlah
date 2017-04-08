@@ -54,6 +54,36 @@ function compileCommentsTemplate() {
     return Handlebars.compile(source);
 }
 
+function compileTagsSection() {
+    var source = $("#tags-template").html();
+    return Handlebars.compile(source);
+}
+
+function compileTagsOthersSection() {
+    var source = $("#tags-others-template").html();
+    return Handlebars.compile(source);
+}
+
+function compileCardTag() {
+    var source = $("#card-tag").html();
+    return Handlebars.compile(source);
+}
+
+function renderTags(tagsJson) {
+    $('.tag-section').html(dietlah.tagsTemplate(tagsJson));
+    $('.tag-section-others').html(dietlah.tagsOthersTemplate(tagsJson));
+    $('.collapsible').collapsible();
+}
+
+function renderCardTag(target, tagsJson) {
+    if(tagsJson.length > 0) {
+        tag = {tag: tagsJson[0]};
+    } else {
+        tag = {}
+    }
+    $('#'+target+'-article-tag').html(dietlah.cardTag(tag));
+}
+
 function showNavLoadingBar() {
     $('.nav-progress').show();
 }
@@ -484,6 +514,9 @@ function handleSuggestTagsSubmit() {
                 hidePostLoadingBar();
                 if(data['status'] == "success") {
                     Materialize.toast(data["response"], 4000);
+                    renderTags(data['tags']);
+                    renderCardTag(data['postid'], data['tags']);
+                    $('.tags-count').html("("+data['tags_count']+")");
                 } else {
                     Materialize.toast(data["reason"], 4000);
                 }
@@ -722,6 +755,8 @@ function registerHandleBarsHelpers() {
     registerContainsImage();
     registerCanEditHelper();
     registerMapHelper();
+    compileTagsSection();
+    compileTagsOthersSection();
 }
 
 function initMaps() {
@@ -761,6 +796,9 @@ $(document).ready(function(){
     handleDeleteCommentSubmit();
     dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
+    dietlah.tagsTemplate = compileTagsSection();
+    dietlah.tagsOthersTemplate = compileTagsOthersSection();
+    dietlah.cardTag = compileCardTag();
     $.lazyLoadXT.scrollContainer = '.modal-content';
     initializeInfiniteScroll();
 });

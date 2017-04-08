@@ -12,11 +12,37 @@ function registerCanEditHelper() {
     });
 }
 
+function registerTopTagsView() {
+    Handlebars.registerHelper("top5", function(index) {
+        if (index < 5) {
+            return true;
+        } else { 
+            return false;
+        }
+    });
+}
+
 /* page rendering functions */
 
 function compileCommentsTemplate() {
     var source = $("#comments_template").html();
     return Handlebars.compile(source);
+}
+
+function compileTagsSection() {
+    var source = $("#tags-template").html();
+    return Handlebars.compile(source);
+}
+
+function compileTagsOthersSection() {
+    var source = $("#tags-others-template").html();
+    return Handlebars.compile(source);
+}
+
+function renderTags(tagsJson) {
+    $('.tag-section').html(dietlah.tagsTemplate(tagsJson));
+    $('.tag-section-others').html(dietlah.tagsOthersTemplate(tagsJson));
+    $('.collapsible').collapsible();
 }
 
 function showNavLoadingBar() {
@@ -375,6 +401,8 @@ function handleSuggestTagsSubmit() {
                 hideNavLoadingBar();
                 if(data['status'] == "success") {
                     Materialize.toast(data["response"], 4000);
+                    renderTags(data['tags']);
+                    $('.tags-count').html("("+data['tags_count']+")");
                 } else {
                     Materialize.toast(data["reason"], 4000);
                 }
@@ -552,6 +580,7 @@ function initMaps() {
 function registerHandleBarsHelpers() {
     registerLinkifyHelper();
     registerCanEditHelper();
+    registerTopTagsView();
 }
 
 $(document).ready(function(){
@@ -566,5 +595,7 @@ $(document).ready(function(){
     handleEditCommentSubmit();
     handleDeleteCommentSubmit();
     dietlah.commentsTemplate = compileCommentsTemplate();
+    dietlah.tagsTemplate = compileTagsSection();
+    dietlah.tagsOthersTemplate = compileTagsOthersSection();
     hideNavLoadingBar();
 });

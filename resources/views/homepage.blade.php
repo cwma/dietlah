@@ -155,7 +155,7 @@
                 <a href="/profile/@{{user_id}}">@{{username}}</a>
             </div>
         </div>
-        <div class="article-tag right">
+        <div class="article-tag right" id="@{{id}}-article-tag">
         @{{#if tag}}
             <div class="chip light-green lighten-3">
                 <a href="view/new/all?tags[]=@{{tagid}}" onclick="return showtag('@{{tagid}}');">@{{tag}}</a>
@@ -241,7 +241,7 @@
                     <li class="tab">
                         <a href="#post-tags" class="tooltipped light-green-text" data-position="bottom" data-delay="50" data-tooltip="Suggest tags!">
                             <i class="material-icons light-green-text" style="vertical-align:middle">label</i>
-                            <span class="light-green-text">(@{{tags_count}})</span> 
+                            <span class="light-green-text tags-count">(@{{tags_count}})</span> 
                         </a>
                     </li>
                     @else
@@ -288,7 +288,7 @@
                     @{{#if (containsLoc loc)}}
                     <div id="map"></div>
                     @{{/if}}
-                    <div class="section">
+                    <div class="section tag-section">
                         @{{#each tags}}
                             @{{#if (top5 @index)}}
                                 <div class="chip light-green lighten-3">
@@ -390,7 +390,7 @@
                         </div>
                         <br>
                         <div class="divider"></div>
-                        <div class="section">
+                        <div class="section tag-section-others">
                             <h5>Tags suggested by other users</h5>
                             @{{#each tags}}
                             <div class="chip light-green lighten-3" tag="@{{this}}">
@@ -490,5 +490,46 @@
             </p>
         </li>
     @{{~/each}}
+</script>
+<script id="tags-template" type="text/x-handlebars-template">
+    @{{#each this}}
+        @{{#if (top5 @index)}}
+            <div class="chip light-green lighten-3">
+                <a href="view/new/all?tags[]=@{{tag_id}}" onclick="return showtag('@{{tag_id}}');">@{{tag_name}}</a>
+            </div>
+        @{{/if}}
+    @{{~/each}}
+    <ul class="collapsible" data-collapsible="accordion">
+        <li>
+            <div class="collapsible-header">
+                <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
+            </div>
+            <div class="collapsible-body"><span>
+                @{{#each this}}
+                    <div class="chip light-green lighten-3">
+                        <a href="view/new/all?tags[]=@{{tag_id}}" onclick="return showtag('@{{tag_id}}');">@{{tag_name}}</a>
+                    </div>
+                @{{~/each}}
+            </span></div>
+        </li>
+    </ul>
+</script>
+<script id="tags-others-template" type="text/x-handlebars-template">
+    <h5>Tags suggested by other users</h5>
+    @{{~#each this}}
+    <div class="chip light-green lighten-3" tag="@{{tag_name}}">
+        @{{tag_name}}
+        <i id="add-tag" class="material-icons add-tag">add</i>
+    </div>
+    @{{~/each}}
+</script>
+<script id="card-tag" type="text/x-handlebars-template">
+    @{{#if tag}}
+        <div class="chip light-green lighten-3">
+            <a href="view/new/all?tags[]=@{{tag.tag_id}}" onclick="return showtag('@{{tag.tag_id}}');">@{{tag.tag_name}}</a>
+        </div>
+    @{{else}}
+        <span style="margin-right: 10px; line-height:2">No Tags</span>
+    @{{/if}}
 </script>
 @stop

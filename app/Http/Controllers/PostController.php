@@ -52,7 +52,7 @@ class PostController extends Controller {
         // TODO: sort by tag count some how
         $result['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate, tag_id from post_tags, tags
                             where post_tags.tag_id = tags.id and post_id = ? group by post_tags.tag_id 
-                            ORDER BY aggregate DESC, tags.id DESC', [$postId]))->pluck("tag_name", "tag_id");
+                            ORDER BY aggregate DESC, tags.id ASC', [$postId]))->pluck("tag_name", "tag_id");
         $result["tags_count"] = sizeOf($result["tags"]);
 
 
@@ -452,7 +452,17 @@ class PostController extends Controller {
 
             $this->updateTags($user_id, $post_id, $tags);
 
-            $response = ["status" => "success", "response" => "tags saved!"];
+            $response = ["status" => "success", "response" => "tags saved!", "postid" => $request->post_id];
+            $response['tags'] = collect(DB::select('SELECT tag_name, count(post_tags.tag_id) as aggregate, tag_id from post_tags, tags
+                                where post_tags.tag_id = tags.id and post_id = ? group by post_tags.tag_id 
+                                ORDER BY aggregate DESC, tags.id ASC', [$post_id]));
+
+            $response["all_tags"] = collect(DB::Select('SELECT tags.id, tag_name from tags 
+                    INNER JOIN post_tags ON tags.id = post_tags.tag_id group by post_tags.tag_id 
+                    order by count(post_tags.tag_id) desc, tags.id ASC'));
+
+            $response["tags_count"] = sizeOf($response["tags"]);
+
             return response(json_encode($response)) ->header('Content-Type', 'application/json');
         }
 
