@@ -666,6 +666,8 @@ function initializeCommentsScroll() {
 }
 
 function initializeInfiniteScroll(order, range, tags) {
+    dietlah.mode = 0;
+    dietlah.page = 1
     dietlah.pageScrollDisabled = false;
     dietlah.nextPage = "/rest/postfeed/"+ order + "/" +range;
     var grid = document.querySelector('#grid');
@@ -675,6 +677,8 @@ function initializeInfiniteScroll(order, range, tags) {
 }
 
 function initializeInfiniteScrollSearch(search) {
+    dietlah.mode = 1;
+    dietlah.page = 1
     dietlah.pageScrollDisabled = false;
     dietlah.nextPage = "/rest/search";
     var grid = document.querySelector('#grid');
@@ -695,7 +699,6 @@ function reinitializeCommentsScroll() {
 }
 
 function reinitializeInfiniteScroll(push) {
-    dietlah.page = 1;
     if(dietlah.pageScrollDisabled){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     }
@@ -725,7 +728,6 @@ function reinitializeInfiniteScroll(push) {
 }
 
 function reinitializeInfiniteScrollSearch(push) {
-    dietlah.page = 1;
     if(dietlah.pageScrollDisabled){
         $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
     }
@@ -853,6 +855,27 @@ function showtag(tag) {
     return false;
 }
 
+function handleClearTags() {
+    $('.clear-tags').on('click', function(e) {
+        e.preventDefault();
+        $('#post-tag-select, #post-tag-select-mobile').val([]);
+        $('#post-tag-select').material_select();
+        $('#post-tag-select-mobile').material_select();
+        reinitializeInfiniteScroll(true);
+    })
+}
+
+function handleRefresh() {
+    $('.refresh').on('click', function(e) {
+        e.preventDefault();
+        if (dietlah.mode == 0) {
+            reinitializeInfiniteScroll(true);
+        } else {
+            reinitializeInfiniteScrollSearch(false);
+        }
+    })
+}
+
 function registerHandleBarsHelpers() {
     registerTopTagsView();
     registerContainsImage();
@@ -886,6 +909,7 @@ function initMaps() {
 }
 
 $(document).ready(function(){
+    $('.collapsible').collapsible('open', 0); // fix for materializecss bug in current release
     if(!dietlah.filter.search){
         history.replaceState({main:{order:dietlah.filter.order, range:dietlah.filter.range, tags:dietlah.filter.tags}}, "page");
         dietlah.currenturl = window.location.pathname;
@@ -901,6 +925,8 @@ $(document).ready(function(){
     handleReportCommentSubmit();
     handleEditCommentSubmit();
     handleDeleteCommentSubmit();
+    handleClearTags();
+    handleRefresh();
     dietlah.cardTemplate = compileCardTemplate();
     dietlah.commentsTemplate = compileCommentsTemplate();
     $.lazyLoadXT.scrollContainer = '.modal-content';

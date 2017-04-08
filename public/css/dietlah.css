@@ -794,3 +794,21 @@ p {
 .title a {
   color: black;
 }
+
+@media screen and (max-width: 1150px) {
+  .search-field-size {
+    width:150px;
+  }
+  .tag-field-size {
+    width:160px;
+  }
+}
+
+@media screen and (min-width: 1151px) {
+  .search-field-size {
+    width:271px;
+  }
+  .tag-field-size {
+    width:200px;
+  }
+}
