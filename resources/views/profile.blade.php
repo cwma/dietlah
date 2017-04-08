@@ -327,7 +327,7 @@
                                     <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
                                 </div>
                                 <div class="collapsible-body"><span>
-                                    @{{#each this}}
+                                    @{{#each tags}}
                                         <div class="chip light-green lighten-3">
                                             <a href="view/new/all?tags[]=@{{tag_id}}">@{{tag_name}}</a>
                                         </div>
