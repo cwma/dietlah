@@ -129,4 +129,32 @@ class MessageController extends Controller {
     {
         dd(Talk::channel());
     }
+
+    public function users() {
+        $users = User::all()->pluck('username');
+        return response()->json($users, 200);
+    }
+
+    public function getuserid(Request $req) {
+        $user = User::where("username", $req->username)->get();
+
+        $validator = Validator::make($req->all(), [
+            'username' => 'required|min:3|max:20',
+        ]);
+
+        if ($validator->fails()) {
+            $response = ["status" => "failed", "reason" => $validator->errors()->all()];
+            return response(json_encode($response)) ->header('Content-Type', 'application/json');
+        }
+
+        if($req->username == Auth::user()->username) {
+            return response()->json(["status"=>"failed", "reason" =>["you cant start a conversation with yourself!"]], 200); 
+        }
+
+        if(sizeOf($user) == 1) {
+            return response()->json(["status"=>"success", "userid" => $user[0]->id], 200);
+        } else {
+            return response()->json(["status"=>"failed", "reason" =>["no such user"]], 200); 
+        }
+    }
 }

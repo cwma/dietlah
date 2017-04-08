@@ -33,6 +33,9 @@ Route::group(['prefix'=>'ajax', 'as'=>'ajax::'], function() {
    Route::delete('message/delete/{id}', 'MessageController@ajaxDeleteMessage')->name('message.delete');
 });
 
+Route::get('/rest/userlist.json', 'MessageController@users');
+Route::post('/rest/getuserid', 'MessageController@getuserid');
+
 #	User profile page
 Route::get('/profile/{userid}', 'ProfileController@viewProfile') -> name('profile.view');
 
