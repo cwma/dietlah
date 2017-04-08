@@ -292,7 +292,7 @@
                         @{{#each tags}}
                             @{{#if (top5 @index)}}
                                 <div class="chip light-green lighten-3">
-                                    <a href="view/new/all?tags[]=@{{@key}}" onclick="return showtag('@{{@key}}');">@{{this}}</a>
+                                    <a href="view/new/all?tags[]=@{{tag_id}}" onclick="return showtag('@{{tag_id}}');">@{{tag_name}}</a>
                                 </div>
                             @{{/if}}
                         @{{~/each}}
@@ -302,9 +302,9 @@
                                     <i class="material-icons">keyboard_arrow_down</i>All Tags</span>
                                 </div>
                                 <div class="collapsible-body"><span>
-                                    @{{#each tags}}
+                                    @{{#each this}}
                                         <div class="chip light-green lighten-3">
-                                            <a href="view/new/all?tags[]=@{{@key}}" onclick="return showtag('@{{@key}}');">@{{this}}</a>
+                                            <a href="view/new/all?tags[]=@{{tag_id}}" onclick="return showtag('@{{tag_id}}');">@{{tag_name}}</a>
                                         </div>
                                     @{{~/each}}
                                 </span></div>
@@ -392,9 +392,9 @@
                         <div class="divider"></div>
                         <div class="section tag-section-others">
                             <h5>Tags suggested by other users</h5>
-                            @{{#each tags}}
-                            <div class="chip light-green lighten-3" tag="@{{this}}">
-                                @{{this}}
+                            @{{~#each tags}}
+                            <div class="chip light-green lighten-3" tag="@{{tag_name}}">
+                                @{{tag_name}}
                                 <i id="add-tag" class="material-icons add-tag">add</i>
                             </div>
                             @{{~/each}}
