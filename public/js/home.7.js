@@ -16,6 +16,16 @@ function registerTopTagsView() {
     });
 }
 
+function registerTop4() {
+    Handlebars.registerHelper("top4", function(index) {
+        if (index < 4) {
+            return true;
+        } else { 
+            return false;
+        }
+    });
+}
+
 function registerContainsImage() {
     Handlebars.registerHelper("containsImage", function(image) {
         if (image != "" && image != null) {
@@ -942,6 +952,7 @@ function registerHandleBarsHelpers() {
     registerMapHelper();
     compileTagsSection();
     compileTagsOthersSection();
+    registerTop4();
 }
 
 function initMaps() {

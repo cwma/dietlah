@@ -194,7 +194,11 @@
     @{{#if (containsImage image)}}
         <a href="/post/@{{id}}" onclick="return false;">
             <div class="card-image" data-postid="@{{id}}">
-                <img data-src="@{{image}}">
+                @{{#if (top4 @index)}}
+                    <img src="@{{image}}">
+                @{{else}}
+                    <img data-src="@{{image}}">
+                @{{/if}}
             </div>
         </a>
     @{{/if}}
