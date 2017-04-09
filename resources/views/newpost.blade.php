@@ -56,7 +56,7 @@
                     </button>
                 </div>
             </div>
-
+            <br>
             <div class="row">
                 <div class="input-field col s12">
                     <textarea id="tags" class="materialize-textarea" data-role="materialtags"></textarea>
