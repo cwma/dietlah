@@ -102,7 +102,7 @@
                                         <div class="collapsible-body"><span>
                                             @foreach ($post['tags'] as $tag)
                                                     <div class="chip light-green lighten-3">
-                                                        <a href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
+                                                        <a class="truncate" href="view/new/all?tags[]={{$id}}">{{$tag}}</a>
                                                     </div>
                                             @endforeach
                                         </span></div>
@@ -110,6 +110,15 @@
                                 </ul>
                             </div>
                             <div class="divider"></div>
+                            @if (sizeof($recs) > 0)
+                                <div class="section">
+                                    <span> Users who liked this post also liked: </span><br>
+                                    @foreach ($recs as $id => $title)
+                                        <a href="/post/{{$id}}">{{$title}}</a><br>
+                                    @endforeach
+                                </div>
+                                <div class="divider"></div>
+                            @endif
                             <div class="section">
                                 @if(Auth::check() && Auth::id() == $post['user_id'])
                                     <div class="left">

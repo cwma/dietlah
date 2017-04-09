@@ -169,6 +169,7 @@ function initializeHomeModals() {
         startingTop: '0%', // Starting top style attribute
         endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            dietlah.reopenmodal = false;
             showPostLoadingBar();
             postid = $(trigger).attr('data-postid');
             $.ajax({
@@ -191,6 +192,9 @@ function initializeHomeModals() {
             $('#comments-marker').off();
             history.replaceState({search:{modal:""}}, "modal", dietlah.currenturl);
             replaceStateWithCurrent();
+            if(dietlah.reopenmodal) {
+                $("#reopenholder").click();
+            }
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -923,6 +927,12 @@ function handleRefresh() {
             reinitializeInfiniteScrollSearch(false);
         }
     })
+}
+
+function openPostModal(id) {
+    dietlah.reopenmodal = true;
+    $('#reopenholder').attr("data-postid",$("#"+id+"-ref").attr("data-postid"));
+    $("#postmodal").modal('close');
 }
 
 function registerHandleBarsHelpers() {

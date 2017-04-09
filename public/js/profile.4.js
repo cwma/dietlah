@@ -138,6 +138,7 @@ function initializeHomeModals() {
         startingTop: '0%', // Starting top style attribute
         endingTop: '5%', // Ending top style attribute
         ready: function(modal, trigger) { // Callback for Modal open. Modal and trigger parameters available.
+            dietlah.reopenmodal = false;
             showPostLoadingBar();
             postid = $(trigger).attr('data-postid');
             $.ajax({
@@ -159,7 +160,9 @@ function initializeHomeModals() {
             clearPost(modal);
             $('#comments-marker').off();
             history.pushState({modal:"open"}, "modal", "/profile/" + dietlah.profileid);
-
+            if(dietlah.reopenmodal) {
+                $("#reopenholder").click();
+            }
         } // Callback for Modal close
     });
     $('.report-post-modal').modal({
@@ -546,7 +549,6 @@ function loadHomeJavascriptElements() {
 function loadPostJavascriptElements(modal, response) {
     /* called whenever a post modal is opened */
     dietlah.loc = response['loc'];
-    console.log(response['loc']);
     initMaps();
     dietlah.postModalOpen = true;
     dietlah.currentPostModalId = response['id'];
@@ -748,6 +750,12 @@ function initializeTagChips(userTags) {
     for(i in userTags) {
         $('#suggested-tags').materialtags('add', userTags[i]);
     }
+}
+
+function openPostModal(id) {
+    dietlah.reopenmodal = true;
+    $('#reopenholder').attr("data-postid",$("#"+id+"-ref").attr("data-postid"));
+    $("#postmodal").modal('close');
 }
 
 function registerHandleBarsHelpers() {

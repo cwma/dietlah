@@ -42,6 +42,37 @@ class PostController extends Controller {
       return $string;
     }
 
+    public function getRecommendations($post){
+        $userlikes = $post->likes->pluck('user_id');
+
+        if (sizeof($userlikes)>0) {
+
+            $likes = Like::where('post_id', '!=', $post->id);
+
+            $likes = $likes->where(function($query) use ($userlikes) {
+                foreach($userlikes as $user) {
+                    $query->orWhere('user_id', $user);
+                }
+            });
+
+            $recs = $likes->groupBy('post_id')->select(DB::raw('post_id, count(post_id) as aggregate'))->orderBy('aggregate', 'desc')->orderBy('post_id', 'desc')->take(3)->get();
+
+            if(sizeof($recs) > 0) {
+
+                $recposts = Post::query();
+                foreach ($recs as $rec) {
+                    $recposts = $recposts->orWhere('id', $rec->post_id);
+                }
+
+                return $recposts->get()->pluck('title', 'id');
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
+
     public function post($postId) {
         $post = Post::with('User')->with('tags')->with('likes')->with('favourites')->findOrFail($postId);
         $result = ["id" => $post->id,"title"=>$post->title, "summary"=>$post->summary, "text"=>nl2br(e($post->text)),
@@ -94,10 +125,12 @@ class PostController extends Controller {
         // for comments infinite scroll
         JavaScript::put([
             "postId" => $postId,
-            "loc" => $post->location
+            "loc" => $post->location,
         ]);
 
-        return view('post', ['post'=> $result]);
+        $recs = self::getRecommendations($post);
+
+        return view('post', ['post'=> $result, "recs" => $recs]);
     }
 
 	public function newpost() {

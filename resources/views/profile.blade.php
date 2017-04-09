@@ -3,6 +3,7 @@
 @section('title', 'Viewing '. $user['username'] .' profile - DietLah!')
 
 @section('page-content')
+<a a href="#postmodal" id="reopenholder" hidden></a>
 <div id="fb-root"></div>
 <script async src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 <div class="container">
@@ -337,6 +338,16 @@
                         </ul>
                     </div>
                     <div class="divider"></div>
+                    @{{#if recs}}
+                        <div class="section">
+                            <span> Users who liked this post also liked: </span><br>
+                            @{{#each recs}}
+                                <a href="/post/@{{@key}}" onclick="openPostModal(@{{@key}}); return false;">@{{this}}</a>
+                                <a id="@{{@key}}-ref" data-postid="@{{@key}}" hidden></a><br>
+                            @{{~/each}}
+                        </div>
+                        <div class="divider"></div>
+                    @{{/if}}
                     <div class="section">
                     @if(Auth::check())
                         @{{#if (canEdit user_id current_user_id)}}

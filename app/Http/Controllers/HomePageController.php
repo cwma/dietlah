@@ -118,6 +118,36 @@ class HomePageController extends Controller {
         return $posts->paginate(12);
     }
 
+    public function getRecommendations($post){
+        $userlikes = $post->likes->pluck('user_id');
+
+        if (sizeof($userlikes)>0) {
+
+            $likes = Like::where('post_id', '!=', $post->id);
+
+            $likes = $likes->where(function($query) use ($userlikes) {
+                foreach($userlikes as $user) {
+                    $query->orWhere('user_id', $user);
+                }
+            });
+
+            $recs = $likes->groupBy('post_id')->select(DB::raw('post_id, count(post_id) as aggregate'))->orderBy('aggregate', 'desc')->orderBy('post_id', 'desc')->take(3)->get();
+
+            if(sizeof($recs) > 0) {
+
+                $recposts = Post::query();
+                foreach ($recs as $rec) {
+                    $recposts = $recposts->orWhere('id', $rec->post_id);
+                }
+
+                return $recposts->get()->pluck('title', 'id');
+            } else {
+                return [];
+            }
+        } else {
+            return [];
+        }
+    }
 
     # RESTFUL end points
 
@@ -268,8 +298,9 @@ class HomePageController extends Controller {
 
             $userTags = PostTag::where('user_id', $userid)->where('post_id', $postId)->with('tag')->get()->pluck('tag.tag_name');
             $result['user_tags'] = $userTags;
-
         }
+
+        $result['recs'] = self::getRecommendations($post);
 
         return response(json_encode($result)) ->header('Content-Type', 'application/json');
     }
