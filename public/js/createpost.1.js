@@ -13,8 +13,14 @@ function handleFormSubmit() {
 
     $('#create-post').validate({
         rules: {
-            title: "required",
-            text: "required",
+            title: {
+                required: true,
+                maxlength: 180
+            },
+            text: {
+                required: true,
+                maxlength: 10000
+            },
             image: {
               extension: "jpeg|jpg|png",
               filesize: 8

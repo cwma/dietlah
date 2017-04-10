@@ -189,7 +189,7 @@ class PostController extends Controller {
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
+            'title' => 'required|max:180',
             'text' => 'required|max:10000',
             'image' => 'max:8192',
             'location' => 'max:50'
@@ -304,7 +304,7 @@ class PostController extends Controller {
         }
 
         $validator = Validator::make($request->all(), [
-            'title' => 'required',
+            'title' => 'required|max:180',
             'text' => 'required|max:10000',
             'image' => 'max:8192',
             'location' => 'max:50'
