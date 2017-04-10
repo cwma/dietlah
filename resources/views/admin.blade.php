@@ -10,46 +10,36 @@
     </div>
 
     <div class="row">
-        <!--for each report here-->
-            <table class="table">
-                <tr>
-                    <td>
-                       <p>Report type</p>
-                    </td>
-                    <td>
-                        <p>Report source</p>
-                    </td>
-                    <td>
-                        <p>Report User</p>
-                    </td>
-                    <td>
-                        <p>report text</p>
-                    </td>
-                </tr>
-                @foreach($reports as $report)
-                <tr>
-                    <td>
-                        <p>{{$report['report_type']}}</p>
-                    </td>
-                    <td>
-                        @if($report['report_type'] == 'post')
-                            <p><a href="/post/{{$report['reported_id']}}">link to post</a></p>
+        <ul class="collection">
+            @foreach($reports as $report)
+                <li class="collection-item">
+                    <span class="title"><b>Report Type</b>: {{$report['report_type']}}</span>
+                    @if($report['report_type'] == 'post')
+                        @if ($posts[$report['reported_id']])
+                            <p><b>Post Title</b>: <a href="/post/{{$posts[$report['reported_id']]->id}}">{{$posts[$report['reported_id']]->title}}</a></p>
+                            <p><b>Summary</b>: {{$posts[$report['reported_id']]->summary}}</p>
+                            <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @else
-                            {{$comment = App\Comment::find($report['reported_id'])}}
-                            <p><a href="/post/{{$comment->post->id}}">link to post</a></p>
+                            <p><b>Post has been deleted></b></p>
+                            <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @endif
+                    @else
+                        @if ($posts[$report['reported_id']])
+                            <p><b>Post Title</b>: {{$posts[$report['reported_id']]->summary}}<a href="/post/{{$posts[$report['reported_id']]->post->id}}">{{$posts[$report['reported_id']]->post->title}}</a></p>
+                            <p><b>Comment</b>:{{$posts[$report['reported_id']]->comment}}</p>
+                            <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
+                        @else
+                            <p><b>Post has been deleted</b></p>
+                            <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
+                        @endif
+                    @endif
+                    <p><a href="/profile/{{$report['user_id']}}">Reporter</a></p>
+                </li>
+            @endforeach
+        </ul>
 
-                    </td>
-                    <td>
-                        <p><a href="/profile/{{$report['user_id']}}">link to profile</a></p>
-                    </td>
-                    <td>
-                        <p>{{$report['report_comment']}}</p>
-                    </td>
-                </tr>
-                @endforeach
-            </table>
-        <!--end for each-->
+        {{ $reports->links() }}
+
     </div>
 
 </div>
