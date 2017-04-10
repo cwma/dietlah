@@ -20,16 +20,16 @@
                             <p><b>Summary</b>: {{$posts[$report['reported_id']]->summary}}</p>
                             <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @else
-                            <p><b>Post has been deleted></b></p>
+                            <p><b>Post has been deleted</b></p>
                             <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @endif
-                    @else
+                    @elseif($report['report_type'] == 'comment')
                         @if ($posts[$report['reported_id']])
                             <p><b>Post Title</b>: {{$posts[$report['reported_id']]->summary}}<a href="/post/{{$posts[$report['reported_id']]->post->id}}">{{$posts[$report['reported_id']]->post->title}}</a></p>
                             <p><b>Comment</b>:{{$posts[$report['reported_id']]->comment}}</p>
                             <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @else
-                            <p><b>Post has been deleted</b></p>
+                            <p><b>Comment has been deleted</b></p>
                             <p><b>Report Comment</b>: {{$report['report_comment']}}</p>
                         @endif
                     @endif

@@ -31,7 +31,7 @@ class AdminController extends Controller {
         			} else {
         				$posts[$report->reported_id] = false;
         			}
-        		} else {
+        		} else if ($report->report_type == "post") {
         			$post = Post::find($report->reported_id);
         			if ($post) {
         				$posts[$report->reported_id] = $post;
