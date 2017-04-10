@@ -104,6 +104,11 @@ class MessageController extends Controller {
                 return response()->json(['status'=>'failed', 'reason'=>$validator->errors()->all()], 200);
             }
 
+            $target = User::find($request->_id);
+            if(!$target) {
+                return response()->json(['status'=>'failed', 'reason'=>["Message not sent. No such user"]], 200);
+            }
+
             $body = $request->input('message-data');
             $userId = $request->input('_id');
 
