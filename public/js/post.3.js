@@ -147,8 +147,10 @@ function initializePostModals() {
 
 function handleLikeClickEvent(elementId) {
     $(elementId).on('click', function(e) {
+        e.preventDefault();
         var likeCaller = this;
-        e.preventDefault(); 
+        if ($(likeCaller).data("executing")) return;
+        $(likeCaller).data("executing", true);
         var liked = $(likeCaller).attr("liked");
         var postId = $(likeCaller).attr("post-id");
         $.ajax({
@@ -159,6 +161,7 @@ function handleLikeClickEvent(elementId) {
                 postId:postId
             },
             success: function( msg ) {
+                $(likeCaller).removeData("executing");
                 Materialize.toast(msg["response"], 4000);
                 if(liked == "yes") {
                     $(likeCaller).attr("liked", "no");
@@ -169,7 +172,11 @@ function handleLikeClickEvent(elementId) {
                     $(likeCaller).children("i").html("star");
                     $(likeCaller).children("span").html(msg["likes"]);
                 }
-            }
+            },
+            error: function(e){
+                $(likeCaller).removeData("executing");
+                Materialize.toast("There was an error attempting to like this post" + e.statusText, 4000);
+            },
         });
     })
 }
@@ -178,6 +185,8 @@ function handleFavouriteClickEvent(elementId) {
     $(elementId).on('click', function(e) {
         var favCaller = this;
         e.preventDefault(); 
+        if ($(favCaller).data("executing")) return;
+        $(favCaller).data("executing", true); 
         var favourited = $(favCaller).attr("favourited");
         var postId = $(favCaller).attr("post-id");
         $.ajax({
@@ -188,6 +197,7 @@ function handleFavouriteClickEvent(elementId) {
                 postId:postId
             },
             success: function( msg ) {
+                $(favCaller).removeData("executing");
                 Materialize.toast(msg["response"], 4000);
                 if(favourited == "yes") {
                     $(favCaller).attr("favourited", "no");
@@ -196,7 +206,11 @@ function handleFavouriteClickEvent(elementId) {
                     $(favCaller).attr("favourited", "yes");
                     $(favCaller).children("i").html("bookmark");
                 }
-            }
+            },
+            error: function(e){
+                $(favCaller).removeData("executing");
+                Materialize.toast("There was an error attempting to add this post to favourites" + e.statusText, 4000);
+            },
         });
     })
 }
