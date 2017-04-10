@@ -39,7 +39,7 @@ class ReportController extends Controller
 	}
 	else {
 	    return response()->json(['status' => 'failure',
-		'reason' => 'invalid reported_id or report_type']);
+		'reason' => ['invalid reported_id or report_type, post/comment may have been deleted']]);
 	}
     }
     //report inaccurate tagging for removal
@@ -57,7 +57,7 @@ class ReportController extends Controller
 	}
 	else {
 	    return response()->json(['status' => 'failure',
-		'reason' => 'invalid tag_id or post_id']);
+		'reason' => ['invalid tag_id or post_id']]);
 	}
     }
 
