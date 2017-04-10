@@ -787,7 +787,7 @@ div.other-message{
     opacity: 1;
 }
 
-p {
+p, h5 {
     word-wrap: break-word;
 }
 
