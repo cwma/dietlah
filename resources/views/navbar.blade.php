@@ -68,14 +68,15 @@
                 @endif
             </ul>
             <a href="#" data-activates="slide-out" class="button-collapse"><i class="material-icons">menu</i></a>
+            @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
             <ul class="hide-on-large-only">
                 <li>
                     <a class="refresh">
                     <i class="material-icons">autorenew</i></a>
                 </li>
-
             </a>
             </ul>
+            @endif
             <ul class="right hide-on-med-and-down">
                 @if (Route::currentRouteNamed('home.default') || Route::currentRouteNamed('home.sorted') || Route::currentRouteNamed('home.search'))
                 <li class="input-field search-field-size">
