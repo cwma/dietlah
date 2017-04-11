@@ -48,7 +48,7 @@
 
                         <div class="form-group">
                             <div class="row center">
-                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1" style="margin-top:5px">
+                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1" style="margin-top:5px" onclick="$('.nav-progress').show(); return true;">
                                     Login
                                 </button>
 

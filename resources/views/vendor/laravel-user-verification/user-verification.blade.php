@@ -21,7 +21,7 @@
 
                         <div class="form-group">
                             <div class="row center">
-                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1">
+                                <button type="submit" class="btn waves-effect waves-ligh light-green lighten-1" onclick="$('.nav-progress').show(); return true;">
                                     Resend Verification Link
                                 </button>
                             </div>
