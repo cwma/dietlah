@@ -11,7 +11,6 @@
                 <div class="panel-body">
                     <div class="row">
                         <p class="center" class="col-md-4 control-label">We were not able to verify your email address. Please check that the link you clicked is valid. If you requested multiple verification emails, please use the latest one.</p>
-                        
                         <br>
                     </div>
                 </div>

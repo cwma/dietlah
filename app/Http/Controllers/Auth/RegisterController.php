@@ -103,7 +103,7 @@ class RegisterController extends Controller
 
     public function resendVerifyPage() {
         if (!Auth::check()) {
-            return redirect("/");
+            return redirect("/login");
         }
         if(Auth::user()->verified) {
             return redirect("/");
@@ -113,10 +113,10 @@ class RegisterController extends Controller
 
     public function resendVerify() {
         if (!Auth::check()) {
-            return redirect("/");
+            return redirect("/login");
         }
         if(Auth::user()->verified) {
-            abort(404);
+            return redirect("/");
         }
         $user = Auth::user();
         $now = Carbon::now();
@@ -143,13 +143,17 @@ class RegisterController extends Controller
         if (! $this->validateRequest($request)) {
             return view('verification-failed');
         }
-
+         
         try {
             UserVerification::process($request->input('email'), $token, $this->userTable());
         } catch (\Jrean\UserVerification\Exceptions\UserNotFoundException $e) {
             return view('vendor/laravel-user-verification/verification-failed');
         } catch (\Jrean\UserVerification\Exceptions\UserIsVerifiedException $e) {
-            return view('vendor/laravel-user-verification/verification-passed');
+            if (Auth::check()) {
+                return redirect('/');
+            } else {
+                return view('vendor/laravel-user-verification/verification-passed');
+            }
         } catch (\Jrean\UserVerification\Exceptions\TokenMismatchException $e) {
             return view('vendor/laravel-user-verification/verification-failed');
         }
