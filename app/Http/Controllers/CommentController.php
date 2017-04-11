@@ -9,6 +9,10 @@ use App\Post;
 use App\Comment;
 class CommentController extends Controller {
 
+	public function __construct() {
+        $this->middleware('isVerified');
+    }
+
 	public function createComment (Request $request){
 		if (Auth::check()){
 
@@ -49,7 +53,7 @@ class CommentController extends Controller {
 				
 				$post_id = $comment->post->id;
 				$post = Post::findOrFail($post_id);
-				
+
 				Comment::destroy($request->comment_id);
 
 				$comments_count = Comment::where("post_id", $post_id)->count();

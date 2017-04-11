@@ -25,6 +25,10 @@ use \Identicon\Identicon;
 
 class ProfileController extends Controller {
 
+    public function __construct() {
+        $this->middleware('isVerified');
+    }
+
     private function findTopTag($tags) {
         $top = 0;
         $top_tag = "";

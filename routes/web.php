@@ -144,5 +144,14 @@ Route::get('/admin', 'AdminController@index') -> name('admin');
 
 ####################################################################################
 
+# email verification routes
+
+Route::get('/email-verification/error', function() {
+	return redirect('/email-verification/verify');
+});
+Route::get('/email-verification/verify', 'Auth\RegisterController@resendVerifyPage') -> name("verify.resendpage");
+Route::post('/email-verification/send-email', 'Auth\RegisterController@resendVerify') -> name("verify.resend");
+
+Route::get("/banned", "Auth\RegisterController@banned") -> name("banned");
 
 Auth::routes();

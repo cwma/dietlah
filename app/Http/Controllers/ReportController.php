@@ -13,6 +13,10 @@ use Illuminate\Support\Facades\Auth;
 
 class ReportController extends Controller
 {
+
+	public function __construct() {
+        $this->middleware('isVerified');
+    }
     //report inappropriate content for deletion
     public function report(Request $request) {
 	if (self::validate_report($request)) {

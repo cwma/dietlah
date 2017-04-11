@@ -20,6 +20,10 @@ use Image;
 
 class PostController extends Controller {
 
+    public function __construct() {
+        $this->middleware('isVerified');
+    }
+
     // Original PHP code by Chirp Internet: www.chirp.com.au
     // Please acknowledge use of this code by including this header.
 

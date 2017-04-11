@@ -19,13 +19,15 @@ use JavaScript;
 Use View;
 
 class MessageController extends Controller {
-
+    
     protected $authUser;
     public function __construct()
     {
         $this->middleware(function ($request, $next) {
             Talk::setAuthUserId(Auth::user()->id); return $next($request);
         });
+
+        $this->middleware('isVerified');
         
         if (Auth::check())
         {

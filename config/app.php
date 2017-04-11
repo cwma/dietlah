@@ -165,6 +165,7 @@ return [
         Collective\Html\HtmlServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         TeamTNT\Scout\TNTSearchScoutServiceProvider::class,
+        Jrean\UserVerification\UserVerificationServiceProvider::class,
 
         /*
          * Package Service Providers...
@@ -242,6 +243,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'Talk'      => Nahid\Talk\Facades\Talk::class,
         'Image' => Intervention\Image\Facades\Image::class,
+        'UserVerification' => Jrean\UserVerification\Facades\UserVerification::class,
 
     ],
 

@@ -15,7 +15,8 @@
         "laravelcollective/html": "^5.4",
         "nahid/talk": "^2.1",
         "teamtnt/laravel-scout-tntsearch-driver": "^2.0",
-        "yzalis/identicon": "^1.1"
+        "yzalis/identicon": "^1.1",
+        "jrean/laravel-user-verification": "^4.1"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

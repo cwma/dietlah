@@ -19,6 +19,10 @@ use App\PostTag;
 
 class HomePageController extends Controller {
 
+    public function __construct() {
+        $this->middleware('isVerified');
+    }
+
     public function index(Request $request, $page = 1) {
         $tags = Tag::has('post_tags')->get()->pluck("tag_name");
 
