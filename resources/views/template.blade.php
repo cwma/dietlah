@@ -16,7 +16,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.98.0/css/materialize.min.css">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.0.0/jquery.lazyloadxt.fadein.css">
         <link rel="stylesheet" href="css/materialize-tags.min.css">
-        <link rel="stylesheet" href="css/dietlah.2.css">
+        <link rel="stylesheet" href="css/dietlah.3.css">
         @yield('stylesheets')
         <title>@yield('title')</title>
     </head>
