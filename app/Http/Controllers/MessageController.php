@@ -23,15 +23,16 @@ class MessageController extends Controller {
     protected $authUser;
     public function __construct()
     {
-        $this->middleware(function ($request, $next) {
-            Talk::setAuthUserId(Auth::user()->id); return $next($request);
-        });
-
         $this->middleware('isVerified');
-        
+        $this->middleware('auth');
+
         if (Auth::check())
         {
-            $this->middleware('auth');
+
+            $this->middleware(function ($request, $next) {
+                Talk::setAuthUserId(Auth::user()->id); return $next($request);
+            });
+
             Talk::setAuthUserId(Auth::user()->id);
 
             View::composer('partials.peoplelist', function($view) {
