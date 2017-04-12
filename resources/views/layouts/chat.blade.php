@@ -23,7 +23,7 @@
                 </li>
             </ul> <!-- end chat-header -->
 
-            <div class="chat-history">
+            <div class="chat-history" @if(!isset($user)) style="height:calc(40vh + 156px);" @endif>
                 <ul id="talkMessages">
 
                     @foreach($messages as $message)
