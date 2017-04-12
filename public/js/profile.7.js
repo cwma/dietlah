@@ -284,15 +284,19 @@ function handleLikeClickEvent(elementId) {
             },
             success: function( msg ) {
                 $(likeCaller).removeData("executing");
-                Materialize.toast(msg["response"], 4000);
-                if(liked == "yes") {
-                    $(targetcaller).attr("liked", "no");
-                    $(targeticon).html("star_outline");
-                    $(targetcount).html(msg["likes"]);
+                if(msg['status'] != "failed") { 
+                    Materialize.toast(msg["response"], 4000);
+                    if(liked == "yes") {
+                        $(targetcaller).attr("liked", "no");
+                        $(targeticon).html("star_outline");
+                        $(targetcount).html(msg["likes"]);
+                    } else {
+                        $(targetcaller).attr("liked", "yes");
+                        $(targeticon).html("star");
+                        $(targetcount).html(msg["likes"]);
+                    }
                 } else {
-                    $(targetcaller).attr("liked", "yes");
-                    $(targeticon).html("star");
-                    $(targetcount).html(msg["likes"]);
+                    Materialize.toast(msg["reason"], 10000);
                 }
             },                
             error: function(e){
@@ -322,13 +326,17 @@ function handleFavouriteClickEvent(elementId) {
             },
             success: function( msg ) {
                 $(favCaller).removeData("executing");
-                Materialize.toast(msg["response"], 4000);
-                if(favourited == "yes") {
-                    $(targetcaller).attr("favourited", "no");
-                    $(targeticon).html("bookmark_outline");
+                if(msg['status'] != "failed") { 
+                    Materialize.toast(msg["response"], 4000);
+                    if(favourited == "yes") {
+                        $(targetcaller).attr("favourited", "no");
+                        $(targeticon).html("bookmark_outline");
+                    } else {
+                        $(targetcaller).attr("favourited", "yes");
+                        $(targeticon).html("bookmark");
+                    }
                 } else {
-                    $(targetcaller).attr("favourited", "yes");
-                    $(targeticon).html("bookmark");
+                    Materialize.toast(msg["reason"], 10000);
                 }
             },
             error: function(e){

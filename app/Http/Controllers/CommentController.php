@@ -10,7 +10,7 @@ use App\Comment;
 class CommentController extends Controller {
 
 	public function __construct() {
-        $this->middleware('isVerified');
+        $this->middleware('isVerified',  ['except' => ['restComments']]);
     }
 
 	public function createComment (Request $request){

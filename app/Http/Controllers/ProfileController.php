@@ -26,7 +26,7 @@ use \Identicon\Identicon;
 class ProfileController extends Controller {
 
     public function __construct() {
-        $this->middleware('isVerified');
+        $this->middleware('isVerified', ['except' => ['myProfile', 'viewProfile', 'restProfile']]);
     }
 
     private function findTopTag($tags) {

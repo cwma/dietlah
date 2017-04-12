@@ -17,10 +17,6 @@ use App\Comment;
 
 class AdminController extends Controller {
 
-	public function __construct() {
-        $this->middleware('isVerified');
-    }
-
     public function index() {
         if(Auth::check() && Auth::user()->is_admin){
         	$reports = Report::orderBy("created_at", "desc")->paginate(5);

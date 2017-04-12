@@ -21,7 +21,7 @@ use Image;
 class PostController extends Controller {
 
     public function __construct() {
-        $this->middleware('isVerified');
+        $this->middleware('isVerified',  ['except' => ['post']]);
     }
 
     // Original PHP code by Chirp Internet: www.chirp.com.au
