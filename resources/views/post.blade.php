@@ -350,7 +350,7 @@
 <script type="text/javascript" src="js/linkify.min.js"></script>
 <script type="text/javascript" src="js/linkify-jquery.min.js"></script>
 <script type="text/javascript" src="js/materialize-tags.min.js"></script>
-<script type="text/javascript" src="js/post.5.js"></script>
+<script type="text/javascript" src="js/post.6.js"></script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAkiUSHEYhC-Eq_KjyTib-zmz7QBbkyk4M"></script>
 <script>
     $(window).bind("load", function() {
