@@ -15,7 +15,7 @@
                         <div class="row">
                             <p class="center" class="col-md-4 control-label">We've sent you an email containing a link to verify your email.</p>
                             <p class="center" class="col-md-4 control-label">Please verify your email for this account before continuing</p>
-                            
+                            <p class="center" class="col-md-4 control-label">Unverified accounts will have read-only access.</p>
                             <br>
                         </div>
 
