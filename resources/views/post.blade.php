@@ -66,7 +66,7 @@
                             <div class="article-header">
                                 <div class="article-user left">
                                     <div class="chip white">
-                                        <img data-src="{{$post['profile_pic']}}" alt="Contact Person">
+                                        <a href="/profile/{{$post['user_id']}}"><img data-src="{{$post['profile_pic']}}" alt="Contact Person"></a>
                                         <a href="/profile/{{$post['user_id']}}">{{$post['username']}}</a>
                                     </div>
                                 </div>
@@ -360,7 +360,7 @@
 <script id="comments_template" type="text/x-handlebars-template">
     @{{#each comments}}
         <li class="collection-item collection-item-comments avatar hide-on-small-only">
-            <img data-src="@{{profile_pic}}" alt="" class="circle">
+            <a href="/profile/@{{user_id}}"><img data-src="@{{profile_pic}}" alt="" class="circle"></a>
             <span class="title"><a href="/profile/@{{user_id}}">@{{username}}</a></span>
             <p id="comment-text" class="comment-text">@{{{text}}}</p>
             <p id="actual" hidden text="@{{raw_text}}"></p>
