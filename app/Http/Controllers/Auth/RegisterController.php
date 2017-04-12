@@ -39,7 +39,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    protected $redirectTo = '/email-verification/verify';
 
     /**
      * Create a new controller instance.
@@ -134,7 +134,7 @@ class RegisterController extends Controller
                     Please try again later.']);
             }
         } else {
-                return back()->withErrors(['email' => 'You can only request a maximum of 1 verification email every 30mins.']);
+                return back()->withErrors(['email' => 'You can only request a maximum of 1 verification email every 30mins. Please try again later.']);
         }
     }
 

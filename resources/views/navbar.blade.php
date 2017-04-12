@@ -9,6 +9,9 @@
             @if (Auth::user()->is_admin)
             <li><a href="{{ route('admin') }}">Admin</a></li>
             @endif
+            @if (!Auth::user()->verified)
+            <li><a href="{{ route('verify.resendpage') }}">Verify Email</a></li>
+            @endif
             <li>
                 <a href="{{ route('logout') }}"
                     onclick="event.preventDefault();
@@ -194,6 +197,9 @@
                 @else
                     @if (Auth::user()->is_admin)
                     <li style="padding-left:43px"><a href="{{ route('admin') }}">Admin</a></li>
+                    @endif
+                    @if (!Auth::user()->verified)
+                    <li><a href="{{ route('verify.resendpage') }}">Verify Email</a></li>
                     @endif
                     <li class="{{Route::currentRouteNamed('profile.my') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('profile.my') }}">My Profile</a></li>
                     <li class="{{Route::currentRouteNamed('message.read') ? 'active' : '' }}" style="padding-left:43px"><a href="{{ route('message.read') }}">Messages</a></li>
