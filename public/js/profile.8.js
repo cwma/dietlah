@@ -411,7 +411,7 @@ function handleReportCommentSubmit() {
                         $(form).find('#report_comment').trigger('autoresize');
                         $('#report-comment-modal').modal('close');
                     } else {
-                        Materialize.toast("We were not able to update the comment", 10000);
+                        Materialize.toast("We were not able to send the report", 10000);
                         reasons = data['reason'];
                         for(i=0; i<reasons.length; i++) {
                             Materialize.toast(reasons[i], 10000);
