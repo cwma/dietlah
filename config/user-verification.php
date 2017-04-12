@@ -14,7 +14,7 @@ return [
     */
 
     'email' => [
-        'type' => 'default',
+        'type' => 'markdown',
     ],
 
 ];
